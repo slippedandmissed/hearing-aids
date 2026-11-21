@@ -4,7 +4,7 @@ Printed in plain grey MJF nylon (PA12). Per ear (LEFT built, RIGHT = exact mirro
   clip A      : C-clip at station 100 mm along the stem            -> fit matrix  T (stem thickness) x H (stem height offset)
   clip B + arm: C-clip at station 127 mm FUSED to the spring arm + exciter plate -> same fit matrix at arm 2.8 mm, plus arm 2.4 / 3.2 mm at the middle fit
   Both: ID text engraved 0.4 mm deep.  clips: top face "L"/"R" + T letter + H digit; arm plate: side + arm thickness.
-Fit codes:  T letter A..D = stem thickness 3.2 / 3.6 / 4.0 / 4.4 mm;  H digit 1..3 = stem height offset -0.6 / 0 / +0.6 mm (vs. the measured/interpolated profile).
+Fit codes:  T letter A..D = stem thickness 3.34 / 3.54 / 3.74 / 3.94 mm (3.54 measured);  H digit 1..3 = stem height offset -0.4 / 0 / +0.4 mm (vs. the measured/interpolated profile).
 Also: gummy bear shells + back plates (L/R) and the bee box base + cover."""
 import os, csv, sys
 import numpy as np
@@ -18,8 +18,8 @@ from bee_box import HP
 
 OUT = "print"; os.makedirs(OUT, exist_ok=True)
 QUICK = bool(os.environ.get("QUICK"))
-T_LIST = {"A": 3.2, "B": 3.6, "C": 4.0, "D": 4.4}
-H_LIST = {"1": -0.6, "2": 0.0, "3": 0.6}
+T_LIST = {"A": 3.34, "B": 3.54, "C": 3.74, "D": 3.94}
+H_LIST = {"1": -0.4, "2": 0.0, "3": 0.4}
 ARM_MAIN, ARM_EXTRA = 2.8, (2.4, 3.2)
 DENS = 1.0                    # g/cm3 effective for MJF PA12 parts
 ENGRAVE = 0.4

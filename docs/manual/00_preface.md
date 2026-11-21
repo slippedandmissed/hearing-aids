@@ -18,7 +18,7 @@ This is a **working document**: a combined *datasheet* (what each part is and wh
 | tag | meaning |
 |---|---|
 | **DATASHEET** | read from a manufacturer datasheet or product page |
-| **MEASURED** | measured on the author's own glasses or head (ruler, ±0.5 mm) |
+| **MEASURED** | measured on the author's own glasses or head (ruler ±0.5 mm; calipers for the glasses stem) |
 | **DERIVED** | calculated from other numbers in this document |
 | **ESTIMATE** | a reasoned guess with stated assumptions; replace by measurement |
 | **UNVERIFIED** | depends on something nobody has tested on hardware yet |

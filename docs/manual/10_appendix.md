@@ -22,7 +22,7 @@ tools/              fetch.py (downloads, bibliography), make_graph.py (dependenc
 
 ## C. Measurements to take with calipers {-}
 
-The glasses stem was measured with a ruler only. When calipers are available, measure the stem's **thickness** and **height** at the hinge, at 50 mm, at 100 mm and at the widest part of the rear paddle, and update `GlassesParams` in `cad/params.py`; the clips and the fit matrix follow. The ear and mastoid measurements already taken (protrusion 20 – 21 mm; groove to mastoid 56 mm along the skin; 22 mm at canal level) are drawn here:
+The glasses stem was first measured with a ruler and then with calipers (3.54 mm thick; 6.40 mm tall at the hinge, 4.7 mm at the end of the straight section, 9.36 mm at the paddle). Stations: the straight section is 105.33 mm long and the tallest point is 134.72 mm away in a straight line. Still to measure: the stem's height at 50 mm and at the tip. Original instruction: measure the stem's **thickness** and **height** at the hinge, at 50 mm, at 100 mm and at the widest part of the rear paddle, and update `GlassesParams` in `cad/params.py`; the clips and the fit matrix follow. The ear and mastoid measurements already taken (protrusion 20 – 21 mm; groove to mastoid 56 mm along the skin; 22 mm at canal level) are drawn here:
 
 ![Ear and mastoid measurement guide.](figures/measure/mastoid.png){width=85%}
 

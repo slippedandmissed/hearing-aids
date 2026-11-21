@@ -39,4 +39,4 @@ Per ear there are four things: **clips** that snap onto the glasses stem, a prin
 
 ## What is *not* done
 
-The firmware is a compile-only skeleton (chapter 8). The PCBs have not been ordered or powered. The 16.129 kHz sample rate is outside the amplifier's listed rates by 0.8 % and has not been tried. The stems of the author's glasses were measured only with a ruler, so the clips are printed in a range of sizes (chapter 4). The risks are listed honestly in chapter 9.
+The firmware is a compile-only skeleton (chapter 8). The PCBs have not been ordered or powered. The 16.129 kHz sample rate is outside the amplifier's listed rates by 0.8 % and has not been tried. The stems of the author's glasses were measured with calipers, but the printer's tolerance is as large as the clip clearance, so the clips are printed in a range of sizes (chapter 4). The risks are listed honestly in chapter 9.

@@ -28,7 +28,7 @@ Everything is **unverified on hardware**.
 
 ## Architecture (decisions that hold)
 
-- Bone conduction at the mastoid; exciter pressed by a printed PA12 spring arm (2.4 / 2.8 / 3.2 mm variants) fused to a C-clip on the glasses stem (clip A at station 100 mm, clip B+arm at 127 mm). Clips printed in a fit matrix (stem thickness A–D = 3.2/3.6/4.0/4.4 mm × height 1–3 = −0.6/0/+0.6 mm) because the stem was measured with a ruler only (thickness assumed 3.5 mm).
+- Bone conduction at the mastoid; exciter pressed by a printed PA12 spring arm (2.4 / 2.8 / 3.2 mm variants) fused to a C-clip on the glasses stem (clip A at station 100 mm, clip B+arm at 127 mm). Clips printed in a fit matrix (stem thickness A–D = 3.34/3.54/3.74/3.94 mm × height 1–3 = −0.4/0/+0.4 mm). The stem is MEASURED with calipers (2026-11-21): 3.54 mm thick, 6.40 mm at the hinge, 4.7 mm at the end of the straight section, 9.36 mm at the paddle; the matrix stays because MJF tolerance (±0.3 mm, holes shrink) equals the 0.25 mm clip clearance. Stations: straight section 105.33 mm (measured); tallest point 134.72 mm from the hinge in a straight line, modelled at 135 mm along the stem.
 - Digital signal path: SPH0641LM4H-1 PDM mic (in the dangle) → XIAO nRF52840 (PDM→16.129 kHz PCM, DSP, I2S) → MAX98357A class-D amp (in the dangle) → 2 × 22 Ω hardware power cap → DAEX-9-4SM. **One** XIAO serves both ears (stereo PDM/I2S); 8 wires per ear in two 4-wire silicone ribbons (VBAT, 2 GND, PDM clk/data, I2S ×3), same pad order on both PCBs.
 - Dangle PCB 13 × 28 mm, all SMD on top, bottom = ground plane + big L/R + signature; L/R variants differ in R_SD (2 k / 220 k) and the mic SELECT strap.
 - Carrier PCB 56 × 40 mm (r 9 mm corners): JST-PH → AO3401A reverse-polarity P-FET → SK12D07VG4 switch → 500 mA PTC → VBAT; LED; ten 33 Ω series resistors; two 8-pad ear blocks; XIAO soldered straight into the board (battery wired to its back pads); XIAO's own charger via its USB-C (works only with the switch ON).
@@ -56,7 +56,10 @@ Everything is **unverified on hardware**.
 - [ ] Get print quotes (JLC3DP and a UK MJF bureau) for the full and lean sets; decide.
 - [ ] Review the gerbers in JLCPCB's viewer / a gerber viewer; check CPL rotations; confirm mic and amp stock; then order the three PCB orders.
 - [ ] Order exciters, XIAO ×2, LiPo (check plug polarity), ribbon cable, small parts, consumables (see `docs/data/parts.toml`).
-- [ ] Measure the glasses stem with calipers when available; update `GlassesParams` and prune the clip matrix.
+- [x] Glasses stem measured with calipers (thickness, three heights); `GlassesParams` and the clip matrix updated.
+- [x] Stations measured (straight section 105.33 mm; tallest point 134.72 mm chord).
+- [ ] Measure the stem height at 50 mm and at the tip (currently interpolated; tip assumed 4.0 mm).
+- [ ] Audit the STLs against JLC3DP's minimum feature sizes and clearances (see the manual's mechanical chapter); check gerbers in a viewer (via annular ring, CPL rotations).
 - [ ] Verify assumed heights against the real JST, headers, battery; adjust `cad/bee_box.py`.
 - [ ] Firmware: bench bring-up (tone, mic level over USB serial, LED codes), DSP library tested on WAV files, feedback canceller, USB-serial then BLE tuning, React Native app.
 - [ ] After hardware arrives: update the manual's status tags (ESTIMATE → MEASURED) and the assembly chapter with what really happened.

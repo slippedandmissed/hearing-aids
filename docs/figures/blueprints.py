@@ -183,7 +183,7 @@ def clip_section(ax, T, h, wall=1.6, clr=0.25, length=14, label_txt="", x0=0, y0
 
 def clips():
     from clips import clip_geom, arm_geom, g_for, P3, s
-    fig, axs = sheet(2, 3, (16, 11), "STEM CLIPS AND SPRING ARM (left ear shown)", "clipA_*, clipB_arm*", notes=("right ear is the mirror image", "fit matrix: stem thickness A–D 3.2 / 3.6 / 4.0 / 4.4, height 1–3 = −0.6 / 0 / +0.6", "wall 1.6, clearance 0.25, length 14", "arm 2.8 mm (2.4 / 3.2 variants), height 7.0"))
+    fig, axs = sheet(2, 3, (16, 11), "STEM CLIPS AND SPRING ARM (left ear shown)", "clipA_*, clipB_arm*", notes=("right ear is the mirror image", "fit matrix: stem thickness A–D 3.34 / 3.54 / 3.74 / 3.94, height 1–3 = −0.4 / 0 / +0.4", "wall 1.6, clearance 0.25, length 14", "arm 2.8 mm (2.4 / 3.2 variants), height 7.0"))
     ax = axs[0]; clip_section(ax, 3.6, 4.6, label_txt="CLIP A  section (station 100 mm, fit B2)"); ax.set_xlim(-14, 14); ax.set_ylim(-14, 14)
     ax = axs[1]; clip_section(ax, 3.6, 8.9, label_txt="CLIP B  section (station 127 mm, fit B2)"); ax.set_xlim(-14, 14); ax.set_ylim(-16, 14)
     ax = axs[2]
@@ -191,7 +191,7 @@ def clips():
     ax.fill_between(st, -hp / 2, hp / 2, color="#b9d2f5", ec=LN); ax.set_xlim(-8, 155); ax.set_ylim(-19, 14)
     for stn, nm in ((100, "A"), (127, "B")): ax.add_patch(plt.Rectangle((stn - 7, -5.5 if nm == "A" else -7), 14, 11 if nm == "A" else 14, fc="none", ec=C["pink"], lw=1.6)); ax.text(stn, -10.2, f"clip {nm}", color=C["pink"], fontsize=8, ha="center", va="top")
     dim(ax, (0, -8), (145, -8), -6.5, "temple length 145 (hinge → tip)"); ax.text(0, 8.5, f"hinge h={G.temple_h_hinge}", color=LN, fontsize=8); ax.text(95, 12.3, f"h={G.temple_h_straight_end} at 105", color=LN, fontsize=8, ha="center"); ax.text(152, 8.3, f"paddle h={G.temple_h_paddle}", color=LN, fontsize=8, ha="right")
-    label(ax, "STEM PROFILE (height along the temple, ruler ±0.5)")
+    label(ax, "STEM PROFILE (height along the temple, calipers)")
     # arm + plate in three views
     cb, g, ib, sb = clip_geom(127.0, 3.6, 0.0); part = cb + arm_geom(g, ib, 2.8)
     c = part.bounding_box().center(); part = part.moved(Pos(-c.X, -c.Y, -c.Z)) if hasattr(part, "moved") else part.move(__import__("build123d").Location((-c.X, -c.Y, -c.Z)))

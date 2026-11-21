@@ -23,7 +23,7 @@ def clips_matrix():
     for h in "123":
         for t in "ABCD":
             ax = axs[k]; k += 1; one(ax, [(mesh(f"clipA_L_{t}{h}"), NYLON)], el=35, az=-40); ax.set_title(f"A-type fit {t}{h}", fontsize=9)
-    fig.suptitle("Clip A, left ear: 4 stem thicknesses (columns A–D = 3.2 / 3.6 / 4.0 / 4.4 mm) × 3 stem heights (rows 1–3 = −0.6 / 0 / +0.6 mm)", fontsize=9.5, y=0.985)
+    fig.suptitle("Clip A, left ear: 4 stem thicknesses (columns A–D = 3.34 / 3.54 / 3.74 / 3.94 mm) × 3 stem heights (rows 1–3 = −0.4 / 0 / +0.4 mm)", fontsize=9.5, y=0.985)
     return fig
 
 def arms():

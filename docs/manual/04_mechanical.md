@@ -12,11 +12,11 @@ Every shape is a Python script (build123d [@build123d]); dimensions live in a fe
 
 ### The stem
 
-The glasses are a 57□17-145 frame (lens 57 mm, bridge 17 mm, temple 145 mm). The stem profile, **MEASURED** with a ruler to about ±0.5 mm, is 6.5 mm tall at the hinge, 4.5 mm where the straight section ends, 9.5 mm at the rear paddle, tapering at the tip. Its thickness is assumed to be 3.5 mm because no calipers were available. Photographs showed that the frame is a cat-eye acetate front with thin translucent-brown temples; the preview's front is a rough interpretation (no lenses).
+The glasses are a 57□17-145 frame (lens 57 mm, bridge 17 mm, temple 145 mm). The stem profile, **MEASURED** with calipers on 2026-11-21, is 6.40 mm tall at the hinge, 4.7 mm where the straight section ends and 9.36 mm at the widest part of the rear paddle before it tapers quickly; the thickness is a consistent 3.54 mm along the whole stem. The straight section is 105.33 mm long, and the tallest point is 134.72 mm from the hinge in a straight line; the model puts it at 135 mm along the stem, because the stem bends and the path is slightly longer. A second set of measurements perpendicular to the lens plane gave 113.56 mm and 130.75 mm; those include the hinge's offset from the lens plane, so the model uses the along-the-stem values. Photographs showed that the frame is a cat-eye acetate front with thin translucent-brown temples; the preview's front is a rough interpretation (no lenses).
 
 ### Clips
 
-Two **C-clips** snap onto the stem from underneath: **clip A** at 100 mm from the hinge, **clip B** at 127 mm. A clip has a 1.6 mm wall, 0.25 mm clearance and a 14 mm length; its slot on the underside is narrower than the stem so it clicks on. Because the true stem thickness and height are unknown, the clips are printed in a *range of sizes* (stem thickness 3.2 / 3.6 / 4.0 / 4.4 mm × height −0.6 / 0 / +0.6 mm) and you use the smallest that slides on with a click.
+Two **C-clips** snap onto the stem from underneath: **clip A** at 100 mm from the hinge, **clip B** at 127 mm. A clip has a 1.6 mm wall, 0.25 mm clearance and a 14 mm length; its slot on the underside is narrower than the stem so it clicks on. Because the printer's tolerance (±0.3 mm for MJF nylon, and holes print smaller than modelled) is as large as the 0.25 mm clearance, the clips are still printed in a *range of sizes* (stem thickness 3.34 / 3.54 / 3.74 / 3.94 mm, where 3.54 mm is the measured value, × height −0.4 / 0 / +0.4 mm) and you use the smallest that slides on with a click.
 
 ### Spring arm {#spring-arm}
 

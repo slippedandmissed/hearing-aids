@@ -58,7 +58,7 @@ A dated record of decisions and findings, newest last. The detailed running note
 | 3 | 8 wires × 60 cm shared bus noise | a real cable test |
 | 4 | Feedback between exciter and microphone | listening test, then the feedback canceller |
 | 5 | Bone-conduction coupling quality at the mastoid | wearing it |
-| 6 | Stem thickness and height (ruler only) | calipers, or trying the clip matrix |
+| 6 | Stem thickness and height (ruler only) | measured with calipers 2026-11-21: 3.54 mm thick, 6.40 / 4.7 / 9.36 mm tall; the clip matrix stays because of print tolerance |
 | 7 | Assumed heights of JST, headers and battery | the real parts |
 | 8 | CPL rotations and the 0.5 mm NPTH at JLCPCB | JLCPCB's order preview |
 | 9 | Weight on the lobe (about 6 g) | wearing it |
