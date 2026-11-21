@@ -60,7 +60,10 @@ Everything is **unverified on hardware**.
 - [x] Stations measured (straight section 105.33 mm; tallest point 134.72 mm chord).
 - [ ] Measure the stem height at 50 mm and at the tip (currently interpolated; tip assumed 4.0 mm).
 - [x] Parameter audit against JLC3DP limits (2026-11-21): bear posts 3.4 mm, PCB stops 1.0 mm, engraving 0.8 mm deep, exciter pocket clearance 0.45 mm. Not done: a mesh-level wall-thickness check of the STLs.
-- [ ] Check gerbers in a viewer (via annular ring, CPL rotations) before ordering.
+- [x] JLCDFM (JLCPCB's free checker) run on the gerbers 2026-11-21: vias enlarged to 0.7/0.3 mm (annular ring 0.15 → 0.2 mm), ground vias kept 0.2 mm clear of SMD pads, router now sees the mic ring-bridge tracks; new routing locks committed. Dangle R: annular ring, via-to-pad and trace spacing all pass.
+- [ ] Re-run JLCDFM on dangle L and the carrier after the last changes; still open from the first run: THT-to-SMD spacing (2 red, hand-soldering risk), silkscreen over pads (pad numbers 5-8), 2 "via without pad" warnings.
+- [ ] Residual KiCad DRC items are against our own 0.2 mm rule (misses of 0.003-0.017 mm: mic ring to its hole on L, a via to the mic ring bridge on R); JLCPCB's limit is 0.127 mm and JLCDFM does not flag them.
+- [ ] Check CPL rotations in JLCPCB's assembly preview before ordering.
 - [ ] Verify assumed heights against the real JST, headers, battery; adjust `cad/bee_box.py`.
 - [ ] Firmware: bench bring-up (tone, mic level over USB serial, LED codes), DSP library tested on WAV files, feedback canceller, USB-serial then BLE tuning, React Native app.
 - [ ] After hardware arrives: update the manual's status tags (ESTIMATE → MEASURED) and the assembly chapter with what really happened.

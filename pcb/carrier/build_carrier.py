@@ -62,7 +62,7 @@ place("C_BYP", *C06, 45.5, 35.0, 0, {"1": "VBAT", "2": "GND"}, "100nF", "C14663"
 place("R_LED", *R06, 50.0, 32.0, 90, {"1": "VBAT", "2": "LEDA"}, "2.2k", "C4190")
 place("D1", "LED_SMD", "LED_0603_1608Metric", 50.0, 36.0, 90, {"2": "LEDA", "1": "GND"}, "red LED", "C2286")
 ds = board.GetDesignSettings(); ds.m_CopperEdgeClearance = mm(0.3); ds.m_HoleClearance = mm(0.2); ds.m_HoleToHoleMin = mm(0.25); ds.m_MinClearance = mm(0.2)
-nc = ds.m_NetSettings.GetDefaultNetclass(); nc.SetTrackWidth(mm(0.25)); nc.SetClearance(mm(0.2)); nc.SetViaDiameter(mm(0.6)); nc.SetViaDrill(mm(0.3))
+nc = ds.m_NetSettings.GetDefaultNetclass(); nc.SetTrackWidth(mm(0.25)); nc.SetClearance(mm(0.2)); nc.SetViaDiameter(mm(0.7)); nc.SetViaDrill(mm(0.3))
 path = os.path.join(OUT, "carrier_C_placed.kicad_pcb"); pcbnew.SaveBoard(path, board)
 json.dump(LCSC, open(os.path.join(OUT, "carrier_C_parts.json"), "w"))
 tmp = pcbnew.LoadBoard(path)

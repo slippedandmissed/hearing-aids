@@ -83,7 +83,7 @@ for p in board.FindFootprintByReference("U2").Pads():
 ds = board.GetDesignSettings()
 ds.m_CopperEdgeClearance = mm(0.3); ds.m_HoleClearance = mm(0.2); ds.m_HoleToHoleMin = mm(0.25)
 ds.m_TrackMinWidth = mm(0.127); ds.m_MinClearance = mm(0.2); ds.m_ViasMinSize = mm(0.5); ds.m_ViasMinDrill = mm(0.3)
-nc = ds.m_NetSettings.GetDefaultNetclass(); nc.SetTrackWidth(mm(0.2)); nc.SetClearance(mm(0.2)); nc.SetViaDiameter(mm(0.6)); nc.SetViaDrill(mm(0.3))
+nc = ds.m_NetSettings.GetDefaultNetclass(); nc.SetTrackWidth(mm(0.2)); nc.SetClearance(mm(0.2)); nc.SetViaDiameter(mm(0.7)); nc.SetViaDrill(mm(0.3))
 
 if STAGE == "place":
     import json; json.dump(LCSC, open(os.path.join(OUT, f"dangle_{VARIANT}_parts.json"), "w"))
@@ -92,5 +92,5 @@ if STAGE == "place":
     for fp in tmp.GetFootprints():
         for p in fp.Pads():
             if p.GetNetname() == "GND": p.SetNetCode(0)
-    for t in list(tmp.GetTracks()): tmp.Remove(t)
+    for t in list(tmp.GetTracks()): t.SetNetCode(0)      # ring-bridge tracks stay as net-less obstacles (otherwise the router puts 3V3 within 0.09 mm of them)
     pcbnew.ExportSpecctraDSN(tmp, os.path.join(OUT, f"dangle_{VARIANT}.dsn")); print("placed + DSN", path)

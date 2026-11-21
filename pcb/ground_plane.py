@@ -8,7 +8,8 @@ from pcbnew import FromMM as mm, ToMM as tomm, VECTOR2I
 
 V = sys.argv[1]; HERE = os.path.dirname(os.path.abspath(__file__)); OUT = os.environ.get("OUTDIR", os.path.join(HERE, "out")); PREFIX = os.environ.get("PREFIX", "dangle")
 board = pcbnew.LoadBoard(os.path.join(OUT, os.environ.get("INPUT", f"{PREFIX}_{V}_placed.kicad_pcb")))
-RES, TW, CL, VD, VDR = 0.05, 0.2, 0.2, 0.6, 0.3
+RES, TW, CL, VD, VDR = 0.05, 0.2, 0.2, 0.7, 0.3     # vias 0.7/0.3: 0.2 mm annular ring (JLCDFM calls 0.15 mm a warning)
+VIA_PAD_GAP = 0.2                                     # copper gap between a via and any SMD pad (no via-in-pad: solder wicks down it)
 EDGE_CL = 0.3
 W, H = float(os.environ.get('BW', 13.0)), float(os.environ.get('BH', 28.0))
 NX, NY = int(round(W / RES)) + 1, int(round(H / RES)) + 1
@@ -89,7 +90,7 @@ smd_boxes = []
 for fp in board.GetFootprints():
     for p in fp.Pads():
         if p.GetAttribute() == pcbnew.PAD_ATTRIB_SMD and not (fp.GetReference() == "U1" and p.GetNumber() == "17"):
-            bb = p.GetBoundingBox(); smd_boxes.append((tomm(bb.GetX()) - 0.15, tomm(bb.GetY()) - 0.15, tomm(bb.GetX() + bb.GetWidth()) + 0.15, tomm(bb.GetY() + bb.GetHeight()) + 0.15))
+            bb = p.GetBoundingBox(); m = VD / 2 + VIA_PAD_GAP; smd_boxes.append((tomm(bb.GetX()) - m, tomm(bb.GetY()) - m, tomm(bb.GetX() + bb.GetWidth()) + m, tomm(bb.GetY() + bb.GetHeight()) + m))
 def via_ok(i, j):
     x, y = i * RES, j * RES
     if any(math.hypot(x - vx, y - vy) < 0.8 for _, vx, vy in vias): return False
@@ -112,9 +113,9 @@ def add_seg(net, layers, x1, y1, x2, y2, hw=0.1):
 for t in board.GetTracks():                      # copper already on the board (Freerouting result, ring bridges): obstacles
     net = t.GetNetCode()
     if t.GetClass() == "PCB_VIA":
-        x, y = tomm(t.GetPosition().x), tomm(t.GetPosition().y); add_item(net, (0, 1), x - 0.3, y - 0.3, x + 0.3, y + 0.3, 0.1, 0.3); vias.append((net, x, y))
+        t.SetWidth(mm(VD)); x, y = tomm(t.GetPosition().x), tomm(t.GetPosition().y); add_item(net, (0, 1), x - VD / 2, y - VD / 2, x + VD / 2, y + VD / 2, 0.1, VD / 2); vias.append((net, x, y))
     else:
-        add_seg(net, (0 if t.GetLayer() == pcbnew.F_Cu else 1,), tomm(t.GetStart().x), tomm(t.GetStart().y), tomm(t.GetEnd().x), tomm(t.GetEnd().y))
+        add_seg(net, (0 if t.GetLayer() == pcbnew.F_Cu else 1,), tomm(t.GetStart().x), tomm(t.GetStart().y), tomm(t.GetEnd().x), tomm(t.GetEnd().y), hw=max(0.1, tomm(t.GetWidth()) / 2))
 fail = []
 for name in ("GND",):
     net = code.get(name)
@@ -159,6 +160,6 @@ pcbnew.ZONE_FILLER(board).Fill(board.Zones())
 pcbnew.SaveBoard(os.path.join(OUT, f"{PREFIX}_{V}_routed.kicad_pcb"), board)
 import json
 rules = {"board": {"design_settings": {"rules": {"min_clearance": 0.2, "min_copper_edge_clearance": 0.2, "min_hole_clearance": 0.2, "min_hole_to_hole": 0.25,
-         "min_track_width": 0.15, "min_via_diameter": 0.5, "min_through_hole_diameter": 0.3, "min_via_annular_width": 0.13, "min_resolved_spokes": 2, "min_silk_clearance": 0.0, "min_text_height": 0.8, "min_text_thickness": 0.08}}}, "meta": {"filename": f"{PREFIX}_{V}_routed.kicad_pro", "version": 3}}
+         "min_track_width": 0.15, "min_via_diameter": 0.5, "min_through_hole_diameter": 0.3, "min_via_annular_width": 0.15, "min_resolved_spokes": 2, "min_silk_clearance": 0.0, "min_text_height": 0.8, "min_text_thickness": 0.08}}}, "meta": {"filename": f"{PREFIX}_{V}_routed.kicad_pro", "version": 3}}
 json.dump(rules, open(os.path.join(OUT, f"{PREFIX}_{V}_routed.kicad_pro"), "w"), indent=2)
 print("failed nets:", fail, "tracks", len(tracks), "vias", len(vias))
