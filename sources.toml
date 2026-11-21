@@ -1,0 +1,185 @@
+# Every third-party document, dataset, tool and library this project depends on.
+# - `make fetch` downloads every entry that has `fetch` (URL or list of URLs) into `dest`.
+# - `make docs` turns this file into the bibliography of the manual (docs/build/references.bib), so cite with [@key].
+# Fields: key, title, author, year, url (canonical page), fetch (optional direct download URL(s)), dest (optional), license, used_for, note.
+
+[[source]]
+key = "max98357a"
+title = "MAX98357A/MAX98357B: Tiny, Low-Cost, PCM Class D Amplifier with Class AB Performance"
+author = "Analog Devices (Maxim Integrated)"
+year = 2019
+url = "https://www.analog.com/en/products/max98357a.html"
+fetch = "https://www.makerguides.com/wp-content/uploads/2026/01/Datasheet_MAX98357A.pdf"
+dest = "docs/datasheets/MAX98357A.pdf"
+license = "datasheet, not redistributed (fetched at build time from a third-party mirror)"
+used_for = "I2S amplifier on the dangle PCB: SD_MODE channel select, GAIN_SLOT, supported LRCLK rates"
+
+[[source]]
+key = "sph0641"
+title = "SPH0641LM4H-1 / SPH0641LU4H-1 Digital Zero-Height SiSonic Microphone"
+author = "Knowles Corporation"
+year = 2018
+url = "https://www.knowles.com/products/microphones/sph0641lm4h-1"
+fetch = "https://akizukidenshi.com/goodsaffix/SPH0641LU4H-1.PDF"
+dest = "docs/datasheets/SPH0641.pdf"
+license = "datasheet, not redistributed (fetched at build time from a third-party mirror)"
+used_for = "PDM microphone on the dangle PCB: pinout, SELECT strap, clock range 1.024 to 2.475 MHz in standard mode"
+note = "The mirrored PDF is the LU4H-1 variant; the LM4H-1 fitted here shares the pinout and electrical table."
+
+[[source]]
+key = "xc6206"
+title = "XC6206 Series: Low Power Consumption, Positive Voltage Regulators"
+author = "Torex Semiconductor"
+url = "https://product.torexsemi.com/en/series/xc6206"
+used_for = "3.3 V LDO for the microphone on the dangle PCB"
+
+[[source]]
+key = "daex9"
+title = "DAEX9-4SM Skinny Mini Exciter 9 mm... (Dayton Audio DAEX-9-4SM), 13 x 26.5 x 5.75 mm, 4 ohm"
+author = "Dayton Audio"
+url = "https://www.daytonaudio.com/product/1295"
+used_for = "Bone-conduction exciter: dimensions, 4 ohm, 2.3 g, Re 3.6 ohm"
+
+[[source]]
+key = "xiao_wiki"
+title = "Seeed Studio XIAO nRF52840 (Sense) Getting Started"
+author = "Seeed Studio"
+url = "https://wiki.seeedstudio.com/XIAO_BLE/"
+used_for = "XIAO pinout, battery pads on the back, charge-current pin P0.13, USB-C bootloader"
+
+[[source]]
+key = "seeed_opl"
+title = "Seeed Studio OPL KiCad Library (XIAO nRF52840 v1.3 board file)"
+author = "Seeed Studio"
+url = "https://github.com/Seeed-Studio/OPL_Kicad_Library"
+license = "see repository"
+used_for = "exact BAT+/BAT- pad positions on the back of the XIAO (read once from the v1.3 board file; the numbers are in pcb/carrier/build_carrier.py)"
+
+[[source]]
+key = "nrf52840_ps"
+title = "nRF52840 Product Specification (PDM, I2S, clocking)"
+author = "Nordic Semiconductor"
+url = "https://docs.nordicsemi.com/bundle/ps_nrf52840/"
+used_for = "PDM clock 1.032 MHz and I2S MCK/LRCK derivation (32 MHz / 31)"
+
+[[source]]
+key = "embassy"
+title = "Embassy: modern embedded framework (embassy-nrf async PDM and I2S drivers)"
+author = "Embassy project"
+url = "https://github.com/embassy-rs/embassy"
+license = "MIT OR Apache-2.0"
+used_for = "Rust firmware runtime and drivers"
+
+[[source]]
+key = "trouble"
+title = "TrouBLE: Bluetooth Low Energy host in Rust"
+author = "Embassy project"
+url = "https://github.com/embassy-rs/trouble"
+used_for = "planned BLE tuning interface"
+
+[[source]]
+key = "uf2"
+title = "UF2: USB Flashing Format"
+author = "Microsoft"
+url = "https://github.com/microsoft/uf2"
+used_for = "flashing the XIAO over USB (family ID 0xADA52840)"
+
+[[source]]
+key = "adafruit_bl"
+title = "Adafruit nRF52 Bootloader (used by the XIAO nRF52840)"
+author = "Adafruit"
+url = "https://github.com/adafruit/Adafruit_nRF52_Bootloader"
+used_for = "double-tap-reset UF2 bootloader; application start address"
+
+[[source]]
+key = "freerouting"
+title = "Freerouting 1.9.0: open source PCB autorouter"
+author = "Freerouting contributors"
+year = 2023
+url = "https://github.com/freerouting/freerouting"
+fetch = "https://github.com/freerouting/freerouting/releases/download/v1.9.0/freerouting-1.9.0.jar"
+dest = "tools/freerouting-1.9.0.jar"
+license = "GPL-3.0"
+used_for = "signal routing of all three PCBs"
+
+[[source]]
+key = "kicad"
+title = "KiCad 10 EDA suite (pcbnew Python API, kicad-cli)"
+author = "KiCad developers"
+url = "https://www.kicad.org/"
+license = "GPL-3.0-or-later"
+used_for = "PCB design, design rule checks, gerbers, 3D renders"
+
+[[source]]
+key = "easyeda2kicad"
+title = "easyeda2kicad.py: convert LCSC/EasyEDA parts to KiCad footprints"
+author = "uPesy"
+url = "https://github.com/uPesy/easyeda2kicad.py"
+used_for = "footprints and 3D models of the MAX98357A, SPH0641 and SOT-23 parts (vendored under pcb/lib)"
+
+[[source]]
+key = "jlcpcb_cap"
+title = "JLCPCB PCB and PCBA manufacturing capabilities"
+author = "JLCPCB"
+url = "https://jlcpcb.com/capabilities/pcb-capabilities"
+used_for = "design rules (0.3 mm copper to edge, 0.5 mm NPTH), assembly, extended-part fees"
+
+[[source]]
+key = "jlc3dp"
+title = "JLC3DP 3D printing service (MJF nylon PA12)"
+author = "JLCPCB / JLC3DP"
+url = "https://jlc3dp.com/"
+used_for = "printing of the clips, spring arms, dangle shells and necklace box"
+
+[[source]]
+key = "jlcsearch"
+title = "jlcsearch: JLCPCB parts search (tscircuit)"
+author = "tscircuit"
+url = "https://jlcsearch.tscircuit.com/"
+used_for = "stock and part-class checks for the LCSC part numbers in the BOM"
+
+[[source]]
+key = "makehuman"
+title = "MakeHuman community base mesh and macro targets (CC0 assets)"
+author = "MakeHuman community"
+url = "https://github.com/makehumancommunity/makehuman"
+fetch = [
+  "https://raw.githubusercontent.com/makehumancommunity/makehuman/master/makehuman/data/3dobjs/base.obj",
+  "https://raw.githubusercontent.com/makehumancommunity/makehuman/master/makehuman/data/targets/macrodetails/caucasian-female-young.target",
+  "https://raw.githubusercontent.com/makehumancommunity/makehuman/master/makehuman/data/targets/macrodetails/african-female-young.target",
+  "https://raw.githubusercontent.com/makehumancommunity/makehuman/master/makehuman/data/targets/macrodetails/asian-female-young.target",
+  "https://raw.githubusercontent.com/makehumancommunity/makehuman/master/makehuman/data/targets/macrodetails/universal-female-young-averagemuscle-averageweight.target",
+]
+dest = "assets/mh_raw"
+license = "CC0 1.0 (assets)"
+used_for = "generic head, neck and torso used only for the fit/scale previews (not a likeness of anyone)"
+
+[[source]]
+key = "build123d"
+title = "build123d: Python BREP CAD"
+author = "build123d contributors"
+url = "https://github.com/gumyr/build123d"
+license = "Apache-2.0"
+used_for = "all CAD models"
+
+[[source]]
+key = "schemdraw"
+title = "Schemdraw: circuit schematics with Python"
+author = "Collin Ball"
+url = "https://schemdraw.readthedocs.io/"
+license = "MIT"
+used_for = "circuit diagrams in this manual"
+
+[[source]]
+key = "ngspice"
+title = "ngspice circuit simulator"
+author = "ngspice developers"
+url = "https://ngspice.sourceforge.io/"
+used_for = "exciter drive-network simulation"
+
+[[source]]
+key = "pandoc"
+title = "Pandoc universal document converter"
+author = "John MacFarlane"
+url = "https://pandoc.org/"
+used_for = "markdown to PDF build of this manual"

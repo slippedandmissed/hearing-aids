@@ -1,0 +1,146 @@
+# Bill of materials and cost model. Prices are ESTIMATES in GBP (low/high, per unit unless stated) from shop listings seen during the design;
+# confirm against live quotes. `group` drives the cost chart; JLC assembled parts are listed per PCB order in the manual (from pcb/fab/*_BOM.csv).
+# kind: order = lump-sum quote estimate for a whole order, part = per-unit item, calc = computed by docs/figures/tables.py
+
+[rates]
+vat = 0.20                    # applied to the JLCPCB lump sums only
+print_gbp_per_cm3 = [0.30, 0.60]   # ASSUMED MJF PA12 price range, NOT quoted; replace with a real JLC3DP / UK bureau quote
+lean_print_cm3 = 73           # the lean print set from the print-order notes
+
+[[item]]
+group = "JLCPCB"
+item = "Dangle PCB LEFT: 5 boards, 2 assembled (economic PCBA)"
+qty = 1
+low = 18
+high = 24
+vat = true
+source = "jlcpcb.com (extended parts: MAX98357A C910544, SPH0641 C497724)"
+note = "setup + stencil + extended-part fees; mic stock ≈ 85 pcs"
+
+[[item]]
+group = "JLCPCB"
+item = "Dangle PCB RIGHT: 5 boards, 2 assembled"
+qty = 1
+low = 18
+high = 24
+vat = true
+source = "jlcpcb.com"
+note = "same BOM except R_SD 220 k and the mic SELECT strap"
+
+[[item]]
+group = "JLCPCB"
+item = "Carrier PCB: 5 boards, 2 assembled"
+qty = 1
+low = 12
+high = 18
+vat = true
+source = "jlcpcb.com (extended: PTC C163512)"
+note = "JST socket, switch, XIAO pins and ear pads are hand-soldered"
+
+[[item]]
+group = "JLCPCB"
+item = "Shared shipping to the UK (3 orders together)"
+qty = 1
+low = 12
+high = 20
+vat = true
+source = "jlcpcb.com"
+note = "UK VAT is collected by JLCPCB below £135 for individuals"
+
+[[item]]
+group = "Exciters"
+item = "Dayton DAEX-9-4SM bone-conduction exciter (2 + 1 spare)"
+qty = 3
+low = 8.3
+high = 11.7
+source = "EU/US stockist (Soundimports, Audiophonics, Parts Express); no UK stockist found"
+note = "$6.99 each + shipping + import VAT"
+uk = false
+
+[[item]]
+group = "XIAO"
+item = "Seeed XIAO nRF52840 with pre-soldered pins (1 + 1 practice)"
+qty = 2
+low = 14
+high = 17
+source = "The Pi Hut"
+note = "the Sense variant also works; its mic is unused"
+uk = true
+
+[[item]]
+group = "Battery"
+item = "LiPo 3.7 V 500 mAh, JST-PH, protected"
+qty = 1
+low = 6
+high = 8
+source = "The Pi Hut"
+note = "CHECK the plug polarity against the carrier silkscreen"
+uk = true
+
+[[item]]
+group = "Cable"
+item = "Silicone ribbon cable, 4 wire 30 AWG, 1 m (4 pieces)"
+qty = 4
+low = 1.75
+high = 2.0
+source = "The Pi Hut"
+note = "two ribbons per ear = 8 conductors"
+uk = true
+
+[[item]]
+group = "Hand-soldered parts"
+item = "JST-PH S2B-PH-K socket + SK12D07VG4 slide switch"
+qty = 1
+low = 3
+high = 6
+source = "LCSC / Farnell / RS"
+note = "LCSC C173752 and C393937"
+
+[[item]]
+group = "Hardware"
+item = "M1.6 × 5 self-tapping screws (12) and M2 × 8 screws (4)"
+qty = 1
+low = 4
+high = 6
+source = "model-making / fastener shop"
+
+[[item]]
+group = "Hardware"
+item = "Ear hook wires or French hooks (silver, 1 pair)"
+qty = 1
+low = 3
+high = 5
+source = "craft shop"
+
+[[item]]
+group = "Hardware"
+item = "Foam ring or silicone dab for the mic seal"
+qty = 1
+low = 2
+high = 3
+source = "hardware shop"
+
+[[item]]
+group = "Consumables"
+item = "Flux pen, solder, 28 AWG wire, heat-shrink, velcro ties, hot glue"
+qty = 1
+low = 15
+high = 25
+source = "various"
+
+[[item]]
+group = "Paint"
+item = "Plastic primer, acrylic paints (pink, blue, yellow, black, silver), brush, clear lacquer"
+qty = 1
+low = 10
+high = 15
+source = "craft shop"
+note = "only needed if you paint the prints yourself"
+
+[[item]]
+group = "Existing"
+item = "Necklace chain (silver)"
+qty = 1
+low = 0
+high = 0
+source = "you already own one"

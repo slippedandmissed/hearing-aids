@@ -1,0 +1,42 @@
+\clearpage
+
+# Use, care and safety
+
+## Putting it on
+
+1. Switch the bee **ON** (red LED), hang the bee round your neck, put the chain's slack where it does not catch.
+2. Put on the glasses with the clips and arms fitted; the exciters should rest on the mastoid bone, the bony bump behind each ear.
+3. Hang the bears on the earrings. Keep the cable slack loops at the ears.
+4. Start with the volume low and raise it until speech is clear, never until it is loud.
+
+## Adjusting
+
+- **Pressure** is set by the arm: 2.4 mm softer, 2.8 mm standard, 3.2 mm stiffer. You can bend the plate slightly only at the moment of fitting; do not heat nylon.
+- **Position**: small moves of the exciter change loudness a lot. Mark the spot that works.
+- **Feedback** (a howl) means the exciter is too close to the microphone or the gain is too high; turn it down and move the earring away from the arm.
+
+## Charging
+
+Plug a USB-C charger or laptop into the bee with the **slide switch ON** (the switch sits between the cell and the charger). 500 mAh at 50 – 100 mA takes roughly 5 – 10 hours. Charge on a hard surface, in sight, never on the head or under a pillow. Unplug when full.
+
+## Safety
+
+- **Hearing safety.** Bone conduction can reach the inner ear at levels that are not obvious by feel. Never turn it up to compensate for a blockage that needs treatment; see a clinician about the wax.
+- **Electrical limits.** The series resistors limit the exciter to about 30 mW in the worst case; the firmware adds its own hard limiter.
+- **Battery.** A LiPo can burn if shorted, crushed or reversed. Use a protected cell; check the plug polarity; never leave the box in a hot car; stop using a puffy cell.
+- **Skin contact.** The exciter and the arm sit on your skin for hours: if the skin reddens or hurts, remove them and shorten the wearing time.
+- **Water.** Nothing is waterproof. Remove for showers and rain.
+- **Small parts.** The screws and the bears' parts are choking hazards for children and pets.
+
+## Troubleshooting
+
+| symptom | likely cause | what to try |
+|---|---|---|
+| no LED when switched on | battery flat or unplugged, plug reversed, switch dirty | check the plug polarity, charge, measure VBAT at pad 3 |
+| charging does nothing | slide switch is OFF, bad USB cable, XIAO battery wires loose | switch ON, another cable, re-solder the BAT wires |
+| silence from one ear | cable wire broken or on the wrong pad, amp strap wrong | continuity test pad by pad, check L/R board against L/R cable |
+| both ears silent, LED on | firmware not running, amplifier rate rejected (16.129 kHz) | reflash; scope LRCLK; see risk 1 in chapter 3 |
+| a howl or whistle | feedback | lower the volume, reposition, check the mic seal |
+| crackles with head movement | broken ribbon wire or poor joint | flex test while measuring continuity |
+| sound only when pressing the exciter | too little pad pressure | thicker arm, re-seat the clip, re-bend the plate gently |
+| the bear rattles | board not clamped | tighten the screws a little, check the stops and pillars |

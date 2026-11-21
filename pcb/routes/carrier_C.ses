@@ -1,0 +1,444 @@
+(session carrier_C
+  (base_design carrier_C)
+  (placement
+    (resolution um 10)
+    (component TestPoint_THTPad_D1.5mm_Drill0.7mm
+      (place R5 440000 -63000 front 0)
+      (place L5 52500 -63000 front 0)
+      (place L3 93000 -38000 front 0)
+      (place R7 494000 -63000 front 0)
+      (place R6 467000 -63000 front 0)
+      (place L7 106500 -63000 front 0)
+      (place L6 79500 -63000 front 0)
+      (place R2 453500 -38000 front 0)
+      (place R8 521000 -63000 front 0)
+      (place L1 39000 -38000 front 0)
+      (place R1 426500 -38000 front 0)
+      (place L4 120000 -38000 front 0)
+      (place R4 507500 -38000 front 0)
+      (place R3 480500 -38000 front 0)
+      (place L8 133500 -63000 front 0)
+      (place W_BATN 166000 -210000 front 0)
+      (place W_BATP 166000 -190000 front 0)
+      (place L2 66000 -38000 front 0)
+    )
+    (component PinHeader_1x07_P2.54mm_Vertical
+      (place J_XB 223800 -286200 front 90)
+    )
+    (component R_0603_1608Metric
+      (place R_LED 500000 -320000 front 90)
+    )
+    (component R_0603_1608Metric::1
+      (place RR_PDM_DATA 440000 -108000 front 0)
+      (place RR_PDM_CLK 440000 -90000 front 0)
+      (place RR_I2S_BCLK 440000 -126000 front 0)
+      (place RL_PDM_DATA 160000 -108000 front 0)
+      (place RR_I2S_LRCLK 440000 -144000 front 0)
+      (place RR_I2S_DIN 440000 -162000 front 0)
+      (place RL_PDM_CLK 160000 -90000 front 0)
+      (place RL_I2S_DIN 160000 -162000 front 0)
+      (place RL_I2S_LRCLK 160000 -144000 front 0)
+      (place RL_I2S_BCLK 160000 -126000 front 0)
+    )
+    (component PinHeader_1x07_P2.54mm_Vertical::1
+      (place J_XT 376200 -133800 front 270)
+    )
+    (component LED_0603_1608Metric
+      (place D1 500000 -360000 front 90)
+    )
+    (component "SOT-23"
+      (place Q1 140000 -350000 front 0)
+    )
+    (component Fuse_1206_3216Metric
+      (place F1 340000 -350000 front 0)
+    )
+    (component MountingHole_2.2mm_M2
+      (place MH1 26000 -200000 front 0)
+      (place MH2 534000 -200000 front 0)
+    )
+    (component "SW-TH_SK12D07VG4"
+      (place SW1 195000 -38000 front 180)
+    )
+    (component C_0805_2012Metric
+      (place C_BULK 410000 -350000 front 0)
+    )
+    (component "JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal"
+      (place J_BAT 110000 -310000 front 270)
+    )
+    (component C_0603_1608Metric
+      (place C_BYP 455000 -350000 front 0)
+    )
+  )
+  (was_is
+  )
+  (routes 
+    (resolution um 10)
+    (parser
+      (host_cad "KiCad's Pcbnew")
+      (host_version 10.0.8)
+    )
+    (library_out 
+      (padstack "Via[0-1]_600:300_um"
+        (shape
+          (circle F.Cu 6000 0 0)
+        )
+        (shape
+          (circle B.Cu 6000 0 0)
+        )
+        (attach off)
+      )
+      (padstack "Via[0-1]_600:300_um"
+        (shape
+          (circle F.Cu 6000 0 0)
+        )
+        (shape
+          (circle B.Cu 6000 0 0)
+        )
+        (attach off)
+      )
+    )
+    (network_out 
+      (net R_I2S_BCLK
+        (wire
+          (path F.Cu 2500
+            448250 -126000
+            474357 -126000
+            531785 -68572
+            531785 -46930
+            511849 -26994
+            503279 -26994
+            495593 -34680
+            495593 -38179
+            484704 -49068
+            453932 -49068
+            440000 -63000
+          )
+        )
+      )
+      (net I2S_BCLK
+        (wire
+          (path F.Cu 2500
+            171131 -128880
+            193180 -150930
+            406820 -150930
+            431750 -126000
+          )
+        )
+        (wire
+          (path F.Cu 2500
+            168250 -126000
+            171131 -128880
+          )
+        )
+        (wire
+          (path F.Cu 2500
+            171131 -128880
+            160080 -139931
+            160080 -179069
+            154803 -184346
+            154803 -214584
+            206826 -266607
+            229607 -266607
+            249200 -286200
+          )
+        )
+      )
+      (net I2S_LRCLK
+        (wire
+          (path F.Cu 2500
+            429501 -146249
+            439422 -156170
+            439422 -166983
+            385293 -221112
+            372662 -221112
+            312700 -281074
+            312700 -291213
+            305806 -298107
+            286507 -298107
+            274600 -286200
+          )
+        )
+        (wire
+          (path F.Cu 2500
+            429501 -146249
+            431750 -144000
+          )
+        )
+        (wire
+          (path F.Cu 2500
+            168250 -144000
+            180223 -155973
+            419777 -155973
+            429501 -146249
+          )
+        )
+      )
+      (net I2S_DIN
+        (wire
+          (path F.Cu 2500
+            431750 -162000
+            424200 -162000
+            300000 -286200
+          )
+        )
+        (wire
+          (path F.Cu 2500
+            168250 -162000
+            175800 -162000
+            300000 -286200
+          )
+        )
+      )
+      (net L_I2S_BCLK
+        (wire
+          (path F.Cu 2500
+            151750 -126000
+            115500 -126000
+            52500 -63000
+          )
+        )
+      )
+      (net VBAT
+        (wire
+          (path F.Cu 2500
+            491723 -328250
+            491723 -116174
+            536335 -71562
+            536335 -44943
+            513616 -22224
+            496276 -22224
+            480500 -38000
+          )
+        )
+        (wire
+          (path F.Cu 2500
+            491723 -328250
+            500000 -328250
+          )
+        )
+        (wire
+          (path F.Cu 2500
+            447250 -350000
+            469000 -328250
+            491723 -328250
+          )
+        )
+        (wire
+          (path F.Cu 2500
+            400500 -350000
+            411054 -360554
+            436696 -360554
+            447250 -350000
+          )
+        )
+        (wire
+          (path F.Cu 2500
+            166000 -190000
+            169967 -190000
+            262833 -282866
+            262833 -291074
+            279610 -307851
+            311851 -307851
+            354000 -350000
+          )
+        )
+        (wire
+          (path F.Cu 2500
+            400500 -350000
+            354000 -350000
+          )
+        )
+        (wire
+          (path B.Cu 2500
+            166000 -190000
+            93000 -117000
+            93000 -38000
+          )
+        )
+      )
+      (net R_PDM_CLK
+        (wire
+          (path F.Cu 2500
+            448250 -90000
+            467000 -90000
+            494000 -63000
+          )
+        )
+      )
+      (net LEDA
+        (wire
+          (path F.Cu 2500
+            500000 -352125
+            508085 -344040
+            508085 -319835
+            500000 -311750
+          )
+        )
+      )
+      (net L_PDM_CLK
+        (wire
+          (path F.Cu 2500
+            151750 -90000
+            133500 -90000
+            106500 -63000
+          )
+        )
+      )
+      (net PDM_DATA
+        (wire
+          (path F.Cu 2500
+            249200 -133800
+            261390 -145990
+            393760 -145990
+            431750 -108000
+          )
+        )
+        (wire
+          (path F.Cu 2500
+            168250 -108000
+            223400 -108000
+            249200 -133800
+          )
+        )
+      )
+      (net R_PDM_DATA
+        (wire
+          (path F.Cu 2500
+            507500 -38000
+            507500 -65125
+            464625 -108000
+            448250 -108000
+          )
+        )
+      )
+      (net PDM_CLK
+        (wire
+          (path F.Cu 2500
+            431750 -90000
+            318400 -90000
+            274600 -133800
+          )
+        )
+        (wire
+          (path F.Cu 2500
+            274600 -133800
+            230800 -90000
+            168250 -90000
+          )
+        )
+      )
+      (net L_PDM_DATA
+        (wire
+          (path F.Cu 2500
+            151750 -108000
+            159421 -100329
+            159421 -72921
+            124500 -38000
+            120000 -38000
+          )
+        )
+      )
+      (net R_I2S_LRCLK
+        (wire
+          (path F.Cu 2500
+            448250 -144000
+            440000 -135750
+            440000 -85380
+            426500 -71880
+            426500 -38000
+          )
+        )
+      )
+      (net R_I2S_DIN
+        (wire
+          (path F.Cu 2500
+            448250 -162000
+            448250 -160524
+            454985 -153789
+          )
+        )
+        (wire
+          (path B.Cu 2500
+            453500 -38000
+            453500 -152304
+            454985 -153789
+          )
+        )
+        (via "Via[0-1]_600:300_um" 454985 -153789
+        )
+      )
+      (net L_I2S_LRCLK
+        (wire
+          (path F.Cu 2500
+            151750 -144000
+            118225 -144000
+            39000 -64775
+            39000 -38000
+          )
+        )
+      )
+      (net PROT
+        (wire
+          (path F.Cu 2500
+            129655 -350032
+            130625 -351002
+            130625 -359500
+          )
+        )
+        (via "Via[0-1]_600:300_um" 129655 -350032
+        )
+        (wire
+          (path B.Cu 2500
+            195000 -38000
+            195000 -284687
+            129655 -350032
+          )
+        )
+      )
+      (net BATP
+        (wire
+          (path F.Cu 2500
+            110000 -310000
+            115215 -310000
+            149375 -344160
+            149375 -350000
+          )
+        )
+      )
+      (net SWOUT
+        (wire
+          (path F.Cu 2500
+            322396 -330505
+            326000 -334109
+            326000 -350000
+          )
+        )
+        (via "Via[0-1]_600:300_um" 322396 -330505
+        )
+        (wire
+          (path B.Cu 2500
+            215000 -38000
+            261900 -84900
+            261900 -210157
+            312700 -260957
+            312700 -320809
+            322396 -330505
+          )
+        )
+      )
+      (net L_I2S_DIN
+        (wire
+          (path F.Cu 2500
+            151750 -162000
+            129763 -162000
+            27657 -59894
+            27657 -33096
+            33775 -26978
+            54978 -26978
+            66000 -38000
+          )
+        )
+      )
+    )
+  )
+)

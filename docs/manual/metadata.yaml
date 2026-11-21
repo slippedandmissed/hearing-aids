@@ -1,0 +1,18 @@
+---
+documentclass: article
+papersize: a4
+geometry: "margin=22mm"
+fontsize: 10pt
+classoption: [table]
+mainfont: "Helvetica Neue"
+monofont: "Menlo"
+monofontoptions: "Scale=0.82"
+colorlinks: true
+linkcolor: "blue!50!black"
+urlcolor: "blue!50!black"
+toccolor: "black"
+link-citations: true
+lang: en-GB
+numbersections: true
+nocite: "@*"
+---

@@ -1,0 +1,19 @@
+[project]
+name = "hearing"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "build123d>=0.13.0",
+    "matplotlib>=3.11.2",
+    "networkx>=3.7",
+    "numpy>=2.5.5",
+    "ocp-vscode>=4.2.0",
+    "pillow>=13.0.0",
+    "schemdraw>=0.23",
+    "trimesh>=5.2.1",
+]
+
+[dependency-groups]
+dev = [
+    "pypdf>=7.1.1",
+]

@@ -1,0 +1,89 @@
+//! STEREO mic -> DSP stub -> stereo I2S amp passthrough for ONE plain XIAO nRF52840 in the necklace box. Two PDM mics share CLK/DATA
+//! (left/right by SELECT strap); two I2S amps share BCLK/LRCLK/DIN (left/right slot). Mics and amps are on the earring dangles. Plays a short boot beep through the exciter so the amp/exciter path is audible.
+//! Sample rate: PDM 1.032 MHz / 64 and I2S MCK (32 MHz / 31) / 64 are the SAME 16.129 kHz, both divided from the 32 MHz clock -> no drift.
+#![no_std]
+#![no_main]
+
+use embassy_executor::Spawner;
+use embassy_nrf::i2s::{self, Config as I2sConfig, MasterClock, MckFreq, MultiBuffering, OutputStream, I2S};
+use embassy_nrf::pdm::{self, Config as PdmConfig, Frequency, OperationMode, Pdm, Ratio, SamplerState};
+use embassy_nrf::{bind_interrupts, peripherals};
+use embassy_sync::blocking_mutex::raw::CriticalSectionRawMutex;
+use embassy_sync::channel::Channel;
+use panic_halt as _;
+
+/// Stereo frames per block (16 frames ~= 1 ms at 16.129 kHz); N = interleaved samples (L,R,L,R...).
+const FRAMES: usize = 16;
+const N: usize = 2 * FRAMES;
+static BLOCKS: Channel<CriticalSectionRawMutex, [i16; N], 4> = Channel::new();
+
+/// HARD safety cap on the digital signal (i16 peak). Placeholder ~ -18 dBFS until the hardware power limit is designed and measured.
+const HARD_LIMIT: i32 = 4000;
+/// Passthrough gain as a fraction GAIN_NUM / 8. Start LOW.
+const GAIN_NUM: i32 = 4;
+
+bind_interrupts!(struct Irqs {
+    PDM => pdm::InterruptHandler<peripherals::PDM>;
+    I2S => i2s::InterruptHandler<peripherals::I2S>;
+});
+
+/// One cycle-ish of a sine (16 samples ~ 1008 Hz at 16.129 kHz), peak 1500 (well under HARD_LIMIT).
+const TONE: [i16; FRAMES] = [0, 574, 1061, 1386, 1500, 1386, 1061, 574, 0, -574, -1061, -1386, -1500, -1386, -1061, -574];
+
+/// The DSP lives here (later: EQ bands, compressor, feedback canceller). Must stay fast.
+fn process(x: i16) -> i16 {
+    let y = (x as i32 * GAIN_NUM) / 8;
+    y.clamp(-HARD_LIMIT, HARD_LIMIT) as i16
+}
+
+#[embassy_executor::task]
+async fn mic_task(mut pdm: Pdm<'static>) {
+    pdm.start().await;
+    let mut bufs = [[0i16; N]; 2];
+    pdm.run_task_sampler(&mut bufs, |buf| {
+        let _ = BLOCKS.try_send(*buf); // drop the block if the amp side is behind (keeps latency bounded)
+        SamplerState::Sampled
+    })
+    .await
+    .unwrap();
+}
+
+#[embassy_executor::task]
+async fn amp_task(mut out: OutputStream<'static, i16, 2, N>) {
+    out.start().await.unwrap();
+    // Boot beep (~1 kHz, ~0.3 s, low level): audible proof that I2S -> amp -> exciter works, with no test equipment.
+    for _ in 0..300 {
+        let buf = out.buffer();
+        for f in 0..FRAMES { buf[2 * f] = TONE[f]; buf[2 * f + 1] = TONE[f]; }
+        let _ = out.send().await;
+    }
+    loop {
+        let blk = BLOCKS.receive().await;
+        let buf = out.buffer();
+        for i in 0..N {
+            buf[i] = process(blk[i]); // interleaved: even = left ear, odd = right ear (swap via the PDM edge setting or the SELECT straps)
+        }
+        let _ = out.send().await;
+    }
+}
+
+#[embassy_executor::main]
+async fn main(spawner: Spawner) {
+    let p = embassy_nrf::init(Default::default());
+
+    // Mic (on the dangle PCB): PDM CLK = D4 (P0.04), DIN = D5 (P0.05). Any GPIO works; the peripheral pins are configurable.
+    let mut pcfg = PdmConfig::default();
+    pcfg.frequency = Frequency::Default; // 1.032 MHz
+    pcfg.ratio = Ratio::Ratio64; // -> 16.129 kHz
+    pcfg.operation_mode = OperationMode::Stereo;
+    let pdm = Pdm::new(p.PDM, Irqs, p.P0_04, p.P0_05, pcfg);
+
+    // I2S to the amp on the dangle: SCK=D8 (P1.13), LRCK=D9 (P1.14), SDOUT=D10 (P1.15). The MCK pin is unused by the amp: parked on D0 (P0.02), leave it unconnected.
+    let mclk = MasterClock::new(MckFreq::_32MDiv31, i2s::Ratio::_64x);
+    let icfg = I2sConfig::default(); // 16-bit, I2S format, stereo: left slot -> left amp, right slot -> right amp
+    let buffers = MultiBuffering::<i16, 2, N>::new();
+    let out = I2S::new_master(p.I2S, Irqs, p.P0_02, p.P1_13, p.P1_14, mclk, icfg).output(p.P1_15, buffers);
+
+    spawner.spawn(mic_task(pdm).unwrap());
+    spawner.spawn(amp_task(out).unwrap());
+}
