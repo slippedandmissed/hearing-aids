@@ -9,7 +9,7 @@ class Params:
     exc_w: float = 13.0
     exc_l: float = 26.5
     exc_t: float = 5.75
-    exc_clear: float = 0.3          # DESIGN: pocket clearance each side
+    exc_clear: float = 0.45         # DESIGN: pocket clearance each side (was 0.3; MJF tolerance is +-0.3 mm, so 0.45 keeps the exciter from not fitting; ASSUMED, test-fit)
     exc_window_inset: float = 1.2   # DESIGN: lip that stops exciter falling through the skin-side window
     exc_angle: float = 90.0         # DESIGN: 0 = long axis vertical, 90 = horizontal. Horizontal chosen for the mastoid: a vertical plate would hang below the lobe
     jaw_t: float = 1.6              # DESIGN: wall thickness of the exciter holder plate (nylon min wall ~1 mm)

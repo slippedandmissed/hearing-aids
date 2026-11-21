@@ -18,7 +18,7 @@ class GP:
     ceil_gap: float = 0.4            # PCB front face -> inner ceiling (solder blobs live in pockets)
     mic_dx: float = 2.6; mic_dy: float = -4.19
     loop_hole: float = 2.2
-    post_r: float = 1.5; pilot: float = 1.3     # M1.6 self-tapping screw posts
+    post_r: float = 1.7; pilot: float = 1.3     # M1.6 self-tapping screw posts; 3.4 mm posts leave a 1.05 mm wall round the pilot (JLC3DP recommends >= 1.0)
     slot_x: float = -5.4; slot_w: float = 4.4   # cable exit slot (top of head, on the back-of-head side)
 
 POSTS = [(-5.8, -16.6), (5.8, -16.6), (-11.4, 3.0), (11.4, 3.0)]      # screw posts: legs + arms (clear of the PCB footprint)
@@ -57,7 +57,7 @@ def build(g: GP = GP(), side: str = "L"):
     shell = shell + boss
     for sx in (-1, 1):                                                                        # lateral PCB stops (hang from the ceiling beside the PCB, above the wire level)
         for (y0, y1) in ((-11.5, -8.0), (5.0, 8.5)):
-            shell = shell + Pos(sx * (g.pcb_w / 2 + g.pcb_clear + 0.5), g.pcb_y + (y0 + y1) / 2, (z_pcb_bot + z_in_top + 0.4) / 2) * Box(0.8, y1 - y0, z_in_top + 0.4 - z_pcb_bot)
+            shell = shell + Pos(sx * (g.pcb_w / 2 + g.pcb_clear + 0.6), g.pcb_y + (y0 + y1) / 2, (z_pcb_bot + z_in_top + 0.4) / 2) * Box(1.0, y1 - y0, z_in_top + 0.4 - z_pcb_bot)
     for px in (k * -9.6, k * -1.0):                                                                   # strain-relief pegs: wires snake around them before leaving
         shell = shell + Pos(px, 17.6, (1.5 + z_in_top + 0.4) / 2) * Cylinder(0.7, z_in_top + 0.4 - 1.5)
     # ---- openings and paint wells

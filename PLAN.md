@@ -59,7 +59,8 @@ Everything is **unverified on hardware**.
 - [x] Glasses stem measured with calipers (thickness, three heights); `GlassesParams` and the clip matrix updated.
 - [x] Stations measured (straight section 105.33 mm; tallest point 134.72 mm chord).
 - [ ] Measure the stem height at 50 mm and at the tip (currently interpolated; tip assumed 4.0 mm).
-- [ ] Audit the STLs against JLC3DP's minimum feature sizes and clearances (see the manual's mechanical chapter); check gerbers in a viewer (via annular ring, CPL rotations).
+- [x] Parameter audit against JLC3DP limits (2026-11-21): bear posts 3.4 mm, PCB stops 1.0 mm, engraving 0.8 mm deep, exciter pocket clearance 0.45 mm. Not done: a mesh-level wall-thickness check of the STLs.
+- [ ] Check gerbers in a viewer (via annular ring, CPL rotations) before ordering.
 - [ ] Verify assumed heights against the real JST, headers, battery; adjust `cad/bee_box.py`.
 - [ ] Firmware: bench bring-up (tone, mic level over USB serial, LED codes), DSP library tested on WAV files, feedback canceller, USB-serial then BLE tuning, React Native app.
 - [ ] After hardware arrives: update the manual's status tags (ESTIMATE → MEASURED) and the assembly chapter with what really happened.

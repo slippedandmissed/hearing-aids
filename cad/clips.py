@@ -24,7 +24,7 @@ def clip_geom(station, T, dh):
     inner = extrude(pl * Rectangle(g.temple_t + 2 * ci, h + 2 * ci), amount=g.clip_len, both=True)
     slot = extrude(pl * Pos(0, -(h / 2 + co / 2), 0) * Rectangle(g.temple_t - 0.6, co + 1.0), amount=g.clip_len, both=True)
     top_origin = np.array(P3[i]) + vec(pl.y_dir) * (h / 2 + co)       # centre of the outer top face (opposite the slot)
-    return (outer - inner) - slot, g, i, dict(origin=top_origin, normal=vec(pl.y_dir), xdir=vec(pl.z_dir), size=3.0 if station < 110 else 3.6)
+    return (outer - inner) - slot, g, i, dict(origin=top_origin, normal=vec(pl.y_dir), xdir=vec(pl.z_dir), size=3.6 if station < 110 else 4.0)
 
 def arm_geom(g, i, arm_t):
     off = g.temple_t / 2 + g.clip_wall + g.clip_clear + arm_t / 2 - 0.8              # 0.8 mm overlap into the clip wall: fuses into one solid
