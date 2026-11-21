@@ -54,7 +54,7 @@ for side, x0 in (("L", 3.9), ("R", 42.65)):                # ear blocks, same pa
 # power
 place("J_BAT", "Connector_JST", "JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal", 11.0, 31.0, 270, {"1": "BATP", "2": "GND"}, "JST-PH battery", "C173752")   # plug enters from the LEFT edge
 for ref, (hx, hy) in (("MH1", (2.6, 20.0)), ("MH2", (53.4, 20.0))): place(ref, "MountingHole", "MountingHole_2.2mm_M2", hx, hy, 0, {}, "M2 mounting hole")
-place("Q1", "Package_TO_SOT_SMD", "SOT-23", 14.0, 35.0, 0, {"1": "GND", "2": "PROT", "3": "BATP"}, "AO3401A", "C15127")
+place("Q1", "Package_TO_SOT_SMD", "SOT-23", float(os.environ.get("Q1X", 15.5)), 35.0, 0, {"1": "GND", "2": "PROT", "3": "BATP"}, "AO3401A", "C15127")
 place("SW1", os.path.join(HERE, "lib", "sw.pretty"), "SW-TH_SK12D07VG4", 19.5, 3.8, 180, {"1": "SWOUT", "2": "PROT"}, "SK12D07VG4", "C393937")
 place("F1", "Fuse", "Fuse_1206_3216Metric", 34.0, 35.0, 0, {"1": "SWOUT", "2": "VBAT"}, "500mA PTC", "C163512")
 place("C_BULK", *C08, 41.0, 35.0, 0, {"1": "VBAT", "2": "GND"}, "22uF", "C45783")
@@ -64,6 +64,8 @@ place("D1", "LED_SMD", "LED_0603_1608Metric", 50.0, 36.0, 90, {"2": "LEDA", "1":
 ds = board.GetDesignSettings(); ds.m_CopperEdgeClearance = mm(0.3); ds.m_HoleClearance = mm(0.2); ds.m_HoleToHoleMin = mm(0.25); ds.m_MinClearance = mm(0.2)
 nc = ds.m_NetSettings.GetDefaultNetclass(); nc.SetTrackWidth(mm(0.25)); nc.SetClearance(mm(0.2)); nc.SetViaDiameter(mm(0.7)); nc.SetViaDrill(mm(0.3))
 path = os.path.join(OUT, "carrier_C_placed.kicad_pcb"); pcbnew.SaveBoard(path, board)
+sys.path.insert(0, os.path.join(HERE, "..")); import silk_strip     # drop the silkscreen outlines of everything but the three big connectors (JLCDFM: outlines sit 0.02-0.09 mm from pads, limit 0.18; the SMD parts are machine-placed; test-pad circles crowd the pad digits; the switch outline crosses the board edge)
+print("silkscreen outlines removed:", silk_strip.strip_silk(path, skip_refs=("J_BAT", "J_XT", "J_XB")))
 json.dump(LCSC, open(os.path.join(OUT, "carrier_C_parts.json"), "w"))
 tmp = pcbnew.LoadBoard(path)
 for fp in tmp.GetFootprints():

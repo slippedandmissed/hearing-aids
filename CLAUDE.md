@@ -60,12 +60,19 @@ tools/      fetch.py (downloads + bibliography), make_graph.py (dependency graph
 - Units are **millimetres**. CAD world coordinates for the head model: X out of the **left** ear canal (origin there), Y toward the nose, Z up. **The body midline is at x = −60**, not 0: mirror about it (`2·XM − x`), centre things on it.
 - Bear frame: X right as seen from the front, Y up, Z from the back plate (0) toward the front. Board→bear: `bear_x = −(board_x − 6.5)`, `bear_y = board_y − 13.5`. Bee frame: Z from the back (0) to the cover side; the preview maps it to world as (X, Z, Y).
 - Dangle and carrier PCBs share one 8-pad order (1 LRCLK, 2 DIN, 3 VBAT, 4 PDM_DATA, 5 BCLK, 6 GND, 7 PDM_CLK, 8 GND) so the cable is a 1:1 harness.
-- **KiCad's DSN export is not reproducible** (random item IDs reorder it) and the Freerouting result depends on that order, hence the committed routing locks. Freerouting itself is deterministic for a given DSN.
+- **KiCad's DSN export is not reproducible** (random item IDs reorder it) and the Freerouting result depends on that order, hence the committed routing locks. Freerouting itself is deterministic for a given DSN, but *every re-route is a dice roll*: the same placement can route cleanly or fail (an unconnected ground pad) on the next try. When you change a placement, re-run `REROUTE=1 make dangle-L` (touch `pcb/build_dangle.py` first, or `make` thinks nothing changed) until it routes and the DRC is clean, then commit the lock. Environment overrides `C3X/C3Y/C5X/C5Y/Q1X` exist for trying positions.
 - pcbnew SWIG objects become invalid after the board is reloaded or modified through a second handle; re-load the board in a new script rather than holding objects across steps. Text fonts: `PCB_TEXT.SetUnresolvedFontName("Helvetica")`.
 - `build123d`: a boolean on a `Part` that has become a `Compound` fails with "Dimensions of objects … inconsistent": build the shape (hook loops, ridges) into the solid *before* hollowing, and validate with `.is_valid` and `len(.solids())`.
 - Matplotlib 3D does not depth-sort across separate collections: put everything that should occlude into one `Poly3DCollection` (see `common.draw_tris`).
 - The software renderers are rough previews, not photographs; `kicad-cli pcb render` is the PCB reference.
 - No auto-commits; generated outputs in `git status` mean a `.gitignore` entry is missing.
+
+## PCB manufacturing checks (learned the hard way)
+
+- The checker that matters is **JLCDFM** (the DFM Check button in JLCPCB's gerber viewer; free account). Run it on the zips in `pcb/fab/` after any PCB change and open every red and orange item: the table in manual chapter 3 is the record. It lives behind a login, so you need the user's logged-in browser.
+- Steps that run after Freerouting (ground vias in `ground_plane.py`, the mic ring bridge in `import_ses.py`, silkscreen in `finish*.py`) add copper and text the router never saw. Tell the router about them (keep-out zones in `build_dangle.py`, `silk_zones.py`) or you get conflicts that move with every re-route.
+- Thresholds that bit us (JLCDFM): via pad to via pad and via to line ≥ 0.15 mm (0.1 is danger), annular ring ≥ 0.15 mm (we use 0.2), silkscreen to pad/hole ≥ 0.18 mm, silkscreen stroke ≥ 0.153 mm, through-hole to SMD pad ≥ 2.03 mm danger / 3.05 mm good (wave-soldering rule; we keep ≥ 2.4 mm only for the exciter pads).
+- KiCad's python returns bare SWIG objects for some library footprints; edit the `.kicad_pcb` text instead (`pcb/silk_strip.py`).
 
 ## Figure legibility rules (learned the hard way)
 

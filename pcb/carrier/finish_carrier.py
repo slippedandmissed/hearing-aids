@@ -9,7 +9,7 @@ for t in list(board.GetTracks()):
         k = (round(t.GetPosition().x / 20000), round(t.GetPosition().y / 20000))
         if k in seen: board.Remove(t)
         seen.add(k)
-def text(s, x, y, h=1.0, layer=pcbnew.F_SilkS, mirror=False, thick=0.15, just=None):
+def text(s, x, y, h=1.0, layer=pcbnew.F_SilkS, mirror=False, thick=0.17, just=None):   # 0.17 mm: JLCDFM warns below 0.153 mm (6 mil)
     t = pcbnew.PCB_TEXT(board); t.SetText(s); t.SetLayer(layer); t.SetPosition(VECTOR2I(mm(x), mm(y)))
     t.SetTextSize(VECTOR2I(mm(h), mm(h))); t.SetTextThickness(mm(thick)); t.SetMirrored(mirror); board.Add(t)
 text("+", 14.2, 31.0, 1.6, thick=0.3); text("-", 14.2, 29.0, 1.6, thick=0.3)          # battery polarity beside the JST pads (CHECK YOUR BATTERY PLUG)
@@ -25,7 +25,7 @@ for side, x0 in (("L", 3.9), ("R", 42.65)):
         text(str(n + 1), x, y - 1.5 if row_a else y + 1.5, 1.0)
 for k, line in enumerate(("1 LRCLK 2 DIN 3 VBAT 4 DATA", "5 BCLK 6 GND 7 CLK 8 GND")):          # pad key (bottom silkscreen)
     text(line, 28, 8.0 + 1.2 * k, 1.0, layer=pcbnew.B_SilkS, mirror=True)
-text("NECKLACE BOX CARRIER", 28, 12.0, 1.2, layer=pcbnew.B_SilkS, mirror=True)
+text("NECKLACE BOX CARRIER", 28, 10.7, 1.2, layer=pcbnew.B_SilkS, mirror=True)
 def sig(x, y, h, layer, mirror=False):
     """signature: lowercase 'morgan' in a normal sans-serif TrueType font (Helvetica) instead of KiCad's stroke font"""
     t = pcbnew.PCB_TEXT(board); t.SetText("morgan"); t.SetLayer(layer); t.SetPosition(VECTOR2I(mm(x), mm(y)))

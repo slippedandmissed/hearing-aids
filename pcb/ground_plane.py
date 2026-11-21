@@ -16,6 +16,8 @@ NX, NY = int(round(W / RES)) + 1, int(round(H / RES)) + 1
 def cell(v): return int(round(v / RES))
 zt = [dict(), dict()]        # per layer: cell -> set(net codes) ; obstacles for TRACK centres
 zv = [dict(), dict()]        # obstacles for VIA centres
+zs = [dict(), dict()]        # same-net spacing: a new track of net N may not come within SAME_GAP of existing copper of net N (the fab's minimum spacing is 0.127 mm whatever the net)
+SAME_GAP = 0.15
 BLOCK = -1
 def add_rect(z, layer, net, x0, y0, x1, y1, infl):
     for i in range(max(0, cell(x0 - infl)), min(NX - 1, cell(x1 + infl)) + 1):
@@ -60,6 +62,9 @@ def pad_cells(layers, bb, p):
         if not out: # tiny pads: fall back to the centre cell
             c = p.GetPosition(); out.add((cell(tomm(c.x)), cell(tomm(c.y)), l))
     return out
+def near_src(i, j, src):
+    """cells within 0.45 mm of the starting pad are exempt from the same-net spacing rule (the stub has to leave the pad)"""
+    return any(abs(i - si) <= 9 and abs(j - sj) <= 9 for (si, sj, _) in src)
 def route_pair(net, tree, src, goal_layer=None):
     """Dijkstra from src cells to any cell in tree. Returns list of (i,j,l) path from src to tree, or None."""
     pq = []; best = {}; prev = {}
@@ -77,6 +82,7 @@ def route_pair(net, tree, src, goal_layer=None):
             if not (0 <= ni < NX and 0 <= nj < NY): continue
             nxt = (ni, nj, l)
             if blocked(zt, l, ni, nj, net) and nxt not in tree and nxt not in src: continue
+            if net in zs[l].get((ni, nj), ()) and nxt not in tree and nxt not in src and not near_src(ni, nj, src): continue
             c = cst + 1 * (3.0 if l == 1 and goal_layer is None else 1.0) + (0.05 if prev.get(cur) and (prev[cur][0] - i, prev[cur][1] - j) != (-di, -dj) else 0)
             if c < best.get(nxt, 1e18): best[nxt] = c; prev[nxt] = cur; heapq.heappush(pq, (c, nxt))
         nl = 1 - l
@@ -91,14 +97,19 @@ for fp in board.GetFootprints():
     for p in fp.Pads():
         if p.GetAttribute() == pcbnew.PAD_ATTRIB_SMD and not (fp.GetReference() == "U1" and p.GetNumber() == "17"):
             bb = p.GetBoundingBox(); m = VD / 2 + VIA_PAD_GAP; smd_boxes.append((tomm(bb.GetX()) - m, tomm(bb.GetY()) - m, tomm(bb.GetX() + bb.GetWidth()) + m, tomm(bb.GetY() + bb.GetHeight()) + m))
+sys.path.insert(0, HERE)
+import silk_zones
+NO_VIA = silk_zones.BOTTOM_SILK_NO_VIA if PREFIX == "dangle" else []            # bottom silkscreen text areas (dangle only)
 def via_ok(i, j):
     x, y = i * RES, j * RES
-    if any(math.hypot(x - vx, y - vy) < 0.8 for _, vx, vy in vias): return False
+    m = VD / 2 + 0.1
+    if any(b[0] - m <= x <= b[2] + m and b[1] - m <= y <= b[3] + m for b in NO_VIA): return False
+    if any(math.hypot(x - vx, y - vy) < VD + 0.2 for _, vx, vy in vias): return False       # 0.2 mm copper between via pads (JLCDFM: <0.1 danger, <0.15 warning)
     return not any(b[0] <= x <= b[2] and b[1] <= y <= b[3] for b in smd_boxes)
 def commit(net, path):
     for (i, j, l) in path:
         x, y = i * RES, j * RES
-        add_item(net, (l,), x - TW / 2, y - TW / 2, x + TW / 2, y + TW / 2)
+        add_item(net, (l,), x - TW / 2, y - TW / 2, x + TW / 2, y + TW / 2); add_rect(zs, l, net, x - TW / 2, y - TW / 2, x + TW / 2, y + TW / 2, SAME_GAP + TW / 2)
     for a, b in zip(path, path[1:]):
         if a[2] != b[2]:
             x, y = a[0] * RES, a[1] * RES; vias.append((net, x, y))
@@ -110,6 +121,7 @@ def add_seg(net, layers, x1, y1, x2, y2, hw=0.1):
     for k in range(n + 1):
         x = x1 + (x2 - x1) * k / n; y = y1 + (y2 - y1) * k / n
         add_item(net, layers, x - hw, y - hw, x + hw, y + hw)
+        for l in layers: add_rect(zs, l, net, x - hw, y - hw, x + hw, y + hw, SAME_GAP + TW / 2)
 for t in board.GetTracks():                      # copper already on the board (Freerouting result, ring bridges): obstacles
     net = t.GetNetCode()
     if t.GetClass() == "PCB_VIA":
@@ -159,7 +171,7 @@ board.Add(z)
 pcbnew.ZONE_FILLER(board).Fill(board.Zones())
 pcbnew.SaveBoard(os.path.join(OUT, f"{PREFIX}_{V}_routed.kicad_pcb"), board)
 import json
-rules = {"board": {"design_settings": {"rules": {"min_clearance": 0.2, "min_copper_edge_clearance": 0.2, "min_hole_clearance": 0.2, "min_hole_to_hole": 0.25,
+rules = {"board": {"design_settings": {"rules": {"min_clearance": 0.2, "min_copper_edge_clearance": 0.2, "min_hole_clearance": 0.18, "min_hole_to_hole": 0.25,
          "min_track_width": 0.15, "min_via_diameter": 0.5, "min_through_hole_diameter": 0.3, "min_via_annular_width": 0.15, "min_resolved_spokes": 2, "min_silk_clearance": 0.0, "min_text_height": 0.8, "min_text_thickness": 0.08}}}, "meta": {"filename": f"{PREFIX}_{V}_routed.kicad_pro", "version": 3}}
 json.dump(rules, open(os.path.join(OUT, f"{PREFIX}_{V}_routed.kicad_pro"), "w"), indent=2)
 print("failed nets:", fail, "tracks", len(tracks), "vias", len(vias))

@@ -54,7 +54,7 @@ RIGHT variant (same, except the SD_MODE resistor and the mic strap):
 
 ![Mechanical drawing with pad positions and the microphone port.](figures/blueprints/dangle_pcb.png)
 
-**Design notes.** The microphone is *bottom-port*: its sound hole (0.5 mm NPTH) goes through the board toward the bare bottom face, which is held against a sealing ring on the bear's front wall. The amplifier's exposed pad and the microphone's ground ring are tied to the bottom ground plane with vias. The two 22 Ω resistors are 1206 so they can dissipate the worst case without drama.
+**Design notes.** The microphone is *bottom-port*: its sound hole (0.5 mm NPTH) goes through the board toward the bare bottom face, which is held against a sealing ring on the bear's front wall. The amplifier's exposed pad and the microphone's ground ring are tied to the bottom ground plane with vias. The two 22 Ω resistors are 1206 so they can dissipate the worst case without drama; they are laid flat, about 2.4 mm below the two exciter wire pads, so that an iron on a wire pad does not touch them. Vias are 0.7 mm pads on 0.3 mm holes (0.2 mm annular ring) and are kept at least 0.2 mm from SMD pads.
 
 ## Carrier PCB (necklace box)
 
@@ -88,7 +88,26 @@ You also need: the JST-PH S2B-PH-K socket (C173752), the SK12D07VG4 switch (C393
 
 <!-- include: tables/drc.md -->
 
-All three boards route with **no unconnected nets**. The remaining KiCad messages are cosmetic (silkscreen over copper, the switch's own outline overhanging the board edge) or benign (courtyard overlaps of through-hole wire pads against 1206 resistors, the microphone footprint's own acoustic-port ring).
+All three boards route with **no unconnected nets**. The only remaining KiCad message on each board is one courtyard overlap (through-hole wire pads whose keep-out outlines touch; the copper does not).
+
+### Manufacturer's checker (JLCDFM)
+
+The gerbers of all three boards were run through JLCPCB's free DFM checker on 2026-11-21 (the *DFM Check* button of the gerber viewer at jlcpcb.com; it needs a free account). Each row reports (danger, warning, good). After the changes described in the project log, the result is:
+
+| item | dangle L | dangle R | carrier | meaning |
+|---|---|---|---|---|
+| trace width and spacing, pad to board edge | all good | all good | all good | |
+| annular ring | 14 good | 14 good | 16 good | via pads are 0.7 mm on 0.3 mm holes |
+| via to pad, pad spacing | no danger | no danger | no danger | |
+| through-hole to SMD spacing | 7 warning | 7 warning | **8 danger**, 6 warning | rule meant for wave soldering; on the dangles the wire pads are 2.4 mm from the resistors. On the carrier the round pads are the battery-wire holes beside the XIAO's oval pads, which is how the module is meant to be wired |
+| silkscreen to pad | all good | all good | 16 warning | |
+| silkscreen to hole | **3 danger** | **13 danger** | **1 danger** | silkscreen printed over via holes (big bottom letter, key text); the fab removes the ink over holes, leaving gaps in the characters. Cosmetic |
+| negative soldermask expansion | 11 warning | 11 warning | 26 warning | mask openings 0.04 mm smaller than the fine-pitch pads, to keep mask between the pins; intended |
+| soldermask bridge | 4 warning | 4 warning | none | 0.11 mm bridges between the amplifier's pins (limit 0.10 mm) |
+| via without pad, unconnected via | 3 warning | 3 warning | none | not understood: KiCad finds every hole connected; the drill files list only 0.3, 0.5 and 0.7 mm holes |
+| PTH without pad (4), slot width (2) | none | none | warning | carrier only, from the slide switch and connector footprints; not investigated |
+
+The *tht to smd* danger on the carrier, and the *silkscreen to hole* danger on all boards, were judged acceptable and left. Nothing in this table has been checked by the factory's own engineers: they may still ask questions when an order is placed.
 
 ## Wiring of the parts you assemble yourself
 
