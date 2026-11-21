@@ -12,7 +12,7 @@ for fp in board.GetFootprints():
     if ref not in parts or not parts[ref][0]: continue
     lc, val = parts[ref]; fpn = str(fp.GetFPID().GetLibItemName())
     rows.setdefault((val, fpn, lc), []).append(ref)
-    pos = fp.GetPosition(); cpl.append((ref, tomm(pos.x), H - tomm(pos.y), "Top", fp.GetOrientationDegrees() % 360))
+    pos = fp.GetPosition(); cpl.append((ref, tomm(pos.x), -tomm(pos.y), "Top", fp.GetOrientationDegrees() % 360))
 with open(os.path.join(OUT, f"dangle_{V}_BOM.csv"), "w", newline="") as f:
     w = csv.writer(f); w.writerow(["Comment", "Designator", "Footprint", "LCSC Part #"])
     for (val, fpn, lc), refs in sorted(rows.items(), key=lambda kv: kv[1][0]): w.writerow([val, ",".join(sorted(refs)), fpn, lc])
