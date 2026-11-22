@@ -83,10 +83,13 @@ def build(p: HP = HP(), b: BP = BP()):
     flange = extrude(offset(th, amount=-w + 0.4), amount=1.0) - extrude(offset(th, amount=-w - 1.25), amount=1.0)   # joins the lip to the cover wall (overlaps it by 0.4 mm)
     cover = cover + Pos(0, 0, zs - 3.0) * lip + Pos(0, 0, zs) * flange
     # ---- openings
-    for sx in (-1, 1): cover = cover - Pos(sx * 20.0, hy - w / 2, zs + 2.4) * Box(8.0, w + 2.0, 4.8)
-    cover = cover - Pos(-8.5, hy - w / 2, z_bt + 1.8) * Box(7.4, w + 2.0, 3.8)
+    # openings are cut from 1.0 mm outside the wall to 4.0 mm inside it. The alignment lip and flange sit 0.25 - 1.25 mm inside the wall, but the slots at x = +-16..24 are in the rounded corner where the outline curves inward, so the lip is further in there:
+    # a shallower cut (1.0, then 1.5 mm) left 0.15 - 0.3 mm slivers of flange and lip behind the openings (flagged by JLC3DP's thin-wall check)
+    od = w + 5.0; oc = -1.5                     # cut depth and the centre shift that keeps the outer end 1.0 mm outside the wall
+    for sx in (-1, 1): cover = cover - Pos(sx * 20.0, hy - w / 2 + oc, zs + 2.4) * Box(8.0, od, 4.8)
+    cover = cover - Pos(-8.5, hy - w / 2 + oc, (zs + z_bt + 3.7) / 2) * Box(7.4, od, z_bt + 3.7 - zs)   # switch window: from the rim (z = zs) up to z_bt + 3.7. It used to start at z_bt - 0.1, 0.3 mm above the rim, which left a 0.3 mm strip of wall under it (flagged by JLC3DP)
     cover = cover - Pos(22.0, -16.0, (z_bt + out_top) / 2) * Cylinder(1.0, out_top - z_bt + 2.0)
-    cover = cover - Pos(hx - w / 2, -1.0, usb_c) * Box(w + 2.0, p.plug_w, p.plug_h)
+    cover = cover - Pos(hx - w / 2 + oc, -1.0, usb_c) * Box(od, p.plug_w, p.plug_h)
     # ---- bumps: thorax dome + abdomen yellow ridges (cover); black stripes are the valleys between
     dx, dy, dz = b.dome
     dome = Pos(0, 0, out_top - 2.5) * scale(Sphere(1.0), by=(dx, dy, dz)) & Pos(0, 0, out_top + 5) * Box(W, H, 10)
