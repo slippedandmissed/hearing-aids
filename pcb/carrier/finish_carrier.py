@@ -22,7 +22,7 @@ for side, x0 in (("L", 3.9), ("R", 42.65)):
     for n in range(8):                                                                   # pad numbers 1..8 (same numbers as the dangle board)
         row_a = n < 4; i = n % 4
         x = x0 + 2.7 * i + (0.0 if row_a else 1.35); y = 3.8 if row_a else 6.3
-        text(str(n + 1), x, y - 1.5 if row_a else y + 1.5, 1.0)
+        text(str(n + 1), x, y - 1.5 if row_a else y + 1.5, 0.8)   # 0.8 mm: at 1.0 mm the digits were 0.12 mm from the 1.5 mm pads (JLCDFM danger below 0.13)
 for k, line in enumerate(("1 LRCLK 2 DIN 3 VBAT 4 DATA", "5 BCLK 6 GND 7 CLK 8 GND")):          # pad key (bottom silkscreen)
     text(line, 28, 8.0 + 1.2 * k, 1.0, layer=pcbnew.B_SilkS, mirror=True)
 text("NECKLACE BOX CARRIER", 28, 10.7, 1.2, layer=pcbnew.B_SilkS, mirror=True)

@@ -10,7 +10,9 @@ for fp in board.GetFootprints():
     lc, val = parts[ref]
     if any(ref.startswith(p) for p in JLC_ASSEMBLE):
         rows.setdefault((val, str(fp.GetFPID().GetLibItemName()), lc), []).append(ref)
-        pos = fp.GetPosition(); cpl.append((ref, tomm(pos.x), -tomm(pos.y), "Top", fp.GetOrientationDegrees() % 360))
+        # JLCPCB's package model of the standard KiCad SOT-23 has pin 1 half a turn from KiCad's (seen in their placement preview, 2026-11-22)
+        corr = 180 if str(fp.GetFPID().GetLibItemName()) == "SOT-23" else 0
+        pos = fp.GetPosition(); cpl.append((ref, tomm(pos.x), -tomm(pos.y), "Top", (fp.GetOrientationDegrees() + corr) % 360))
     else: hand.append((ref, val, lc))
 with open(os.path.join(OUT, "carrier_BOM.csv"), "w", newline="") as f:
     w = csv.writer(f); w.writerow(["Comment", "Designator", "Footprint", "LCSC Part #"])

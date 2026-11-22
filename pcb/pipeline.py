@@ -4,7 +4,9 @@ Needs: KiCad 10 (kicad-cli on PATH, KICAD_PY = KiCad's bundled python), java, to
 Everything it writes is generated and gitignored (pcb/out, pcb/carrier/out, pcb/fab, pcb/renders) EXCEPT the routing locks in pcb/routes/:
 KiCad's DSN export is not reproducible (random item IDs reorder it) and the router's result depends on that order, so the accepted Freerouting
 result is committed as pcb/routes/<board>.ses together with a fingerprint of the placement it belongs to. The pipeline re-uses the lock while the
-fingerprint matches and re-routes (and rewrites the lock) when it does not, or when REROUTE=1 (make reroute)."""
+fingerprint matches and re-routes (and rewrites the lock) when it does not, or when REROUTE=1 (make reroute).
+Small fixes to a routed board (move a via, delete or add a track) go in pcb/routes/<board>.edits.json (see route_edits.py): they are applied after the
+import and survive until the placement changes, so a tweak never means a new router run."""
 import os, sys, shutil, subprocess, zipfile, re
 
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
@@ -42,9 +44,16 @@ def build(kind, variant):
     os.makedirs(ROUTES, exist_ok=True); lock = os.path.join(ROUTES, f"{name}.ses"); lockfp = os.path.join(ROUTES, f"{name}.placement.sha256")
     fp = run([KICAD_PY, os.path.join(HERE, "fingerprint.py"), os.path.join(out, f"{name}_placed.kicad_pcb")], cwd=cwd).stdout.strip().splitlines()[-1]
 
-    def finish_and_check():
+    def finish_and_check(use_edits=True):
         run(steps["importer"], cwd=cwd)
+        ed = os.path.join(ROUTES, f"{name}.edits.json")                     # hand edits on top of the router's result (route_edits.py)
+        def edits(board, stage):
+            if os.path.exists(ed):
+                o = run([sys.executable, os.path.join(HERE, "route_edits.py"), os.path.join(out, board), ed, fp, stage], cwd=cwd).stdout.rstrip()
+                if o: print(o)
+        if use_edits: edits(ground_in, "ses")
         run([KICAD_PY, os.path.join(HERE, "ground_plane.py"), var], cwd=cwd, env=dict(OUTDIR=out, PREFIX=prefix, INPUT=ground_in, BW=size[0], BH=size[1]))
+        if use_edits: edits(f"{name}_routed.kicad_pcb", "ground")
         run(steps["finish"], cwd=cwd)
         shutil.copy(os.path.join(out, f"{name}_routed.kicad_pro"), os.path.join(out, f"{name}_final.kicad_pro"))
         run(["kicad-cli", "pcb", "drc", "--format", "report", "-o", drc, os.path.join(out, board_final)], cwd=cwd, check=False)
@@ -54,6 +63,8 @@ def build(kind, variant):
         print(f"== {name}: using the committed routing lock pcb/routes/{name}.ses (placement fingerprint matches)")
         shutil.copy(lock, os.path.join(out, ses)); n = finish_and_check(); print(f"   unconnected items: {n}")
         ok = n == 0
+        if not ok and os.path.exists(os.path.join(ROUTES, f"{name}.edits.json")):
+            sys.exit(f"{name}: the committed lock plus pcb/routes/{name}.edits.json does not route cleanly; not re-routing (that would discard the edits). Fix the edits, see {drc}")
         if not ok: print("   the lock no longer routes cleanly: re-routing")
     elif os.path.exists(lock) and not REROUTE: print(f"== {name}: placement changed since the routing lock was made: re-routing")
     if not ok:
@@ -61,12 +72,14 @@ def build(kind, variant):
             print(f"== {name}: Freerouting (max passes {mp})")
             # -dct 0 = dialog confirmation timeout 0: skip the "Start (20s)" countdown dialog and start routing immediately
             run(["java", "-jar", JAR, "-de", os.path.join(out, dsn), "-do", os.path.join(out, ses), "-mp", str(mp), "-dct", "0"], cwd=ROOT)
-            n = finish_and_check(); print(f"   unconnected items: {n}")
+            n = finish_and_check(use_edits=False); print(f"   unconnected items: {n}")
             if n == 0: ok = True; break
         if ok:
             txt = open(os.path.join(out, ses)).read().split("\n"); txt[0] = f"(session {name}"; txt[1] = f"  (base_design {name})"       # the filename is in the header: normalise it
             open(lock, "w").write("\n".join(txt)); open(lockfp, "w").write(fp + "\n")
             print(f"   NEW routing lock written: commit pcb/routes/{name}.ses and {name}.placement.sha256")
+            ed = os.path.join(ROUTES, f"{name}.edits.json")
+            if os.path.exists(ed): os.replace(ed, ed + ".stale"); print(f"   the old hand edits belonged to the previous routing: moved to {name}.edits.json.stale (re-make them for the new routing)")
     if not ok: sys.exit(f"{name}: still unconnected nets after all routing attempts, see {drc}")
     run(steps["bom"], cwd=cwd)
     fabname = "carrier" if kind == "carrier" else name

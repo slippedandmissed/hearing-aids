@@ -66,6 +66,7 @@ nc = ds.m_NetSettings.GetDefaultNetclass(); nc.SetTrackWidth(mm(0.25)); nc.SetCl
 path = os.path.join(OUT, "carrier_C_placed.kicad_pcb"); pcbnew.SaveBoard(path, board)
 sys.path.insert(0, os.path.join(HERE, "..")); import silk_strip     # drop the silkscreen outlines of everything but the three big connectors (JLCDFM: outlines sit 0.02-0.09 mm from pads, limit 0.18; the SMD parts are machine-placed; test-pad circles crowd the pad digits; the switch outline crosses the board edge)
 print("silkscreen outlines removed:", silk_strip.strip_silk(path, skip_refs=("J_BAT", "J_XT", "J_XB")))
+print("connector outline strokes widened to 0.17:", silk_strip.thicken_silk(path, ("J_BAT", "J_XT", "J_XB")))
 json.dump(LCSC, open(os.path.join(OUT, "carrier_C_parts.json"), "w"))
 tmp = pcbnew.LoadBoard(path)
 for fp in tmp.GetFootprints():

@@ -90,24 +90,28 @@ You also need: the JST-PH S2B-PH-K socket (C173752), the SK12D07VG4 switch (C393
 
 All three boards route with **no unconnected nets**. The only remaining KiCad message on each board is one courtyard overlap (through-hole wire pads whose keep-out outlines touch; the copper does not).
 
+### Hand edits on top of the router's result
+
+Freerouting's result is kept as a lock (`pcb/routes/<board>.ses`) and re-used while the placement is unchanged, because every router run is a dice roll. Small fixes to a routed board are therefore kept as edits in `pcb/routes/<board>.edits.json` and applied by the build after the lock is imported (`pcb/route_edits.py`: move a via with the track ends on it, delete or add a track, delete a via). They are tied to the placement they were made for and are skipped with a warning when the placement changes; if a lock plus its edits no longer routes cleanly the build stops instead of re-routing. Edits in use: the carrier's I2S_BCLK via moved 3.4 mm west so a connector outline no longer prints over its hole; on both dangles a ground via moved 0.15 mm off the bottom text; on dangle R a data-line via moved 0.4 mm.
+
 ### Manufacturer's checker (JLCDFM)
 
-The gerbers of all three boards were run through JLCPCB's free DFM checker on 2026-11-21 (the *DFM Check* button of the gerber viewer at jlcpcb.com; it needs a free account). Each row reports (danger, warning, good). After the changes described in the project log, the result is:
+The gerbers of all three boards were run through JLCPCB's free DFM checker on 2026-11-21 and again, after the final changes, on 2026-11-22 (the *DFM Check* button of the gerber viewer at jlcpcb.com; it needs a free account). Each row reports (danger, warning, good). After the changes described in the project log, the result is:
 
 | item | dangle L | dangle R | carrier | meaning |
 |---|---|---|---|---|
 | trace width and spacing, pad to board edge | all good | all good | all good | |
 | annular ring | 14 good | 14 good | 16 good | via pads are 0.7 mm on 0.3 mm holes |
-| via to pad, pad spacing | no danger | no danger | no danger | |
+| via to pad, pad spacing | no danger; 1 pad-spacing warning (0.11 mm, limit 0.15) | same | no danger | the warning has not been traced to a pad pair; it appears on both dangles, which share the microphone's land pattern |
 | through-hole to SMD spacing | 7 warning | 7 warning | **8 danger**, 6 warning | rule meant for wave soldering; on the dangles the wire pads are 2.4 mm from the resistors. On the carrier the round pads are the battery-wire holes beside the XIAO's oval pads, which is how the module is meant to be wired |
-| silkscreen to pad | all good | all good | 16 warning | |
-| silkscreen to hole | **3 danger** | **13 danger** | **1 danger** | silkscreen printed over via holes (big bottom letter, key text); the fab removes the ink over holes, leaving gaps in the characters. Cosmetic |
+| silkscreen to pad | all good | all good | 3 warning, no danger | pad digits on the carrier are 0.8 mm high, 0.2 mm from the pads |
+| silkscreen to hole | none | **14 danger** | none | dangle R only: three ground vias sit under the big bottom "R", the pad key and the "RIGHT EAR" line, and none could be moved without breaking a clearance (each counts several times against the letter strokes). The fab removes the ink over a hole, leaving a gap in a character. Cosmetic |
 | negative soldermask expansion | 11 warning | 11 warning | 26 warning | mask openings 0.04 mm smaller than the fine-pitch pads, to keep mask between the pins; intended |
 | soldermask bridge | 4 warning | 4 warning | none | 0.11 mm bridges between the amplifier's pins (limit 0.10 mm) |
-| via without pad, unconnected via | 3 warning | 3 warning | none | not understood: KiCad finds every hole connected; the drill files list only 0.3, 0.5 and 0.7 mm holes |
-| PTH without pad (4), slot width (2) | none | none | warning | carrier only, from the slide switch and connector footprints; not investigated |
+| via without pad, unconnected via, mask opening exposing trace / with multiple segments | 3 + 2 warning | 3 + 2 warning | none | not understood: KiCad finds every hole connected; the drill files list only 0.3, 0.5 and 0.7 mm holes |
+| PTH without pad (4), slot width (2) | none | none | warning | carrier only. The four are the two 2.2 mm M2 mounting holes, which are non-plated (JLCDFM reads the NPTH file as plated). The two slots are the 0.8 mm-wide oval pad holes at the ends of the XIAO socket rows |
 
-The *tht to smd* danger on the carrier, and the *silkscreen to hole* danger on all boards, were judged acceptable and left. Nothing in this table has been checked by the factory's own engineers: they may still ask questions when an order is placed.
+The *tht to smd* danger on the carrier (the 1.5 mm round wire pads, 0.69 to 1.9 mm from the XIAO's oval pads) and the *silkscreen to hole* danger on dangle R were judged acceptable and left. Nothing in this table has been checked by the factory's own engineers: they may still ask questions when an order is placed.
 
 ## Wiring of the parts you assemble yourself
 
@@ -147,5 +151,5 @@ The next figure shows the same system as *you* will see it: the PCBs are black b
 2. **Microphone clock margin.** 1.032 MHz is only 0.8 % above the lower limit of standard mode; temperature or clock tolerance could push it below. The datasheet's low-power mode is the fallback.
 3. **Eight digital wires over about 60 cm** as a shared bus per side. Series resistors, grounds between signals and equal cable lengths mitigate it; only a real test settles it. The fallback is two XIAOs, with no PCB change.
 4. **Microphone stock.** The SPH0641LM4H-1 showed about 85 pieces on the JLCPCB listing; check before ordering and consider a spare.
-5. **JLCPCB placement orientation (CPL).** Checked for dangle L on 2026-11-21 in JLCPCB's assembly preview: with the placement file in the gerber frame (Y negative, board at y from −H to 0) every part lands on its pads, and the pin-1 markers of the amplifier, microphone and regulator agree with our footprints. An earlier placement file that counted Y upward from the bottom-left corner appeared 28 mm above the board; the preview offered to align it. Dangle R and the carrier use the same code but their previews have not been looked at. The microphone (LCSC C497724) is an Extended part that JLCPCB flags as difficult to process: it is reviewed after the order, may add a fee, and the result comes by email (about £6.39 for five boards in the draft quote).
+5. **JLCPCB placement orientation (CPL).** Checked for dangle L on 2026-11-21 in JLCPCB's assembly preview: with the placement file in the gerber frame (Y negative, board at y from −H to 0) every part lands on its pads, and the pin-1 markers of the amplifier, microphone and regulator agree with our footprints. An earlier placement file that counted Y upward from the bottom-left corner appeared 28 mm above the board; the preview offered to align it. Dangle R (2026-11-22) looked the same: every part on its pads and the same pin-1 agreement. On the carrier every part lands on its pads, but the transistor Q1 (the standard KiCad `SOT-23` footprint) had JLCPCB's pin-1 marker half a turn from ours, which would have fitted the reverse-polarity P-FET backwards; `pcb/carrier/bom_carrier.py` now adds 180° to that footprint's CPL rotation, and the re-uploaded preview agrees. The LED's cathode side could not be read at the preview's resolution (our footprint puts the cathode on GND; a reversed LED would only fail to light), and the passive parts have no polarity. The microphone (LCSC C497724) is an Extended part that JLCPCB flags as difficult to process: it is reviewed after the order, may add a fee, and the result comes by email (about £6.39 for five boards in the draft quote).
 6. **LiPo plug polarity** differs between vendors; check it against the board silkscreen every time.

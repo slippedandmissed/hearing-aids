@@ -1,0 +1,18 @@
+{
+ "placement_sha256": "2248d3615c28c2da40439ce436d2ff4cb293729f32cb45df6f25fffd4433c41a",
+ "edits": [
+  {
+   "op": "move_via",
+   "from": [
+    10.85,
+    15.25
+   ],
+   "to": [
+    10.7,
+    15.25
+   ],
+   "drag": true,
+   "stage": "ground"
+  }
+ ]
+}

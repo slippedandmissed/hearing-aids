@@ -271,7 +271,7 @@ flowchart LR
 
 ## Reproducibility notes
 
-- **Router results are committed.** KiCad's design export is not reproducible (random item IDs reorder it) and the autorouter's result depends on that order, so the accepted routing of each board is stored in `pcb/routes/<board>.ses` with a fingerprint of the placement it belongs to. `make pcb` re-uses the lock while the fingerprint matches and re-routes (and rewrites the lock) when the placement changes.
+- **Router results are committed.** KiCad's design export is not reproducible (random item IDs reorder it) and the autorouter's result depends on that order, so the accepted routing of each board is stored in `pcb/routes/<board>.ses` with a fingerprint of the placement it belongs to. `make pcb` re-uses the lock while the fingerprint matches and re-routes (and rewrites the lock) when the placement changes. Small fixes on top of a routed board (move a via, delete or add a track) are kept in `pcb/routes/<board>.edits.json` and applied after the lock is imported (`pcb/route_edits.py`), so they never need a new router run; a re-route sets the old edits aside as `.stale`.
 - Freerouting is run with `-dct 0`, which skips its "Start (20 s)" confirmation dialog.
 - Figures, tables, the cost model and the BOM tables in the manual are all computed from the CAD, the PCB outputs and `docs/data/parts.toml`; change an input and `make docs` updates the PDF.
 
