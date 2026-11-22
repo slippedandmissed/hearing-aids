@@ -30,6 +30,15 @@ def svg_assets(text):
     """hand-authored diagrams: assets/name.svg in a chapter -> the PDF that the Makefile makes from docs/assets/name.svg"""
     return re.sub(r"\]\((assets/[A-Za-z0-9_-]+)\.svg\)", r"](\1.pdf)", text)
 
+FLOW_STEPS = {0, 4, 5, 6, 7, 13, 15}          # text-only or continuing steps flow on; every other step starts a page
+def step_headings(text):
+    """'## Step N: Title {-}' -> the \\steptitle macro of header.tex; the carrier overview starts a page too"""
+    def f(m):
+        n, title = int(m.group(1)), m.group(2).replace("&", "\\&").replace("%", "\\%").replace("#", "\\#")
+        return "```{=latex}\n\\steptitle{%d}{%s}{%d}\n```" % (n, title, 1 if n in FLOW_STEPS else 0)
+    text = re.sub(r"^## Step (\d+): (.+?) \{-\}\s*$", f, text, flags=re.M)
+    return text.replace("## The carrier board at a glance {-}", "```{=latex}\n\\clearpage\n```\n\n## The carrier board at a glance {-}")
+
 def landscape(text):
     """schematics and blueprints get their own landscape page (a stand-alone figure line under figures/circuits or figures/blueprints)"""
     out = []
@@ -39,4 +48,4 @@ def landscape(text):
     return "\n".join(out)
 
 os.makedirs(os.path.dirname(out), exist_ok=True)
-open(out, "w").write(svg_assets(landscape(prefer_vector(fix_glyphs("\n\n".join(parts))))) + "\n"); print("assembled", len(parts), "chapters ->", os.path.relpath(out, ROOT))
+open(out, "w").write(step_headings(svg_assets(landscape(prefer_vector(fix_glyphs("\n\n".join(parts)))))) + "\n"); print("assembled", len(parts), "chapters ->", os.path.relpath(out, ROOT))

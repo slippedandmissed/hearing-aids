@@ -17,8 +17,9 @@ def mesh(n): return load_mesh(os.path.join(PRINT, n + ".stl"))
 def pcb_img(name): return Image.open(os.path.join(FIG, "renders", name))
 
 # ------------------------------------------------------------------ IKEA-style page furniture
-def page(n, title, w=12, h=7.6):
+def page(n, title, w=12, h=7.6, header=True):
     fig = plt.figure(figsize=(w * 0.72, h * 0.72), facecolor="white"); ax = fig.add_axes([0, 0, 1, 1]); ax.set_xlim(0, w); ax.set_ylim(0, h); ax.axis("off")
+    if not header: return fig, ax          # the manual draws the step number and title itself (header.tex \steptitle); a figure carries none
     ax.add_patch(Circle((0.75, h - 0.75), 0.5, fc="white", ec=INK, lw=3)); ax.text(0.75, h - 0.78, str(n), ha="center", va="center", fontsize=26, fontweight="bold")
     ax.text(1.55, h - 0.75, title, ha="left", va="center", fontsize=15 * 0.9, fontweight="bold")
     ax.plot([0.25, w - 0.25], [h - 1.4, h - 1.4], color=INK, lw=1)
@@ -98,9 +99,9 @@ def _tri_cell(fig, H, cx, cy, w, h, name, col, el, az, zoom=1.0):
 
 def step00b():
     import textwrap
-    H = 8.6
-    fig, ax = page("0", "Check what you have (2/3): printed parts", 12, H)
-    cells = [("Clip + spring arm, left", "clip_arm2.8_L_N", "#59616e", 20, -30, "×4 (grips N, T; arms 2.4, 3.2)"), ("Clip + spring arm, right", "clip_arm2.8_R_N", "#59616e", 20, -30, "×4 (grips N, T; arms 2.4, 3.2)"),
+    H = 7.3
+    fig, ax = page(None, None, 12, H, header=False)
+    cells = [("Clip + spring arm, left", "clip_arm2.8_L_N", "#59616e", 20, -30, "×4"), ("Clip + spring arm, right", "clip_arm2.8_R_N", "#59616e", 20, -30, "×4"),
              ("Bear shell, left", "bear_shell_L", PINK, 55, -55, "×2"), ("Back plate, left", "bear_backplate_L", PINK, 55, -55, "×2"),
              ("Bear shell, right", "bear_shell_R", BLUE, 55, -55, "×2"), ("Back plate, right", "bear_backplate_R", BLUE, 55, -55, "×2"),
              ("Bee base", "bee_base", "#59616e", 40, -55, "×2"), ("Bee cover", "bee_cover", YEL, 40, -55, "×2")]
@@ -110,12 +111,12 @@ def step00b():
         ax.text(cx, cy - 1.15, t, ha="center", va="top", fontsize=9.5, fontweight="bold"); ax.text(cx, cy - 1.5, f"{d[0]:.0f} × {d[1]:.0f} × {d[2]:.0f} mm", ha="center", va="top", fontsize=9)
         badge(ax, cx - 1.3, cy + 1.0, q.split()[0], 0.28)
         if len(q.split()) > 1: ax.text(cx - 0.92, cy + 1.0, " ".join(q.split()[1:]).strip("()"), ha="left", va="center", fontsize=8, color="#444444")
-    ax.text(0.5, 0.25, "JLC3DP or a UK MJF bureau, PA12 nylon: clips, arms and bee base dyed black, the rest natural grey. Bears and bee cover are painted afterwards (step 2). One spare of each bear and bee part.", fontsize=9, color="#444444")
+    ax.text(0.5, 0.45, textwrap.fill("JLC3DP or a UK MJF bureau, PA12 nylon: clips, arms and bee base dyed black, the rest natural grey. Bears and bee cover are painted afterwards (step 2). One spare of each bear and bee part. The clips come in four variants per ear: grips N and T, and arms 2.4, 2.8 and 3.2 mm.", 100), fontsize=9, color="#444444", va="center", linespacing=1.3)
     return fig
 
 def step00c():
-    H = 8.6
-    fig, ax = page("0", "Check what you have (3/3): clip grips and arms", 12, H)
+    H = 7.3
+    fig, ax = page(None, None, 12, H, header=False)
     ax.text(0.5, 7.05, "Clip grips: two variants per ear", fontsize=9.5, fontweight="bold", va="center")
     for k, (t, sub, nm) in enumerate((("N: nominal", "try this first", "clip_arm2.8_L_N"), ("T: tight", "if N is loose on the glasses arm", "clip_arm2.8_L_T"))):
         cx = 2.2 + k * 3.6; _tri_cell(fig, H, cx, 5.4, 1.7, 1.7, nm, "#59616e", 20, -30, zoom=1.4)
@@ -150,7 +151,7 @@ def step02():
 
 # ============================================================================== 3. XIAO battery wires
 def step03():
-    fig, ax = page(3, "Solder two battery wires to the back of the XIAO")
+    fig, ax = page(None, None, 12, 6.4, header=False)
     # XIAO back view, 21 x 17.8 mm drawn at scale 0.27 inch/mm (~) : width 21 mm -> 5.8 units
     s = 0.28; cx, cy = 3.7, 3.6; w, h = 21 * s, 17.8 * s
     line_rect(ax, cx - w / 2, cy - h / 2, w, h, fc="#2c6bd1", lw=3, r=0.1); ax.text(cx, cy + 1.0, "XIAO nRF52840 — BACK", ha="center", color="white", fontsize=10, fontweight="bold")
@@ -326,5 +327,5 @@ if __name__ == "__main__":
         fig = f()
         if f in (step00b, step00c): name = f.__name__
         else: name = f"step{k:02d}"; k += 1
-        for t in fig.axes[0].texts[2:]: t.set_fontsize(t.get_fontsize() * 1.2)          # the first two texts are the page number and the title
+        for t in fig.axes[0].texts[(0 if f in (step00b, step00c, step03) else 2):]: t.set_fontsize(t.get_fontsize() * 1.2)          # the first two texts are the page number and the title (the headerless figures have none)
         save(fig, "assembly", name, dpi=150)

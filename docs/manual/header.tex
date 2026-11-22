@@ -28,3 +28,13 @@
 \setcounter{tocdepth}{2}
 \AtBeginDocument{\hypersetup{pdftitle={Open-ear hearing aids: datasheet, user manual and project log},pdfauthor={morgan}}}
 \AtBeginDocument{\definecolor{rowgrey}{gray}{0.93}\rowcolors{2}{rowgrey}{white}}
+
+% --- assembly step headings: one place draws the step number; a step with a figure starts a page, a short one flows on unless under a third of a page is left
+\usepackage{tikz}
+\newcommand{\stepnum}[1]{\tikz[baseline=(n.base)]\node[circle,draw,line width=1.4pt,inner sep=2pt,minimum size=1.1cm](n){\Large\bfseries #1};}
+\newcommand{\steptitle}[3]{%
+  \par
+  \ifnum#3=1 \dimen0=\pagegoal \advance\dimen0 by -\pagetotal \ifdim\dimen0<0.33\textheight\clearpage\fi
+  \else\clearpage\fi
+  \phantomsection\addcontentsline{toc}{subsection}{Step #1: #2}%
+  \vspace{0.6em}\noindent\stepnum{#1}\hspace{0.7em}{\large\bfseries #2}\par\vspace{-0.1em}\noindent\rule{\linewidth}{0.5pt}\par\vspace{0.5em}}

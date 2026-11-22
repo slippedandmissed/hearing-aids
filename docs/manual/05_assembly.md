@@ -16,21 +16,21 @@ Follow the pictures; the text under each picture has the detail. Allow a weekend
 
 ![Everything you should have in front of you before you start.](assets/parts-checklist.svg)
 
-The printed parts, so you can tell them apart:
+![The printed parts, so you can tell them apart.](figures/assembly/step00b.png)
 
-![](figures/assembly/step00b.png)
-
-![](figures/assembly/step00c.png)
+![Clip grips and arm thicknesses.](figures/assembly/step00c.png)
 
 Every clip is engraved with its fit code (side, grip, arm thickness). The grips and arms are explained in Step 12.
 
 ## Step 1: Look before you solder {-}
 
+![The continuity check, before any power.](assets/continuity-check.svg)
+
 Do this for all three boards, under a magnifier or a phone macro photo, against the renders in the [Electronics datasheet](#electronics-datasheet).
 
 1. **No solder bridges** between neighbouring pads, and every surface-mount part present.
 2. **The silkscreen reads "morgan".**
-3. **Continuity, battery unplugged:** VBAT and GND must not beep. On a dangle board, test pad 3 against pads 6 and 8. On the carrier, test the battery socket's + against its −. The picture under Step 10 shows exactly where (marker a).
+3. **Continuity, battery unplugged:** VBAT and GND must not beep. On a dangle board, test pad 3 against pads 6 and 8. On the carrier, test the battery socket's + against its −. The picture shows where.
 4. Anything wrong: stop and re-order that board rather than repair it. You have five of each.
 
 ## Step 2: Prime and paint the printed parts {-}
@@ -113,7 +113,7 @@ Slide a 15 mm piece of 3 mm heat-shrink over each ribbon pair first (it cannot b
 
 ## Step 8: Solder the cable and the exciter wires to each dangle PCB {-}
 
-![The dangle PCB seen from the component side, with the order of work.](assets/dangle-solder-map.svg)
+![The dangle PCB seen from the component side, with the order of work.](assets/dangle-solder-map.svg){height=60%}
 
 Do the left board with the left-ear cables and the right board with the right-ear cables. The big letter on the bare face tells you which is which.
 
@@ -130,7 +130,7 @@ This is the opposite order to the carrier (Step 7). There the B row is the far o
 
 ## Step 9: Assemble each gummy bear {-}
 
-![One bear, exploded, and how the cables run.](assets/bear-assembly.svg)
+![One bear, exploded, and how the cables run.](assets/bear-assembly.svg){height=52%}
 
 Start the silicone a day ahead, and do the rest after the bench test of Step 10 if you can, because the bear is awkward to reopen. The shell lies front-down on the bench, so its open side faces you.
 
