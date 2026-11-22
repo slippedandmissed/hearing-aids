@@ -12,7 +12,7 @@ Every shape is a Python script (build123d [@build123d]); dimensions live in a fe
 
 ### The stem
 
-The glasses are a 57□17-145 frame (lens 57 mm, bridge 17 mm, temple 145 mm). The stem profile, **MEASURED** with calipers on 2026-11-21, is 6.40 mm tall at the hinge, 4.7 mm where the straight section ends and 9.36 mm at the widest part of the rear paddle before it tapers quickly; the thickness is a consistent 3.54 mm along the whole stem. The straight section is 105.33 mm long, and the tallest point is 134.72 mm from the hinge in a straight line; the model puts it at 135 mm along the stem, because the stem bends and the path is slightly longer. A second set of measurements perpendicular to the lens plane gave 113.56 mm and 130.75 mm; those include the hinge's offset from the lens plane, so the model uses the along-the-stem values. Photographs showed that the frame is a cat-eye acetate front with thin translucent-brown temples; the preview's front is a rough interpretation (no lenses).
+The glasses are a 57□17-145 frame (lens 57 mm, bridge 17 mm, temple 145 mm). **MEASURED** with calipers on 2026-11-21: the stem is 3.54 mm thick all along; it is 6.40 mm tall at the hinge, 4.7 mm where the 105.33 mm straight section ends, and 9.36 mm at the widest part of the rear paddle. The tallest point is 134.72 mm from the hinge in a straight line, which the model places at 135 mm along the stem because the stem bends. (Measurements perpendicular to the lens plane include the hinge's offset, so the model uses the along-the-stem values.) The frame is a cat-eye acetate front with thin translucent-brown temples; the preview's front is a rough interpretation.
 
 ### The clip {#clip}
 
@@ -29,7 +29,7 @@ The reasoning is in [The mechanics, and why](#the-mechanics-and-why); these are 
 
 Grip **N** is expected to work on flat glasses arms about 3.2 – 4.2 mm thick and grip **T** about 2.9 – 3.9 mm (the lower limit is where the jaw preload falls to about 0.17 mm per jaw, the upper where the jaw strain reaches 2 %). Both are printed for each ear. N is the one to try first; T is for when N is loose or twists when the arm is loaded: the arm's pull tries to roll the clip, and a jaw that has less preload than that roll needs would lift off. (The needed preload is an order-of-magnitude estimate and has not been tested.) Nylon relaxes under constant load, so the grip may loosen over weeks; a strip of self-adhesive felt or silicone on the jaw faces is the fallback. The stem path is ASSUMED from photographs, so its real bend and twist may differ from the model: the first test fit settles it. This design is meant for flat plastic or acetate arms at least 2.5 mm thick and 4 mm tall; thin metal arms would need another grip.
 
-Following JLC3DP's published limits ([JLC3DP design guideline](https://jlc3dp.com/help/article/212-3D-Printing-Design-Guideline): 1.0 mm recommended wall, 0.5 – 0.8 mm minimum engraved detail, ±0.3 mm tolerance), the ID text on the clips is engraved 0.6 mm deep in 4 mm bold text and the arm-thickness digits on the exciter plate in 6.5 mm bold text (5 mm gave strokes about 0.5 mm wide that JLC3DP's heatmap flagged red), the bear's screw posts are 3.4 mm across (1.05 mm wall round the 1.3 mm pilot), the PCB stops are 1.0 mm thick and the exciter pocket has 0.45 mm clearance each side (**ASSUMED**; test-fit it first).
+JLC3DP's published limits ([JLC3DP design guideline](https://jlc3dp.com/help/article/212-3D-Printing-Design-Guideline)) are a 1.0 mm recommended wall, 0.5 – 0.8 mm minimum engraved detail and ±0.3 mm tolerance. Applied: the clip ID text is 4 mm bold engraved 0.6 mm deep; the arm-thickness digits on the exciter plate are 6.5 mm bold (5 mm gave strokes about 0.5 mm wide, flagged red by the heatmap); the bear's screw posts are 3.4 mm across (1.05 mm wall round the 1.3 mm pilot); the PCB stops are 1.0 mm thick; the exciter pocket has 0.45 mm clearance each side (**ASSUMED**; test-fit it first).
 
 ### Spring arm {#spring-arm}
 
@@ -57,7 +57,7 @@ The bear is a hollow shell with a flat back plate. Seen from the front it is 32.
 
 ## Bee necklace box
 
-The **thorax** (62 × 46 mm, 15.8 mm thick) holds the 56 × 40 carrier PCB on two M2 screw posts and four supports; the **abdomen** (44 mm wide, 10.1 mm thick) is a pocket for the 30 × 35 × 5.5 mm battery; the **head** is a solid ball with the chain hole through it. The cover presses onto the base with a lip. Openings: USB-C on the right edge, the switch lever through the top edge (next to the head), two ear-cable slots in the top edge, an LED window. The flat single-layer **wings** are printed as part of the base and are purely cosmetic.
+The **thorax** (62 × 46 × 15.8 mm) holds the 56 × 40 carrier PCB on two M2 screw posts and four supports; the **abdomen** (44 mm wide, 10.1 mm thick) holds the 30 × 35 × 5.5 mm battery; the **head** is a solid ball with the chain hole. Openings: USB-C (right edge), the switch lever and two ear-cable slots (top edge), an LED window. The cover presses on with a lip; the flat wings are cosmetic. The reasoning is in [The mechanics, and why](#the-mechanics-and-why).
 
 ![Bee box: front, base with the cover off (PCB and battery outlines dashed), side and a section through the thorax.](figures/blueprints/bee_box.png)
 
@@ -73,7 +73,7 @@ The **thorax** (62 × 46 mm, 15.8 mm thick) holds the 56 × 40 carrier PCB on tw
 
 ## The print files
 
-Everything is printed in **MJF nylon (PA12)** [@jlc3dp], in two colours because the dye bath colours a whole part and cannot be applied to part of one. The clips, the spring arms and the **bee base** are **dyed black**: the clips and arms stay unpainted, and the base needs no black paint (head, stinger and antennae) and only its wings painted silver. The **bear shells, back plates and the bee cover** are **natural grey**, then sanded, primed and painted (yellow over black dye would take several coats of primer, while black into a few valleys over grey is easy). Colour regions are 0.4 mm paint wells and raised bumps, not multi-colour printing.
+Everything is printed in **MJF nylon (PA12)** [@jlc3dp]. **Dyed black and left unpainted:** the clips, the spring arms and the bee base (only its wings are painted silver). **Natural grey, sanded, primed and painted:** the bear shells, back plates and the bee cover. Colour regions are 0.4 mm paint wells and raised bumps, not multi-colour printing. The reasoning is in [The mechanics, and why](#the-mechanics-and-why).
 
 ![The finished print files, one of each kind (rendered from the STLs that will be sent for printing).](figures/renders/print_overview.png)
 

@@ -48,7 +48,11 @@ The glasses stem was first measured with a ruler and then with calipers (3.54 mm
 | **Latency** | delay between the sound entering the microphone and the exciter moving |
 | **Routing lock** | the accepted autorouter result, committed because the router's input is not reproducible |
 
-## F. References {-}
+## F. Routing locks and hand edits {-}
+
+Freerouting's result is kept as a lock (`pcb/routes/<board>.ses`) and re-used while the placement is unchanged, because every router run is a dice roll. Small fixes to a routed board are therefore kept as edits in `pcb/routes/<board>.edits.json` and applied by the build after the lock is imported (`pcb/route_edits.py`: move a via with the track ends on it, delete or add a track, delete a via). They are tied to the placement they were made for and are skipped with a warning when the placement changes; if a lock plus its edits no longer routes cleanly the build stops instead of re-routing. Edits in use: the carrier's I2S_BCLK via moved 3.4 mm west so a connector outline no longer prints over its hole; on both dangles a ground via moved 0.15 mm off the bottom text; on dangle R a data-line via moved 0.4 mm.
+
+## G. References {-}
 
 ::: {#refs}
 :::
