@@ -11,8 +11,12 @@
 # Add a category by using a new name; the tables and charts pick it up.
 
 [rates]
-print_gbp_per_cm3 = [0.30, 0.60]   # ASSUMED MJF PA12 price range, NOT quoted; replace with a real JLC3DP / UK bureau quote
-lean_print_cm3 = 73                # the lean print set from the print-order notes
+# JLC3DP quote, 2026-11-22, MJF PA12-HP, 10 representative parts (USD): every file costs max(minimum, per_cm3 x volume); dyeing black adds about 0.10 on a small part.
+print_usd_min = 0.95
+print_usd_per_cm3 = 0.339
+print_usd_dye_small = 0.10          # per black part; the bee base (a large part) is not quoted separately, so the same figure is used: ESTIMATE
+usd_to_gbp = 0.7625                 # the rate on the JLCPCB invoice of the same day (USD 124.37 = GBP 94.84)
+print_black = ["clip", "bee_base"]  # file name prefixes printed black (dyed); the rest is natural grey
 
 # ---------------------------------------------------------------------------------------------------------------- paid
 
@@ -138,13 +142,22 @@ note = "USD 20.73"
 [[order]]
 id = "prints"
 vendor = "JLC3DP or a UK MJF bureau"
-title = "3D prints (MJF nylon PA12, grey)"
+title = "3D prints (MJF nylon PA12, black and grey)"
 status = "planned"
-note = "NOT quoted: volume from the print manifest × an assumed price per cm³. Shipping and tax are not estimated separately."
+note = "Priced with the JLC3DP rule from the 2026-11-22 quote (see [rates]; 10 representative parts quoted; 14 files: clip + arm per ear in two grips, two extra arm thicknesses, bears, bee; every part a separate file). Shipping is a guess (the sample of 0.22 kg quoted USD 5.55 by the cheapest line); UK VAT is 20 % of goods + shipping. Not yet ordered."
 [[order.line]]
-item = "MJF nylon prints, full set"
+item = "MJF nylon prints"
 category = "Manufacturing"
 kind = "prints"
+[[order.line]]
+item = "Shipping to the UK (about 1 kg of parts)"
+category = "Shipping"
+low = 6
+high = 15
+[[order.line]]
+item = "UK VAT on goods and shipping (20 %)"
+category = "Tax"
+kind = "vat"
 
 [[order]]
 id = "exciters"

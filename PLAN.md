@@ -10,7 +10,7 @@ Two independent open-ear bone-conduction hearing aids for temporary help on bad-
 
 | area | state | where |
 |---|---|---|
-| CAD: stem clips, spring arm, bears (L/R), bee box | **done on screen**, 58 print STLs, all valid | `cad/`, `make print-files` |
+| CAD: stem clips, spring arm, bears (L/R), bee box | **done on screen**, 14 print STLs (one spring-jaw clip + arm per ear in 2 grips and 3 arm thicknesses, bears, bee), all valid | `cad/`, `make print-files` |
 | Blueprint drawings, print renders, previews | done | `make docs` |
 | Dangle PCB L/R, carrier PCB | **designed, routed, DRC: 0 unconnected nets**; checked in JLCDFM and the assembly preview; **ORDERED 2026-11-22 (£94.84, 5 of each, all 5 assembled); not yet arrived or powered** | `pcb/`, `make pcb` |
 | Routing | accepted results committed as locks | `pcb/routes/` (`make reroute` to redo) |
@@ -28,18 +28,18 @@ Everything is **unverified on hardware**.
 
 ## Architecture (decisions that hold)
 
-- Bone conduction at the mastoid; exciter pressed by a printed PA12 spring arm (2.4 / 2.8 / 3.2 mm variants) fused to a C-clip on the glasses stem (clip A at station 100 mm, clip B+arm at 127 mm). Clips printed in a fit matrix (stem thickness A–D = 3.34/3.54/3.74/3.94 mm × height 1–3 = −0.4/0/+0.4 mm). The stem is MEASURED with calipers (2026-11-21): 3.54 mm thick, 6.40 mm at the hinge, 4.7 mm at the end of the straight section, 9.36 mm at the paddle; the matrix stays because MJF tolerance (±0.3 mm, holes shrink) equals the 0.25 mm clip clearance. Stations: straight section 105.33 mm (measured); tallest point 134.72 mm from the hinge in a straight line, modelled at 135 mm along the stem.
+- Bone conduction at the mastoid; exciter pressed by a printed PA12 spring arm (2.4 / 2.8 / 3.2 mm variants) fused to ONE **spring-jaw clip** on the glasses stem at 127 mm (V-shaped jaws in three fingers each, grips N nominal and T tight; designed for flat arms about 3.2–4.2 mm thick (grip T 2.9–3.9), ESTIMATE, untested). Replaced on 2026-11-22 the first design (rectangular C-clips A at 100 mm and B at 127 mm in a 12-size fit matrix): clip A was not connected to anything, and the exact-fit clip was fragile (pad lever 45 mm over a 14 mm clip, stem bends 41° between the clips and its faces twist about 5°). The stem is MEASURED with calipers (2026-11-21): 3.54 mm thick, 6.40 mm at the hinge, 4.7 mm at the end of the straight section, 9.36 mm at the paddle. Stations: straight section 105.33 mm (measured); tallest point 134.72 mm from the hinge in a straight line, modelled at 135 mm along the stem. Design rule found while measuring: the arm must hang from the clip's shelf, not from a jaw (a fused jaw cannot spring).
 - Digital signal path: SPH0641LM4H-1 PDM mic (in the dangle) → XIAO nRF52840 (PDM→16.129 kHz PCM, DSP, I2S) → MAX98357A class-D amp (in the dangle) → 2 × 22 Ω hardware power cap → DAEX-9-4SM. **One** XIAO serves both ears (stereo PDM/I2S); 8 wires per ear in two 4-wire silicone ribbons (VBAT, 2 GND, PDM clk/data, I2S ×3), same pad order on both PCBs.
 - Dangle PCB 13 × 28 mm, all SMD on top, bottom = ground plane + big L/R + signature; L/R variants differ in R_SD (2 k / 220 k) and the mic SELECT strap.
 - Carrier PCB 56 × 40 mm (r 9 mm corners): JST-PH → AO3401A reverse-polarity P-FET → SK12D07VG4 switch → 500 mA PTC → VBAT; LED; ten 33 Ω series resistors; two 8-pad ear blocks; XIAO soldered straight into the board (battery wired to its back pads); XIAO's own charger via its USB-C (works only with the switch ON).
 - Bee box: thorax 62 × 46 × 15.8 mm (board), abdomen 44 wide × 10.1 mm (battery pocket), head ball with the chain hole, cosmetic flat wings, raised stripe bumps; overall 105 × 116 × 16.9 mm. Bears 32 × 46 × 7.6 mm with screw posts, mic ring, PCB stops, strain pegs; all cables leave through one top slot.
-- Paint rather than multi-colour printing; clips and arm stay unpainted grey MJF PA12.
+- Paint rather than multi-colour printing; clips, arms and bee base are dyed black MJF PA12 and stay unpainted.
 - Tooling: build123d, KiCad 10 (+ Freerouting 1.9.0), Rust/embassy-nrf, pandoc, Makefile (no `just`).
 
 ## Numbers worth remembering (all ESTIMATES unless noted)
 
 - Sample rate 16.129 kHz (32 MHz / 31 / 64), latency about 3–4 ms, worst-case exciter power about 30 mW (assumed exciter model), about 15 mA typical → about 30 h on 500 mAh, mass about 6 g per stem and 6 g per lobe.
-- Cost: **£94.84 paid** (JLCPCB, 3 orders, 2026-11-22); projected total about £239–322 (prints £40–80 at an *assumed* £0.3–0.6/cm³ for 137 cm³, lean set about 73 cm³; exciters £25–35; XIAO ×2 £28–34; rest £50–70).
+- Cost: **£94.84 paid** (JLCPCB, 3 orders, 2026-11-22); projected total about £237–291 (prints: 14 files, about £26 goods by JLC3DP's quoted rule ($0.95 minimum per file, then $0.34/cm³) + shipping £6–15 guess + 20 % VAT; exciters £25–35; XIAO ×2 £28–34; rest £50–70).
 
 ## Open risks (what would settle each)
 
@@ -53,7 +53,7 @@ Everything is **unverified on hardware**.
 
 ## TODO (next steps, roughly in order)
 
-- [ ] Get print quotes (JLC3DP and a UK MJF bureau) for the full and lean sets; decide.
+- [x] JLC3DP quote 2026-11-22 (MJF PA12-HP, 10 representative parts; nothing ordered): price = max($0.95, $0.339/cm³) per file; black = Surface Finish Yes → Dyeing → Dyed Black, about +$0.10; the page takes at most 10 files per upload (and the browser tool 10.4 MB per call). Colour split decided: **black (dyed): clips + arms, bee base; natural grey: bear shells, back plates, bee cover**. Bee and bear parts ordered twice (spares). Product descriptions: Plastic Bracket (HS 392690) for the clips, Plastic Decorations (HS 392640) for bears and bee. JLC3DP flags the bee cover (thin walls), accepted. JLC3DP treats a file holding several loose parts as an assembly and wants it split, so multi-part bundles were dropped. The print set is now 14 single files after the clip redesign. **State 2026-11-22: all 14 files are in the JLC3DP cart as two quotes (the quote list holds at most 10 lines): 10 lines = 8 clips + bee base + bee cover, then 4 bear files; nothing is ordered.** The checkout (JLCONE app) is the user's; the bee cover needs its 'Yes, I will take the risks' box ticked by them. Still to do: check out, then test-fit the clip on the glasses (and re-measure the stem height at 127 mm).
 - [x] Gerbers reviewed in JLCDFM, CPL rotations checked in the assembly preview, **three PCB orders placed 2026-11-22** (£94.84 incl. shipping and import VAT; JLCONE desktop-app discount −£13.64). Watch for JLCPCB's email about the microphone (extended, flagged difficult) and their post-order DFM/placement analysis.
 - [ ] Order exciters, XIAO ×2, LiPo (check plug polarity), ribbon cable, small parts, consumables (estimates in `docs/data/orders.toml`; record each real order there as a ledger entry).
 - [x] Glasses stem measured with calipers (thickness, three heights); `GlassesParams` and the clip matrix updated.
@@ -77,4 +77,5 @@ Everything is **unverified on hardware**.
 
 - 2026-11-20: concept (tragus clip → helix cuff → glasses clip + earring + necklace box), parts research, firmware feasibility, dangle and carrier PCBs, housing, soldered-XIAO and battery-wing decisions.
 - 2026-11-21: documentation pass: neutral-tone illustrated front matter, redrawn schematics and block diagrams, stacked charts, three-page step 0, shaded tables, wrapped bibliography.
-- 2026-11-21: gummy bears and bee, assembly preview, glasses front from photos, carrier r9 corners and signatures, 58 print files, then the repository restructure (Makefile, sources manifest, routing locks, `-dct 0`) and this manual.
+- 2026-11-21: gummy bears and bee, assembly preview, glasses front from photos, carrier r9 corners and signatures, 58 print files (since replaced by 14), then the repository restructure (Makefile, sources manifest, routing locks, `-dct 0`) and this manual.
+- 2026-11-22: **clip redesign** — clip A dropped, rectangular fit matrix replaced by a spring-jaw clip (grips N and T) with the arm on a shelf, 14 print files; flagged and fixed on the way: the stem profile figure was unrolled (looked straight), `print_files` bundles rejected by JLC3DP, and the arm-fused-jaw problem.

@@ -53,7 +53,7 @@ cad/print/manifest.csv: $(CAD_PY) assets/body_upper.npz
 	cd cad && $(UV) print_files.py
 
 previews: cad/out/preview_assembly.png cad/out/glasses_check.png cad/out/preview_bee.png cad/out/preview_gummy.png ## software-rendered previews of the whole assembly, glasses, bee and bears
-print-files: cad/print/manifest.csv ## every printable STL (58 files) + manifest.csv
+print-files: cad/print/manifest.csv ## every printable STL (14 single parts) + manifest.csv
 
 cad/print/audit.csv: cad/print_audit.py cad/print/manifest.csv
 	$(UV) cad/print_audit.py

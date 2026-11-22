@@ -35,7 +35,7 @@ Per ear there are four things: **clips** that snap onto the glasses stem, a prin
 | Charging | USB-C, 50 or 100 mA (firmware selects), about 5 – 10 h | DATASHEET / ESTIMATE |
 | Mass on the head, per side | about 6 g on the glasses + about 6 g on the lobe | ESTIMATE |
 | Necklace box | 105 × 116 × 17 mm including wings, about 50 g | DERIVED / ESTIMATE |
-| Cost, everything | £94.84 paid (the PCBs); about £239 – 322 projected in total (see chapter 5) | MEASURED (paid) / ESTIMATE (rest) |
+| Cost, everything | £94.84 paid (the PCBs); about £237 – 291 projected in total (see chapter 5) | MEASURED (paid) / ESTIMATE (rest) |
 
 ## What is *not* done
 

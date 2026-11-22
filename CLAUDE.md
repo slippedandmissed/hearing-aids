@@ -37,7 +37,7 @@ macOS is assumed (KiCad path, system fonts). On another OS set `KICAD_PY`, `KICA
 Makefile  sources.toml  README.md  PLAN.md  CLAUDE.md  pyproject.toml
 assets/     build_body.py (generic CC0 head/torso mesh; sources downloaded to assets/mh_raw)
 cad/        params.py, glasses.py, earhook.py (stem, clip, spring arm); gummy_dangle.py (bear); bee_box.py (necklace box);
-            clips.py (shared clip/arm builders); assembly.py (full-body preview); previews.py, preview_glasses.py;
+            clips.py (shared clip/arm builders; the spring-jaw clip geometry is in glasses.py: `clip_flex`, `flex_grip`); assembly.py (full-body preview); previews.py, preview_glasses.py;
             print_files.py (every STL + manifest)
 pcb/        build_dangle.py, carrier/build_carrier.py (placement)  →  pipeline.py (Freerouting, ground plane, silk, DRC, BOM/CPL, gerbers, renders)
             import_ses*.py, ground_plane.py, finish*.py, bom*.py, fingerprint.py; lib/ + carrier/lib/ (vendored footprints); routes/ (routing locks)

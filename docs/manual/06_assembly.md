@@ -35,7 +35,7 @@ Follow the pictures; the text under each picture has the detail. Allow a weekend
 1. Sand lightly with 400-grit and wipe clean.
 2. Plastic primer, thin coats.
 3. Base colours: left bear bubblegum pink (about `#FF6FB5`), right bear fizzy blue (about `#3DB9FF`), bee yellow.
-4. Details: black into the bee's stripe valleys, silver on the wings, bear eyes and nose.
+4. Details: black into the bee's stripe valleys on the cover, silver on the wings of the base (the base is printed black, so its head, stinger and antennae need no paint), bear eyes and nose.
 5. Clear lacquer. **Do not paint the clips or the spring arm** (paint cracks where they flex).
 
 Keep paint out of the microphone hole, the screw holes and the clip cavities.
@@ -132,17 +132,17 @@ Solder from the top side of the carrier: ribbon A to pads 1 – 4 (front row), r
 5. Cover on: press the lip into the base until it clicks. Make sure no wire is pinched.
 6. The chain goes through the hole in the bee's head.
 
-## Step 12: Fit the clips {-}
+## Step 12: Fit the clip {-}
 
 ![](figures/assembly/step12.png)
 
-Try the A-type clips at station 100 mm from the hinge (clip B at 127 mm) starting with fit **B2**. Press from below (slot side up). Choose the smallest cavity that slides on with a firm click; if it is loose, pad it with tape or go one size down; if it will not go on, go one size up. Never force it: the stem is plastic.
+Press the clip (with its arm) onto the arm of the glasses at 127 mm from the hinge, from below (the mouth with the V-shaped jaws facing up the stem), starting with grip **N**. It should need firm pressure and then stay put with a slight click; the jaws spring apart to take your stem. Push the arm gently sideways: the clip should not twist or slide. If it does, or it is loose, use grip **T**, and if it is still loose put a strip of self-adhesive felt on the inside of the jaws. If it will not go on, do not force it (the stem is plastic): measure the glasses arm again: it should be at least 3.2 mm thick.
 
 ## Step 13: Fit the spring arm and the exciter {-}
 
 ![](figures/assembly/step13.png)
 
-Clip A on at 100 mm, clip B with the arm at 127 mm. The arm curves behind the ear to the mastoid. Put the exciter in the plate (13 × 26.5 × 5.75 mm) with a drop of glue at the corners, thread its wires through the tie hole, then to the dangle. Check that the pad presses gently (about 2 – 5 N) and does not squeeze the ear. If it pushes hard, swap to the 2.4 mm arm; if it floats off the skin, use the 3.2 mm arm.
+With the clip on at 127 mm, the arm curves behind the ear to the mastoid. Put the exciter in the plate (13 × 26.5 × 5.75 mm) with a drop of glue at the corners, thread its wires through the tie hole, then to the dangle. Check that the pad presses gently (about 2 – 5 N) and does not squeeze the ear. If it pushes hard, swap to the 2.4 mm arm; if it floats off the skin, use the 3.2 mm arm.
 
 ## Step 14: Hang the bears, route the cables {-}
 

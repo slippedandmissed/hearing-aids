@@ -6,7 +6,7 @@ Two do-it-yourself **open-ear hearing aids** for conductive hearing loss, design
 
 What is in the repository:
 
-- **CAD** (`cad/`): glasses-stem clips and spring arm, gummy-bear dangles, bee necklace box, all as parameterised [build123d](https://github.com/gumyr/build123d) scripts, plus a generator for the 58 print-ready STL files.
+- **CAD** (`cad/`): glasses-stem clips and spring arm, gummy-bear dangles, bee necklace box, all as parameterised [build123d](https://github.com/gumyr/build123d) scripts, plus a generator for the 14 print-ready STL files.
 - **PCBs** (`pcb/`): two earring boards (left/right) and the necklace-box carrier, generated with KiCad's Python API, routed with Freerouting, checked with KiCad DRC, exported as JLCPCB-ready gerbers + BOM + CPL.
 - **Firmware** (`firmware/`): a Rust (embassy-nrf) stereo PDM → I2S passthrough skeleton. Compile-only.
 - **Manual** (`docs/`): a datasheet + user manual + project log with schematics, blueprints, simulations, print renders and IKEA-style assembly steps, generated as a PDF.
@@ -45,7 +45,7 @@ make all          # build everything (about 10 minutes the first time)
 | `make setup` | install Python deps, the Rust target, and run `fetch` |
 | `make fetch` | download third-party files from `sources.toml` |
 | `make previews` | software-rendered previews: whole assembly on the body (`cad/out/preview_assembly.png`), glasses close-up, bee, bears |
-| `make print-files` | the 58 printable STLs and `manifest.csv` in `cad/print/` (all validity-checked) |
+| `make print-files` | the printable STLs and `manifest.csv` in `cad/print/` (14 single parts: a spring-jaw clip + arm per ear in two grips and three arm thicknesses, bears, bee; all validity-checked) |
 | `make print-audit` | measures the real wall thickness and narrow gaps of every STL against JLC3DP's limits: `cad/print/audit.csv` (about 5 minutes) |
 | `make dangle-L` / `dangle-R` / `carrier` | one PCB: gerbers + BOM + CPL zip in `pcb/fab/`, DRC report, KiCad 3D renders in `pcb/renders/` |
 | `make pcb` | all three PCBs |

@@ -14,9 +14,9 @@ This chapter is a ledger. Each order, meaning each movement of money, is recorde
 
 <!-- include: tables/cost_category.md -->
 
-**The budget is exceeded.** The original ceiling was about £200 ("flexible"). **£94.84 has been paid** (the three PCB orders); the projected total, with the estimates for everything still to buy, is about **£239 – 322**. The levers, in order of effect:
+**The budget is exceeded.** The original ceiling was about £200 ("flexible"). **£94.84 has been paid** (the three PCB orders); the projected total, with the estimates for everything still to buy, is about **£237 – 291**. The prints are now priced with JLC3DP's real rule from a quote (a $0.95 minimum per file, then about $0.34 per cm³), which is why the estimate rose. The print set is now 14 single files after the clip redesign (one spring-jaw clip + arm per ear in two grips, two extra arm thicknesses, the bears and the bee; see chapter 4). JLC3DP treats a file holding several loose parts as an assembly and wants it split, so every part is its own file. The levers, in order of effect:
 
-1. Print fewer clip sizes (the *lean* set is about half the volume).
+1. Print fewer clip variants (done: the clip is a single spring-jaw design in two grips, not a twelve-size matrix).
 2. Two exciters instead of three, one XIAO instead of two.
 3. Skip the paint and hooks if you already own them.
 
@@ -43,7 +43,7 @@ The microphone (LCSC C497724) is an *extended* part that JLCPCB flags as difficu
 ## Ordering checklist
 
 1. **JLCPCB, three separate orders: DONE 2026-11-22** (see above): `pcb/fab/dangle_L.zip`, `dangle_R.zip`, `carrier.zip` with their `*_BOM.csv` and `*_CPL.csv`.
-2. **3D prints**: upload the files in `cad/print/` to JLC3DP or a UK MJF bureau for an instant quote; choose MJF nylon PA12, grey. Decide between the full set and the lean set after seeing the price.
+2. **3D prints**: upload the files in `cad/print/` (the website takes at most 10 per upload) to JLC3DP or a UK MJF bureau; choose MJF nylon PA12: **black (dyed)** for the clips, spring arms and bee base, **natural grey** for the bear shells, back plates and bee cover; one spare of each non-matrix part (bears and bee are ordered twice). The 14 files are one clip + arm per ear in two grips (N, T) plus the two extra arm thicknesses, the bears and the bee.
 3. **Exciters** (3 × DAEX-9-4SM): no UK stockist was found; order EU/US and allow for import VAT.
 4. **XIAO nRF52840 ×2, LiPo, ribbon cable**: The Pi Hut or similar UK shop. The cable is *Silicone Cover Stranded-Core Ribbon Cable, 4 wires, 1 m, **30 AWG** black* (Adafruit 3889), 5 pieces; its wires are 0.8 mm across, so a ribbon is about 0.8 × 3.2 mm. The **28 AWG** version (1.2 mm wires) is too fat for the cable slot. The Pi Hut's own page could not be read when this was written (rate-limited), so its price and stock are unconfirmed.
 5. **Hand-soldered parts**: JST-PH S2B-PH-K socket and SK12D07VG4 switch (LCSC numbers in the carrier BOM).

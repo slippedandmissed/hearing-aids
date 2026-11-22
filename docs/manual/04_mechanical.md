@@ -6,7 +6,7 @@ Every shape is a Python script (build123d [@build123d]); dimensions live in a fe
 
 ## The assembled picture
 
-![The whole system on the generic body, from the front, back, three-quarters and both ears. Brown: glasses; grey: clips and spring arm; orange: exciter; pink / blue: the bears; silver: chain and ear wires; yellow and black: the bee.](figures/renders/preview_assembly.png)
+![The whole system on the generic body, from the front, back, three-quarters and both ears. Brown: glasses; black: clips and spring arm; orange: exciter; pink / blue: the bears; silver: chain and ear wires; yellow and black: the bee.](figures/renders/preview_assembly.png)
 
 ## Glasses stem, clips and spring arm
 
@@ -14,13 +14,34 @@ Every shape is a Python script (build123d [@build123d]); dimensions live in a fe
 
 The glasses are a 57□17-145 frame (lens 57 mm, bridge 17 mm, temple 145 mm). The stem profile, **MEASURED** with calipers on 2026-11-21, is 6.40 mm tall at the hinge, 4.7 mm where the straight section ends and 9.36 mm at the widest part of the rear paddle before it tapers quickly; the thickness is a consistent 3.54 mm along the whole stem. The straight section is 105.33 mm long, and the tallest point is 134.72 mm from the hinge in a straight line; the model puts it at 135 mm along the stem, because the stem bends and the path is slightly longer. A second set of measurements perpendicular to the lens plane gave 113.56 mm and 130.75 mm; those include the hinge's offset from the lens plane, so the model uses the along-the-stem values. Photographs showed that the frame is a cat-eye acetate front with thin translucent-brown temples; the preview's front is a rough interpretation (no lenses).
 
-### Clips
+### The clip {#clip}
 
-Two **C-clips** snap onto the stem from underneath: **clip A** at 100 mm from the hinge, **clip B** at 127 mm. A clip has a 1.6 mm wall, 0.25 mm clearance and a 14 mm length; its slot on the underside is narrower than the stem so it clicks on. Because the printer's tolerance (±0.3 mm for MJF nylon, and holes print smaller than modelled) is as large as the 0.25 mm clearance, the clips are still printed in a *range of sizes* (stem thickness 3.34 / 3.54 / 3.74 / 3.94 mm, where 3.54 mm is the measured value, × height −0.4 / 0 / +0.4 mm) and you use the smallest that slides on with a click. Following JLC3DP's published limits ([JLC3DP design guideline](https://jlc3dp.com/help/article/212-3D-Printing-Design-Guideline): 1.0 mm recommended wall, 0.5–0.8 mm minimum engraved detail, ±0.3 mm tolerance), the ID text on the clips is engraved 0.8 mm deep in 3.6–4 mm bold text, the bear's screw posts are 3.4 mm across (1.05 mm wall round the 1.3 mm pilot), the PCB stops are 1.0 mm thick and the exciter pocket has 0.45 mm clearance each side (**ASSUMED**; test-fit it first).
+One **spring-jaw clip** at 127 mm from the hinge carries the spring arm; the arm and clip are one printed part. There is no second clip: an earlier design had a *clip A* at 100 mm, but it was a separate part that touched nothing, so it could not steady the clip at 127 mm (then called clip B; there is now only one clip), and it fitted the stem worse than that clip (the stem starts to bend there). It was dropped on 2026-11-22.
+
+**Why not an exact-fit clip.** The first design was a rectangular C-clip with 0.25 mm of clearance, printed in twelve sizes. Three things made that fragile (all from the stem model and ESTIMATES, nothing tested):
+
+- The pad hangs about 45 mm below the clip, which is 3.3 times the clip's 14 mm length. Any slack in the fit shows up at the pad three times larger: 0.25 mm of clearance each side lets the clip rock about 2°, which moves the pad by about 1.6 mm out of the 5 mm preload, and the printer's ±0.3 mm tolerance can make that about 3.6 mm.
+- Between 100 mm and 127 mm the stem bends by 41°, it grows from 7.0 to 9.2 mm tall within ±7 mm of the clip, and its flat faces twist by about 5° over the clip length. A straight cavity sized for one height touches the stem at its ends.
+- The fit depended on the interpolated stem height at the clip, which was not measured there.
+
+**The spring-jaw clip.** Two thin jaws hang from a top plate and are angled towards each other, like a V. The stem is pushed in from below, wedges where the free gap equals its thickness and, pushed up to the top plate, springs the jaws apart. The grip is then a spring force, not a fit: any stem within the jaws' travel is held, and the height of the stem hardly matters because the jaws only touch its flat faces and the cavity is deep (the top plate sits 0.3 mm above the stem's top edge at its tallest point over the clip). Each jaw is split into three fingers by two 1 mm slits, so the fingers can follow the twist of the stem faces independently. The arm hangs from a rigid shelf on the top plate, not from a jaw: an arm fused to a jaw would make that jaw rigid and force the other one to take all the spring travel (found by measuring the first version, where the arm ran through the jaw over nearly its whole height).
+
+| dimension | value | status |
+|---|---|---|
+| jaw thickness / top plate / clip length | 1.4 / 1.6 / 14 mm (1.2 mm jaws were flagged by JLC3DP's thin-wall heatmap) | DESIGN |
+| free gap under the top plate / at the narrowest point | 4.9 mm / 2.65 mm (grip **N**, nominal) or 2.35 mm (grip **T**, tight) | DESIGN |
+| fingers per jaw | 3 (two 1 mm slits) | DESIGN |
+| distance from the arm to the jaws | at least 1.28 mm (measured on the model) | DERIVED |
+
+![Grip force per jaw and jaw strain against the thickness of the glasses arm, for the two grips. The model is a cantilever jaw with E = 1.7 GPa and a 2 % strain limit (both ASSUMED); at the measured 3.54 mm, grip N gives about 8 N per jaw and 1.0 % strain, grip T about 11 N and 1.4 %.](figures/sims/clip_grip.png)
+
+Grip **N** is expected to work on flat glasses arms about 3.2 – 4.2 mm thick and grip **T** about 2.9 – 3.9 mm (the lower limit is where the jaw preload falls to about 0.17 mm per jaw, the upper where the jaw strain reaches 2 %). Both are printed for each ear. N is the one to try first; T is for when N is loose or twists when the arm is loaded: the arm's pull tries to roll the clip, and a jaw that has less preload than that roll needs would lift off. (The needed preload is an order-of-magnitude estimate and has not been tested.) Nylon relaxes under constant load, so the grip may loosen over weeks; a strip of self-adhesive felt or silicone on the jaw faces is the fallback. The stem path is ASSUMED from photographs, so its real bend and twist may differ from the model: the first test fit settles it. This design is meant for flat plastic or acetate arms at least 2.5 mm thick and 4 mm tall; thin metal arms would need another grip.
+
+Following JLC3DP's published limits ([JLC3DP design guideline](https://jlc3dp.com/help/article/212-3D-Printing-Design-Guideline): 1.0 mm recommended wall, 0.5 – 0.8 mm minimum engraved detail, ±0.3 mm tolerance), the ID text on the clips is engraved 0.6 mm deep in 4 mm bold text and the arm-thickness digits on the exciter plate in 6.5 mm bold text (5 mm gave strokes about 0.5 mm wide that JLC3DP's heatmap flagged red), the bear's screw posts are 3.4 mm across (1.05 mm wall round the 1.3 mm pilot), the PCB stops are 1.0 mm thick and the exciter pocket has 0.45 mm clearance each side (**ASSUMED**; test-fit it first).
 
 ### Spring arm {#spring-arm}
 
-Clip B carries a **leaf-spring arm** that curves behind the ear and ends in a plate holding the exciter against the mastoid. It is fused to the clip (one printed part), thin in the direction it flexes and tall in the other, like a miniature glasses temple. The pad force follows the cantilever formula $F = \frac{3EI}{L^3}\,\delta$, where $E$ is the nylon's modulus (about 1.7 GPa for PA12, ESTIMATE), $I = h t^3/12$ with arm height $h = 7$ mm and thickness $t$, $L \approx 55$ mm the free length and $\delta$ the preload (how far the relaxed pad sits proud of the skin, 5 mm).
+The clip carries a **leaf-spring arm** that curves behind the ear and ends in a plate holding the exciter against the mastoid. It is fused to the clip (one printed part), thin in the direction it flexes and tall in the other, like a miniature glasses temple. The pad force follows the cantilever formula $F = \frac{3EI}{L^3}\,\delta$, where $E$ is the nylon's modulus (about 1.7 GPa for PA12, ESTIMATE), $I = h t^3/12$ with arm height $h = 7$ mm and thickness $t$, $L \approx 55$ mm the free length and $\delta$ the preload (how far the relaxed pad sits proud of the skin, 5 mm).
 
 ![Pad force against arm thickness for three preloads, and the bending strain in the arm. The printed variants are 2.4, 2.8 and 3.2 mm; 2.8 mm at 5 mm preload gives about 2 N.](figures/sims/spring_arm.png)
 
@@ -60,17 +81,17 @@ The **thorax** (62 × 46 mm, 15.8 mm thick) holds the 56 × 40 carrier PCB on tw
 
 ## The print files
 
-Everything is printed in plain grey **MJF nylon (PA12)** [@jlc3dp]. Clips and arm stay unpainted; shells and the bee are sanded, primed and painted. Colour regions are 0.4 mm paint wells and raised bumps, not multi-colour printing.
+Everything is printed in **MJF nylon (PA12)** [@jlc3dp], in two colours because the dye bath colours a whole part and cannot be applied to part of one. The clips, the spring arms and the **bee base** are **dyed black**: the clips and arms stay unpainted, and the base needs no black paint (head, stinger and antennae) and only its wings painted silver. The **bear shells, back plates and the bee cover** are **natural grey**, then sanded, primed and painted (yellow over black dye would take several coats of primer, while black into a few valleys over grey is easy). Colour regions are 0.4 mm paint wells and raised bumps, not multi-colour printing.
 
 ![The finished print files, one of each kind (rendered from the STLs that will be sent for printing).](figures/renders/print_overview.png)
 
-![Clip A in every size of the fit matrix.](figures/renders/print_clips_matrix.png)
+![The spring-jaw end of clip + arm, cropped from the print file.](figures/renders/print_clip.png)
 
-![Clip B with spring arm and exciter plate, and the three arm thicknesses.](figures/renders/print_arms.png)
+![The clip with spring arm and exciter plate, and the three arm thicknesses.](figures/renders/print_arms.png)
 
-Every part carries an engraved ID so the many near-identical clips can be told apart (the right-ear parts are mirrored, but their text still reads correctly):
+Every part carries an engraved ID so the many near-identical clips can be told apart (the right-ear parts are mirrored, but their text still reads correctly; N and T are the two grips):
 
-![Engraved IDs on clip A (left and right) and clip B + arm (right).](figures/renders/print_engraving.png)
+![Engraved IDs on the clip + arm: left grip N, right grip N, right grip T.](figures/renders/print_engraving.png)
 
 <!-- include: tables/print_summary.md -->
 
@@ -85,9 +106,9 @@ The full file list with volumes, bounding boxes and validity checks is in the ap
 | part | finding after the 2026-11-22 changes | what is left |
 |---|---|---|
 | bear back plates (L, R) | up to 11 % of the surface under 1.0 mm and 9 % under 0.8 mm: the floors are 0.75 – 0.8 mm, so the measurement counts them as thin | screw counterbores 0.4 mm deep (0.8 mm floor, was 0.5 mm); cable notch leaves a 0.8 mm skin (was 0.5 mm); the large L or R engraved 0.45 mm leaves 0.75 mm, kept because it is cosmetic |
-| clips A and B | clip A up to 5 % under 1.0 mm and 1.5 % under 0.8 mm; clip B 2.6 % and 0.6 % | the engraved IDs are now 0.6 mm deep in the 1.6 mm wall, so 1.0 mm is left under the letters (was 0.8 mm); the remaining readings are letter edges and a few thin spots near the arm tip (not traced) |
+| clip + arm (8 files) | 1.7 – 2.5 % under 1.0 mm and 0.1 – 0.4 % under 0.8 mm (first-percentile wall 1.0 mm); JLC3DP's heatmap flagged the first 1.2 mm jaws yellow and red, which is why they are 1.4 mm now, with a 0.4 mm lead-in so the jaw tips are 1.0 mm; after that only the finger tips show yellow | the jaws are 1.4 mm; the engraved IDs are 0.6 mm deep in the 1.6 mm top plate, so 1.0 mm is left under the letters; the remaining readings are letter edges, the jaw tips and a few thin spots near the arm tip (not traced) |
 | bear shells | 5 % under 1.0 mm, 0.7 % under 0.8 mm; one patch of 1.0 mm over the PCB at the top | probably a thin ceiling region near the mic seal (not traced) |
 | bee cover and base | 1 – 9 % under 1.0 mm, 1 % under 0.8 mm; two tiny patches 0.3 – 0.5 mm thick | probably lip and flange edges on the cover and an eye well on the base (not traced) |
-| narrow gaps (under 0.4 mm) | 0.1 – 0.4 % on the clips and the bear shells | the 0.25 mm clip-to-stem clearance and the 0.4 mm paint wells, by design |
+| narrow gaps (under 0.4 mm) | 0.2 – 0.4 % on the clips and the bear shells | the jaw lead-in edges, the engraved digits and the 0.4 mm paint wells, by design (the finger slits are 1 mm) |
 
 None of these is a wrong model; they are the places where legibility, fit and strength trade against JLC3DP's recommended 1.0 mm wall. The cable notch assumes the cable: 30 AWG silicone ribbon with 0.8 mm wires is about 0.8 mm thick, so two stacked ribbons (1.6 mm) pass the 2.4 mm slot with 3.0 mm of room under it; that thickness is inferred from the wire size and should be confirmed with the real cable. JLC3DP's own model check, run when the STLs are uploaded for a quote, has not been consulted yet.

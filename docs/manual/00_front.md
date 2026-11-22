@@ -31,7 +31,7 @@ The earrings are shaped like gummy bears (pink for the left ear, blue for the ri
 
 # One ear in detail {-  .unlisted}
 
-Two clips attach to the arm of the glasses. One of them carries a spring arm that passes around the ear and presses the exciter against the mastoid bone behind it. The microphone opening is in the front of the earring.
+A clip attaches to the arm of each side of the glasses. It carries a spring arm that passes around the ear and presses the exciter against the mastoid bone behind it. The microphone opening is in the front of the earring.
 
 ![Left ear from the side.](figures/overview/worn_ear.png){width=100%}
 
