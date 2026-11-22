@@ -1,6 +1,6 @@
 """Glasses-stem clip and spring-arm geometry shared by print_files.py and the blueprint drawings (head coordinates, canal opening = origin)."""
 import numpy as np
-from dataclasses import replace
+from dataclasses import replace, dataclass
 from build123d import *
 import assembly as A
 from params import G, H, P
@@ -26,7 +26,21 @@ def clip_geom(station, T, dh):
     top_origin = np.array(P3[i]) + vec(pl.y_dir) * (h / 2 + co)       # centre of the outer top face (opposite the slot)
     return (outer - inner) - slot, g, i, dict(origin=top_origin, normal=vec(pl.y_dir), xdir=vec(pl.z_dir), size=3.6 if station < 110 else 4.0)
 
-def arm_geom(g, i, arm_t):
-    off = g.temple_t / 2 + g.clip_wall + g.clip_clear + arm_t / 2 - 0.8              # 0.8 mm overlap into the clip wall: fuses into one solid
-    return exciter_arm(A.X0, P3, s, np.array(P3[i]), p=P, h=H, g=g, arm_t=arm_t, lat_off=off)             # default preload = relaxed (printed) shape
+def arm_geom(g, i, arm_t, arm=None):
+    """arm: what clip_flex returns (dict lat_outer, shift: the arm starts on the clip's shelf); None = the old straight clip wall"""
+    lat_outer = g.temple_t / 2 + g.clip_wall + g.clip_clear if arm is None else arm["lat_outer"]
+    anchor = np.array(P3[i]) + (0 if arm is None else arm["shift"])
+    off = lat_outer + arm_t / 2 - 0.8              # 0.8 mm overlap into the clip: fuses into one solid
+    return exciter_arm(A.X0, P3, s, anchor, p=P, h=H, g=g, arm_t=arm_t, lat_off=off)             # default preload = relaxed (printed) shape
 
+
+
+
+# ---------------------------------------------------------------------------------------------------------------- compliant (spring-jaw) clip: geometry lives in glasses.py
+import glasses as _gl
+from glasses import FlexParams, FLEX, FLEX_TIGHT
+def clip_flex(station, fp=FLEX, g=G): return _gl.clip_flex(P3, s, station, fp, g)
+def flex_grip(station, T_stem, h_stem, fp=FLEX, g=G): return _gl.flex_grip(P3, s, station, T_stem, h_stem, fp, g)
+def flex_span(station, T_stem, fp=FLEX, g=G): return _gl.flex_span(P3, s, station, T_stem, fp, g)
+def flex_outline(station, fp=FLEX, g=G): return _gl.flex_outline(P3, s, station, fp, g)
+def _frame(station, g=G): return _gl._frame(P3, s, station, g)

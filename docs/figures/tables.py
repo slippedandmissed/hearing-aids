@@ -28,20 +28,27 @@ def money(lo, hi=None):
 def ledger():
     """-> (orders, print volume, lean volume). Each order gets .lines (with lo/hi in GBP), .lo, .hi and .paid; paid orders must add up to their invoice total."""
     rates = ORDERS["rates"]
-    man = csv_rows(os.path.join(ROOT, "cad", "print", "manifest.csv")); vol = sum(float(r["qty"]) * float(r["volume_cm3"]) for r in man) if man else 137.0
-    plo, phi = rates["print_gbp_per_cm3"]; orders = []
+    man = csv_rows(os.path.join(ROOT, "cad", "print", "manifest.csv"))
+    def goods(rows):                                    # GBP for a set of files by the JLC3DP rule: max(minimum, per cm3 x volume) per file x quantity, + dyeing for the black parts
+        usd = sum(max(rates["print_usd_min"], rates["print_usd_per_cm3"] * float(r["volume_cm3"])) * int(r["qty"]) + (rates["print_usd_dye_small"] * int(r["qty"]) if any(r["file"].startswith(p) for p in rates["print_black"]) else 0) for r in rows)
+        return usd * rates["usd_to_gbp"]
+    vol = sum(float(r["qty"]) * float(r["volume_cm3"]) for r in man) if man else 84.0
+    lean = dict(volume=vol, files=len(man))
+    orders = []
     for o in ORDERS["order"]:
         lines = []
         for l in o["line"]:
             item = l["item"]
-            if l.get("kind") == "prints": lo, hi, item = vol * plo, vol * phi, f"{item} ({vol:.0f} cm\u00b3 incl. spares)"
+            if l.get("kind") == "prints":
+                lo = hi = goods(man); item = f"{item} ({len(man)} files, {vol:.0f} cm\u00b3, {sum(int(r['qty']) for r in man)} pieces incl. spares)"
+            elif l.get("kind") == "vat": lo = 0.2 * sum(x["lo"] for x in lines); hi = 0.2 * sum(x["hi"] for x in lines)
             elif "amount" in l: lo = hi = l["amount"]
             else: q = l.get("qty", 1); lo, hi = q * l["low"], q * l["high"]; item += f" \u00d7 {q}" if q > 1 else ""
             lines.append(dict(l, item=item, lo=lo, hi=hi))
         o2 = dict(o, lines=lines, lo=sum(x["lo"] for x in lines), hi=sum(x["hi"] for x in lines), paid=o["status"] == "paid")
         if o2["paid"] and abs(o2["lo"] - o["paid_total"]) > 0.005: raise SystemExit(f"orders.toml: order {o['id']} lines add up to {o2['lo']:.2f} but the invoice total is {o['paid_total']:.2f}")
         orders.append(o2)
-    return orders, vol, rates["lean_print_cm3"]
+    return orders, vol, lean
 
 def by_category(orders):
     """{category: dict(paid=amount paid, lo=planned low, hi=planned high)} in display order"""
@@ -61,9 +68,8 @@ def bom_tables():
         rows.append([f"**{o['title']}**", when, "", f"**{money(o['lo'], o['hi'])}**", " \u2014 ".join(what)])
         for l in o["lines"]: rows.append([f"\u2003{l['item']}", "", l["category"], money(l["lo"], l["hi"]), l.get("note", "")])
     paid = sum(o["lo"] for o in orders if o["paid"]); plo = sum(o["lo"] for o in orders if not o["paid"]); phi = sum(o["hi"] for o in orders if not o["paid"])
-    rates = ORDERS["rates"]["print_gbp_per_cm3"]; sav = [vol * rates[0] - lean * rates[0], vol * rates[1] - lean * rates[1]]
     rows.append(["**Paid so far**", "", "", f"**{money(paid)}**", "net of discounts, including tax and shipping"])
-    rows.append(["**Still to buy (estimate)**", "", "", f"**{money(plo, phi)}**", f"with the lean print set (\u2248 {lean} cm\u00b3) instead of the full one: {money(plo - sav[0], phi - sav[1])}"])
+    rows.append(["**Still to buy (estimate)**", "", "", f"**{money(plo, phi)}**", f"prints: {lean['files']} files, priced by the JLC3DP rule"])
     rows.append(["**Projected total**", "", "", f"**{money(paid + plo, paid + phi)}**", "paid + estimate"])
     write("bom_cost", md(rows, ["Order / line item", "Date", "Category", "\u00a3", "Vendor, reference, note"], ["l", "l", "l", "r", "l"]))
     cats = by_category(orders); rows = []
@@ -82,7 +88,7 @@ def print_tables():
     if not man: write("print_summary", "*(run `make print-files`)*"); return
     groups = {}
     for r in man:
-        n = r["file"]; g = "clip A" if n.startswith("clipA") else "clip B + arm 2.8" if "arm2.8" in n else "clip B + arm 2.4/3.2" if n.startswith("clipB") else n.split("_")[0] + " " + n.split("_")[1].split(".")[0] if n.startswith("bear") else "bee box"
+        n = r["file"]; g = "clip + arm 2.8" if "arm2.8" in n else "clip + arm 2.4/3.2" if n.startswith("clip_") else n.split("_")[0] + " " + n.split("_")[1].split(".")[0] if n.startswith("bear") else "bee box"
         if n.startswith("bear"): g = "bear " + ("shell" if "shell" in n else "back plate")
         d = groups.setdefault(g, [0, 0.0, 0.0, r["bbox_mm"]]); d[0] += 1; d[1] += float(r["volume_cm3"]) * float(r["qty"]); d[2] += float(r["mass_g_est"]) * float(r["qty"])
     rows = [[g, v[0], f"{v[1]:.1f}", f"{v[2]:.0f}", v[3]] for g, v in groups.items()]

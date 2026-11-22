@@ -84,18 +84,18 @@ def exciter_power():
 LOADS = {"XIAO nRF52840 (CPU + PDM + I2S)": 6.0, "2 × MAX98357A idle": 4.8, "2 × PDM mic": 1.2, "power LED": 0.9, "2 × exciter drive (speech)": 2.0}   # mA, ASSUMED from datasheet typicals
 
 def battery():
-    fig, axs = plt.subplots(3, 1, figsize=(9, 9), gridspec_kw=dict(height_ratios=[1.0, 1.1, 2.6]))
+    fig, axs = plt.subplots(3, 1, figsize=(9, 9), gridspec_kw=dict(height_ratios=[1.0, 1.6, 2.6]))      # the legend is one column: at the manual's shrink (65 %) a two-column legend was wider than the figure and constrained layout squeezed the axes to nothing
     ax = axs[0]; left = 0; cols = [C["blue"], C["pink"], C["teal"], C["yellow"], C["orange"]]
     for (k, v), c in zip(LOADS.items(), cols):
         ax.barh(0, v, left=left, color=c, ec="white"); (ax.text(left + v / 2, 0, f"{v:.1f}", ha="center", va="center", fontsize=11, color="white" if c in (C["blue"], C["pink"], C["teal"]) else C["ink"]) if v >= 1.5 else None); left += v
     ax.set_yticks([]); ax.set_xlabel("typical current from the cell (mA, ASSUMED)"); ax.set_xlim(0, left * 1.02)
     ax.set_title(f"Where the current goes: ≈ {left:.1f} mA typical", fontsize=12, loc="left")
-    axs[1].axis("off"); axs[1].legend([Rectangle((0, 0), 1, 1, color=c) for c in cols], [f"{k}: {v:.1f} mA" for k, v in LOADS.items()], fontsize=10.5, loc="center", ncol=2, frameon=False)
+    axs[1].axis("off"); axs[1].legend([Rectangle((0, 0), 1, 1, color=c) for c in cols], [f"{k}: {v:.1f} mA" for k, v in LOADS.items()], fontsize=10.5, loc="center", ncol=1, frameon=False)
     ax = axs[2]
     caps = np.array([200, 300, 500, 700, 1000]); usable = 0.85
     for scen, mA, col in (("quiet room", left - 0.9 - 1.0, C["green"]), ("typical", left, C["blue"]), ("loud, all the time", left + 6, C["red"])):
         ax.plot(caps, caps * usable / mA, marker="o", color=col, lw=2, label=f"{scen}: {mA:.0f} mA")
-    ax.set_xlabel("battery capacity (mAh)"); ax.set_ylabel("run time (hours), 85 % usable"); ax.grid(alpha=0.3); ax.legend(fontsize=10, loc="upper left")
+    ax.set_xlabel("battery capacity (mAh)"); ax.set_ylabel("run time (hours), 85 % usable"); ax.grid(alpha=0.3); ax.legend(fontsize=10, loc="lower right")
     ax.set_title("Estimated run time", fontsize=12, loc="left"); ax.axvline(500, color=C["mute"], ls=":"); ax.text(510, ax.get_ylim()[1] * 0.93, "planned 500 mAh", fontsize=10, color=C["mute"])
     save(fig, "sims", "battery"); return left
 
@@ -114,6 +114,21 @@ def spring():
     ax.axhline(2.0, color=C["red"], ls="--"); ax.text(4.15, 1.93, "≈ 2 % : comfortable for PA12 long term (ASSUMED)", ha="right", va="top", fontsize=10, color=C["red"]); ax.set_ylim(0, 2.7)
     ax.set_xlabel("arm thickness (mm)"); ax.set_ylabel("peak bending strain (%)"); ax.set_title("Strain in the arm at the preload", fontsize=12, loc="left"); ax.grid(alpha=0.3); ax.legend(fontsize=10, ncol=3, loc="upper center")
     save(fig, "sims", "spring_arm")
+
+
+# ============================================================================== 3b. spring-jaw clip grip
+def clip_grip():
+    """grip force per jaw and strain against the thickness of the glasses arm, for grip N and T (clips.flex_grip: cantilever jaw, PA12 E and strain limit ASSUMED)"""
+    from clips import flex_grip, FLEX, FLEX_TIGHT, G
+    T = np.linspace(2.8, 4.8, 81); fig, axs = plt.subplots(2, 1, figsize=(9, 6.4), sharex=True)
+    for fp, nm, col in ((FLEX, "grip N (free gap 2.65 mm)", C["blue"]), (FLEX_TIGHT, "grip T (free gap 2.35 mm)", C["orange"])):
+        res = np.array([flex_grip(127.0, x, 8.13, fp)[:3] for x in T])
+        axs[0].plot(T, res[:, 1], lw=2, color=col, label=nm); axs[1].plot(T, res[:, 2], lw=2, color=col, label=nm)
+    axs[0].axvline(G.temple_t, color=C["mute"], ls=":"); axs[0].text(G.temple_t + 0.04, axs[0].get_ylim()[1] * 0.92, f"your glasses {G.temple_t} mm", fontsize=10, color=C["mute"])
+    axs[0].set_ylabel("grip force per jaw (N)"); axs[0].set_title("Spring-jaw clip: grip force against the thickness of the glasses arm", fontsize=12, loc="left"); axs[0].grid(alpha=0.3); axs[0].legend(fontsize=10, loc="upper left", bbox_to_anchor=(0.0, 0.8))
+    axs[1].axhline(2.0, color=C["red"], ls="--"); axs[1].text(4.8, 2.05, "2 % strain limit (ASSUMED)", ha="right", fontsize=10, color=C["red"]); axs[1].axvline(G.temple_t, color=C["mute"], ls=":")
+    axs[1].set_ylabel("peak jaw strain (%)"); axs[1].set_xlabel("thickness of the glasses arm (mm), height 8.1 mm"); axs[1].grid(alpha=0.3); axs[1].set_ylim(0, 3.2)
+    save(fig, "sims", "clip_grip")
 
 # ============================================================================== 4. latency
 def latency():
@@ -157,7 +172,7 @@ def mass():
     with open(os.path.join(ROOT, "cad", "print", "manifest.csv")) as f:
         for r in _csv.DictReader(f): vol[r["file"]] = float(r["mass_g_est"])
     items = {
-        "Glasses stem (each side)": [("clip A", vol.get("clipA_L_B2.stl", 0.5), C["teal"]), ("clip B + arm", vol.get("clipB_arm2.8_L_B2.stl", 3.1), C["blue"]), ("exciter", 2.3, C["pink"])],
+        "Glasses stem (each side)": [("clip + arm", vol.get("clip_arm2.8_L_N.stl", 3.0), C["blue"]), ("exciter", 2.3, C["pink"])],
         "Earring (each lobe)": [("bear shell + back plate", vol.get("bear_shell_L.stl", 2.4) + vol.get("bear_backplate_L.stl", 0.9), C["pink"]), ("PCB + parts", 0.9, C["green"]), ("wires, hook, screws", 1.6, C["yellow"])],
         "Necklace box": [("bee base + cover", vol.get("bee_base.stl", 12) + vol.get("bee_cover.stl", 11), C["yellow"]), ("PCB + XIAO", 6.0, C["green"]), ("500 mAh LiPo", 11.0, C["orange"]), ("cables + chain", 10.0, C["mute"])],
     }
@@ -176,7 +191,7 @@ def mass():
 
 if __name__ == "__main__":
     r = {}
-    r["exciter"] = exciter_power(); r["battery_mA"] = battery(); spring(); latency(); margins(); r["mass_g"] = mass()
+    r["exciter"] = exciter_power(); r["battery_mA"] = battery(); spring(); clip_grip(); latency(); margins(); r["mass_g"] = mass()
     os.makedirs(TAB, exist_ok=True)
     with open(os.path.join(TAB, "sim_summary.txt"), "w") as f:
         f.write(f"worst_case_exciter_peak_mW {r['exciter']['peak_mW']:.1f} at {r['exciter']['at']:.0f} Hz\nsquare_wave_peak_mA {r['exciter']['square_mA']:.0f}\ntypical_current_mA {r['battery_mA']:.1f}\n")

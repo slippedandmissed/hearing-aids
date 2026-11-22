@@ -181,19 +181,41 @@ def clip_section(ax, T, h, wall=1.6, clr=0.25, length=14, label_txt="", x0=0, y0
     dim(ax, (x0 - W / 2, y0 - h / 2 - ci), (x0 - W / 2, y0 + h / 2 + ci), -3.4, f"cavity {h + 2 * ci:.2f}", fs=6.5); callout(ax, (x0 + sw / 2, y0 - Hh / 2), (x0 + 6, y0 - Hh / 2 - 4.5), f"slot {sw:.1f}")
     ax.text(x0, y0 + Hh / 2 + 7.5, label_txt, color=LN, fontsize=8, ha="center", fontweight="bold")
 
+def flex_section(ax, fp, T, h, label_txt):
+    """cross-section of the spring-jaw clip (free shape) with a stem of thickness T and height h pushed up to the top plate"""
+    from clips import flex_outline
+    vt_in, vt_out, vb, gap = flex_outline(127.0, fp); tj = fp.t_jaw; v_n = vb + fp.lead_h; half = lambda v: gap(v) / 2; vng = half(v_n)
+    R = [(0, vt_out), (half(vt_in) + tj, vt_out), (vng + tj - (v_n - vb) * (half(vt_in) - vng) / (vt_in - v_n), vb), (fp.gap_tip / 2 + fp.lead, vb), (fp.gap_tip / 2, v_n), (half(vt_in), vt_in), (0, vt_in)]
+    poly = R + [(-x, y) for x, y in reversed(R[1:-1])]; xs, ys = zip(*(poly + [poly[0]])); y0 = -(vt_out + vt_in) / 2 * 0
+    ax.fill(xs, ys, fc="#c9d1dc", ec=LN, lw=1.2, zorder=0.6)
+    u_top = half(vt_in) + tj; v_sh = vt_in + fp.arm_up + 3.5          # the rigid shelf the arm hangs from (outside the jaws, above them)
+    ax.add_patch(plt.Rectangle((u_top - 0.3, vt_in), fp.shelf_w + 0.3, v_sh - vt_in, fc="#c9d1dc", ec=LN, lw=1.2, zorder=0.6)); ax.text(u_top + fp.shelf_w + 0.6, (vt_in + v_sh) / 2, "arm shelf", fontsize=6.5, color=DM, ha="left", va="center")
+    ax.add_patch(plt.Rectangle((-T / 2, vt_in - fp.top_clear - h), T, h, fc="#b9d2f5", ec=HID, lw=0.8, alpha=0.8, zorder=1))
+    dim(ax, (-(half(vt_in) + tj), vt_out), (half(vt_in) + tj, vt_out), 2.6, f"{2 * (half(vt_in) + tj):.1f}")
+    dim(ax, (-fp.gap_tip / 2, v_n), (fp.gap_tip / 2, v_n), -3.0, f"free gap {fp.gap_tip:.2f}", fs=6.5)
+    callout(ax, (half(vt_in - 3) + tj / 2, vt_in - 3), (half(vt_in) + tj + 3.5, vt_in - 3), f"jaw {tj:.1f} thick"); ax.text(0, vt_out + 5.8, label_txt, color=LN, fontsize=8, ha="center", fontweight="bold")
+
 def clips():
-    from clips import clip_geom, arm_geom, g_for, P3, s
-    fig, axs = sheet(2, 3, (16, 11), "STEM CLIPS AND SPRING ARM (left ear shown)", "clipA_*, clipB_arm*", notes=("right ear is the mirror image", "fit matrix: stem thickness A–D 3.34 / 3.54 / 3.74 / 3.94, height 1–3 = −0.4 / 0 / +0.4", "wall 1.6, clearance 0.25, length 14", "arm 2.8 mm (2.4 / 3.2 variants), height 7.0"))
-    ax = axs[0]; clip_section(ax, 3.6, 4.6, label_txt="CLIP A  section (station 100 mm, fit B2)"); ax.set_xlim(-14, 14); ax.set_ylim(-14, 14)
-    ax = axs[1]; clip_section(ax, 3.6, 8.9, label_txt="CLIP B  section (station 127 mm, fit B2)"); ax.set_xlim(-14, 14); ax.set_ylim(-16, 14)
+    from clips import arm_geom, clip_flex, FLEX, FLEX_TIGHT, P3, s
+    fig, axs = sheet(2, 3, (16, 11), "SPRING-JAW CLIP AND SPRING ARM (left ear shown)", "clip_arm*", material="PA12 (MJF nylon), dyed black", notes=("right ear is the mirror image", "grip N gap 2.65 / T 2.35 (4.9 at top)", "jaws 1.4, 3 fingers, plate 1.6, 14 long", "arm hangs from the shelf, clear of the jaws", "free shapes: the stem overlaps the jaws (preload)"))
+    ax = axs[0]; flex_section(ax, FLEX, 3.54, 8.13, "CLIP  section, grip N, your stem 3.54 x 8.1"); ax.set_xlim(-14, 14); ax.set_ylim(-14, 16)
+    ax = axs[1]; flex_section(ax, FLEX, 4.4, 8.13, "grip N on a thick frame, 4.4 mm"); ax.set_xlim(-14, 14); ax.set_ylim(-14, 16)
     ax = axs[2]
-    st = np.linspace(0, 145, 300); hp = np.array([ __import__("glasses").hfun(x, G) for x in st ])
-    ax.fill_between(st, -hp / 2, hp / 2, color="#b9d2f5", ec=LN); ax.set_xlim(-8, 155); ax.set_ylim(-19, 14)
-    for stn, nm in ((100, "A"), (127, "B")): ax.add_patch(plt.Rectangle((stn - 7, -5.5 if nm == "A" else -7), 14, 11 if nm == "A" else 14, fc="none", ec=C["pink"], lw=1.6)); ax.text(stn, -10.2, f"clip {nm}", color=C["pink"], fontsize=8, ha="center", va="top")
-    dim(ax, (0, -8), (145, -8), -6.5, "temple length 145 (hinge → tip)"); ax.text(0, 8.5, f"hinge h={G.temple_h_hinge}", color=LN, fontsize=8); ax.text(95, 12.3, f"h={G.temple_h_straight_end} at 105", color=LN, fontsize=8, ha="center"); ax.text(152, 8.3, f"paddle h={G.temple_h_paddle}", color=LN, fontsize=8, ha="right")
-    label(ax, "STEM PROFILE (height along the temple, calipers)")
+    from clips import _frame, flex_outline
+    pts_t, pts_b = [], []
+    for k in range(0, len(P3), 2):
+        i0, pl = _frame(float(s[k])); yd = np.array([pl.y_dir.X, pl.y_dir.Y, pl.y_dir.Z]); h = __import__("glasses").hfun(s[k], G)
+        pts_t.append((-(P3[k][1] + yd[1] * h / 2), P3[k][2] + yd[2] * h / 2)); pts_b.append((-(P3[k][1] - yd[1] * h / 2), P3[k][2] - yd[2] * h / 2))
+    poly = np.array(pts_t + pts_b[::-1]); ax.fill(poly[:, 0], poly[:, 1], fc="#b9d2f5", ec=LN, lw=1.0)
+    i127, pl127 = _frame(127.0); vt_in, vt_out, vb, gap = flex_outline(127.0); tg = np.array([pl127.z_dir.X, pl127.z_dir.Y, pl127.z_dir.Z]); yd = np.array([pl127.y_dir.X, pl127.y_dir.Y, pl127.y_dir.Z])
+    cc = np.array(P3[i127]); box = [cc + tg * a_ + yd * v_ for a_, v_ in ((-7, vb), (7, vb), (7, vt_out), (-7, vt_out))]
+    ax.add_patch(plt.Polygon([(-q[1], q[2]) for q in box], fc="none", ec=C["pink"], lw=1.6)); ax.text(-cc[1] + 6, cc[2] + 11, "clip at 127 mm", color=C["pink"], fontsize=8, ha="left")
+    for st_, txt, dx, dy in ((0, f"hinge {G.temple_h_hinge}", 4, -13), (105.3, f"{G.temple_h_straight_end} at 105 mm", -16, -14), (135, f"paddle {G.temple_h_paddle}", 30, -10)):
+        k = int(np.argmin(abs(s - st_))); ax.annotate(txt, (-P3[k][1], P3[k][2]), (-P3[k][1] + dx, P3[k][2] + dy), fontsize=7, color=LN, ha="center", arrowprops=dict(arrowstyle="-", color=HID, lw=0.7))
+    ax.set_aspect("equal"); ax.autoscale_view(); ax.margins(0.12); y0, y1 = ax.get_ylim(); ax.set_ylim(y0 - 10, y1 + 16)
+    label(ax, "STEM, SIDE VIEW (heights in mm)")
     # arm + plate in three views
-    cb, g, ib, sb = clip_geom(127.0, 3.6, 0.0); part = cb + arm_geom(g, ib, 2.8)
+    cb, g, ib, sb, lat = clip_flex(127.0, FLEX); part = cb + arm_geom(g, ib, 2.8, lat)
     c = part.bounding_box().center(); part = part.moved(Pos(-c.X, -c.Y, -c.Z)) if hasattr(part, "moved") else part.move(__import__("build123d").Location((-c.X, -c.Y, -c.Z)))
     for ax, (o, up, nm) in zip(axs[3:], (((300, 0, 0), (0, 0, 1), "ARM + PLATE  from the outside (+X)"), ((0, 0, 300), (0, 1, 0), "from above (+Z)"), ((0, -300, 0), (0, 0, 1), "from behind (−Y)"))):
         lo, hi = draw_view(ax, part, o, up, color="#bcc6d6"); pad_limits(ax, lo, hi, 11); label(ax, nm)

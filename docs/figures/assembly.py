@@ -100,35 +100,30 @@ def step00b():
     import textwrap
     H = 8.6
     fig, ax = page("0", "Check what you have (2/3): printed parts", 12, H)
-    cells = [("Clip A", "clipA_L_B2", "#b9c0cb", 40, -55, "×24 (12 fits × L/R)"), ("Clip B + spring arm", "clipB_arm2.8_L_B2", "#b9c0cb", 20, -30, "×28 (12 fits × L/R + 4 arms)"),
-             ("Bear shell, left", "bear_shell_L", PINK, 55, -55, "×1"), ("Back plate, left", "bear_backplate_L", PINK, 55, -55, "×1"),
-             ("Bear shell, right", "bear_shell_R", BLUE, 55, -55, "×1"), ("Back plate, right", "bear_backplate_R", BLUE, 55, -55, "×1"),
-             ("Bee base", "bee_base", "#c3c9d3", 40, -55, "×1"), ("Bee cover", "bee_cover", YEL, 40, -55, "×1")]
+    cells = [("Clip + spring arm, left", "clip_arm2.8_L_N", "#59616e", 20, -30, "×4 (grips N, T; arms 2.4, 3.2)"), ("Clip + spring arm, right", "clip_arm2.8_R_N", "#59616e", 20, -30, "×4 (grips N, T; arms 2.4, 3.2)"),
+             ("Bear shell, left", "bear_shell_L", PINK, 55, -55, "×2"), ("Back plate, left", "bear_backplate_L", PINK, 55, -55, "×2"),
+             ("Bear shell, right", "bear_shell_R", BLUE, 55, -55, "×2"), ("Back plate, right", "bear_backplate_R", BLUE, 55, -55, "×2"),
+             ("Bee base", "bee_base", "#59616e", 40, -55, "×2"), ("Bee cover", "bee_cover", YEL, 40, -55, "×2")]
     for k, (t, n, col, el, az, q) in enumerate(cells):
         cx = 1.6 + (k % 4) * 3.0; cy = 5.5 - (k // 4) * 3.05
-        d = _tri_cell(fig, H, cx, cy, 2.6, 2.1, n, col, el, az, zoom=(1.5 if "clipB" in n else 1.25))
+        d = _tri_cell(fig, H, cx, cy, 2.6, 2.1, n, col, el, az, zoom=(1.5 if "clip_" in n else 1.25))
         ax.text(cx, cy - 1.15, t, ha="center", va="top", fontsize=9.5, fontweight="bold"); ax.text(cx, cy - 1.5, f"{d[0]:.0f} × {d[1]:.0f} × {d[2]:.0f} mm", ha="center", va="top", fontsize=9)
         badge(ax, cx - 1.3, cy + 1.0, q.split()[0], 0.28)
         if len(q.split()) > 1: ax.text(cx - 0.92, cy + 1.0, " ".join(q.split()[1:]).strip("()"), ha="left", va="center", fontsize=8, color="#444444")
-    ax.text(0.5, 0.25, "JLC3DP or a UK MJF bureau, PA12 nylon, plain grey. Bears and bee are painted afterwards (step 2).", fontsize=9, color="#444444")
+    ax.text(0.5, 0.25, "JLC3DP or a UK MJF bureau, PA12 nylon: clips, arms and bee base dyed black, the rest natural grey. Bears and bee cover are painted afterwards (step 2). One spare of each bear and bee part.", fontsize=9, color="#444444")
     return fig
 
 def step00c():
     H = 8.6
-    fig, ax = page("0", "Check what you have (3/3): clip fit matrix and arms", 12, H)
-    ax.text(0.5, 6.85, "Clips A and B: four stem thicknesses × three stem heights. One of each fit is printed.", fontsize=9.5, fontweight="bold", va="center")
-    cols = ("A  3.2 mm", "B  3.6 mm", "C  4.0 mm", "D  4.4 mm"); rows = ("1   −0.6 mm", "2   nominal", "3   +0.6 mm")
-    for j, t in enumerate(cols): ax.text(2.7 + j * 2.1, 6.4, t, ha="center", fontsize=9, fontweight="bold")
-    for i, t in enumerate(rows): ax.text(0.5, 5.4 - i * 1.15, t, ha="left", va="center", fontsize=9, fontweight="bold")
-    for i, h in enumerate("123"):
-        for j, tt in enumerate("ABCD"):
-            cx = 2.7 + j * 2.1; cy = 5.4 - i * 1.15
-            _tri_cell(fig, H, cx, cy, 1.4, 1.05, f"clipA_L_{tt}{h}", "#b9c0cb", 35, -40, zoom=1.2)
-            ax.text(cx + 0.75, cy - 0.35, f"{tt}{h}", fontsize=8.5, color="#444444", ha="left", va="center")
-    ax.text(9.8, 1.5, "Columns: stem\nthickness.\nRows: stem height.\nTry them in step 12.", fontsize=8.5, va="center", ha="left", color="#444444")
-    ax.text(0.5, 2.15, "Spring arm thickness (clip B; the 2.8 mm arm is printed for all 12 fits)", fontsize=9.5, fontweight="bold", va="center")
+    fig, ax = page("0", "Check what you have (3/3): clip grips and arms", 12, H)
+    ax.text(0.5, 7.05, "Clip grips: two variants per ear", fontsize=9.5, fontweight="bold", va="center")
+    for k, (t, sub, nm) in enumerate((("N: nominal", "try this first", "clip_arm2.8_L_N"), ("T: tight", "if N is loose on the glasses arm", "clip_arm2.8_L_T"))):
+        cx = 2.2 + k * 3.6; _tri_cell(fig, H, cx, 5.4, 1.7, 1.7, nm, "#59616e", 20, -30, zoom=1.4)
+        ax.text(cx, 4.35, t, fontsize=10, fontweight="bold", va="center", ha="center"); ax.text(cx, 4.0, sub, fontsize=8.5, va="center", ha="center", color="#444444")
+    ax.text(8.2, 5.4, "The jaws spring apart when\nthe clip is pushed onto the\nglasses arm. Designed for a flat\narm about 3.2 - 4.2 mm thick\n(calculated, not tested).\nTry them in step 12.", fontsize=8.5, va="center", ha="left", color="#444444")
+    ax.text(0.5, 2.15, "Spring arm thickness (the 2.8 mm arm is printed with both grips)", fontsize=9.5, fontweight="bold", va="center")
     for k, (t, sub) in enumerate((("2.4 mm", "softer: less force on the bone"), ("2.8 mm", "default"), ("3.2 mm", "stiffer: more force"))):
-        cx = 2.2 + k * 3.2; _tri_cell(fig, H, cx, 1.4, 1.5, 1.5, f"clipB_arm{t[:3]}_L_B2", "#b9c0cb", 5, -90, zoom=1.3)
+        cx = 2.2 + k * 3.2; _tri_cell(fig, H, cx, 1.4, 1.5, 1.5, f"clip_arm{t[:3]}_L_N", "#59616e", 5, -90, zoom=1.3)
         ax.text(cx, 0.6, t, fontsize=10, fontweight="bold", va="center", ha="center"); ax.text(cx, 0.25, sub, fontsize=8.5, va="center", ha="center", color="#444444")
     return fig
 
@@ -290,13 +285,13 @@ def step11():
 
 # ============================================================================== 12. clip sizing
 def step12():
-    fig, ax = page(12, "Fit the clips: find the size that snaps on")
-    for k, (t, col) in enumerate((("too tight\n(won't pass)", ACC), ("right: slides on\nwith a firm click", "#1a8f4d"), ("loose: wobbles\n(add tape or go smaller)", "#e08a00"))):
+    fig, ax = page(12, "Fit the clip: it springs onto the glasses arm")
+    for k, (t, col) in enumerate((("won't go on:\ndo not force it", ACC), ("right: firm pressure,\nthen it stays put", "#1a8f4d"), ("loose or twists:\nuse grip T, or add felt", "#e08a00"))):
         x = 1.6 + k * 3.6
         line_rect(ax, x - 0.55, 3.6, 1.1, 1.5, fc="#e9ecef", lw=2.5, r=0.1); line_rect(ax, x - 0.3, 3.9, 0.6, 0.9, fc="#9bb7e0", lw=1.8, r=0.05)
         ax.text(x, 3.3, t, ha="center", va="top", fontsize=9, color=col, fontweight="bold")
-    ax.text(6.0, 5.75, "Try the A-type clips on the stem at station 100 mm from the hinge,\nB-type + arm at 127 mm", ha="center", va="center", fontsize=9.5, fontweight="bold")
-    big_arrow(ax, (2.0, 2.0), (4.4, 2.0), text="start with fit B2", fs=9, off=(0, 0.25)); ax.text(5.0, 1.9, "→ then smaller (A) if loose, larger (C, D) if it will not go on", fontsize=9)
+    ax.text(6.0, 5.75, "Press the clip onto the glasses arm at 127 mm from the hinge,\nfrom below (jaws facing up the arm)", ha="center", va="center", fontsize=9.5, fontweight="bold")
+    big_arrow(ax, (2.0, 2.0), (4.4, 2.0), text="start with grip N", fs=9, off=(0, 0.25)); ax.text(5.0, 1.9, "then T if N is loose", fontsize=9)
     warn(ax, 1.0, 0.9, "Never force it: the stem is plastic.", 5.0)
     return fig
 

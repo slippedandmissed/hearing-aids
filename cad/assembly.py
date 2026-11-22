@@ -9,14 +9,14 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
 from build123d import Box, Pos, Location, Plane, Vector
 from params import P, H, G
 from earhook import catmull, exciter_dims
-from glasses import glasses_stem, clip_at, exciter_arm
+from glasses import glasses_stem, clip_flex, exciter_arm, FLEX
 import gummy_dangle as gd
 import bee_box as bee
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SKIN, BROWN, TEAL, BLUE, ORANGE, GREY = (0.93, 0.78, 0.70), (0.45, 0.30, 0.22), (0.25, 0.70, 0.65), (0.30, 0.55, 0.85), (0.95, 0.60, 0.20), (0.55, 0.55, 0.60)
 PINK = (0.85, 0.50, 0.65)
-NYLON = (0.50, 0.51, 0.55)        # plain MJF PA12 (grey) for the unpainted clips + lever arm
+NYLON = (0.23, 0.25, 0.29)        # MJF PA12 dyed black, for the unpainted clips + lever arm
 SILVER = (0.80, 0.82, 0.86)
 
 def shape_tris(shape, tol=0.05):
@@ -55,9 +55,9 @@ def ear_pieces():
     stem, P3, sarr = glasses_stem(X0)
     global HINGE; HINGE = np.array(P3[0])
     out.append((shape_tris(stem), BROWN))
-    clips = [clip_at(P3, sarr, st) for st in G.clip_stations]
-    for c, _ in clips: out.append((shape_tris(c), NYLON))
-    arm = exciter_arm(X0, P3, sarr, clips[-1][1], preload=0.0)
+    clip, _, i_clip, _, lat = clip_flex(P3, sarr, 127.0, FLEX)                  # one spring-jaw clip per ear, fused to the arm (clip A no longer exists)
+    out.append((shape_tris(clip), NYLON))
+    arm = exciter_arm(X0, P3, sarr, np.array(P3[i_clip]) + lat["shift"], preload=0.0, lat_off=lat["lat_outer"] + H.arm_t / 2 - 0.8)
     out.append((shape_tris(arm), NYLON))
     dy, dz = exciter_dims()
     ex = Pos(X0(H.mastoid_y, H.mastoid_z) + P.exc_t / 2, H.mastoid_y, H.mastoid_z) * Box(P.exc_t, *((P.exc_w, P.exc_l) if dz > dy else (P.exc_l, P.exc_w)))
@@ -77,7 +77,7 @@ def ear_pieces():
     W = lambda sh: yaw(shape_tris(sh)[:, :, [2, 0, 1]] + t)         # local (x,y,z) -> world (z,x,y)
     out.append((W(bshell), BEARP)); out.append((W(blid), BEARP))
     ANCHORS['bear'] = W(bshell).reshape(-1, 3).mean(0); ANCHORS['mic'] = yaw(np.array([[gd.GP().height, gd.GP().mic_dx, gd.GP().pcb_y + gd.GP().mic_dy]]) + t)[0]; ANCHORS['hook'] = loopw
-    ANCHORS['clipA'] = np.array(P3[int(np.argmin(abs(sarr - 100)))]); ANCHORS['clipB'] = np.array(P3[int(np.argmin(abs(sarr - 127)))])
+    ANCHORS['clipA'] = np.array(P3[int(np.argmin(abs(sarr - 100)))]); ANCHORS['clip'] = np.array(P3[int(np.argmin(abs(sarr - 127)))])
     hook = [pierce + [-3, 0, 0.5], pierce + [0.5, 0, 3.0], pierce + [3.5, 0, 2.0], loopw + [0, 0, 1.0]]
     out.append((tube(catmull(np.array(hook, float), 8), 0.5, 5), (0.80, 0.82, 0.86)))
     top = np.array([gd.GP().slot_x, 0, 0]); topw = yaw(np.array([1.6, gd.GP().slot_x, 21.0]) + t)     # cable slot exit (top of head, back side)
@@ -282,7 +282,7 @@ def render(path="out/preview_assembly.png"):
     fig = plt.figure(figsize=(24, 12))
     for k, (title, el, az, span, ctr) in enumerate(views):
         ax = fig.add_subplot(2, 4, k + 1, projection="3d"); draw_scene(ax, scene, el, az, span, ctr, 0.6); ax.set_title(title, fontsize=11)
-    fig.text(0.5, 0.01, "brown = glasses (stems + rough front), grey = clips + lever arm (plain grey MJF nylon), orange = exciter, pink / blue bears = dangles (mic + amp PCB), silver = chain + ear wires, black = cables, bee = necklace box. Schematic; generic CC0 body.", ha="center", fontsize=9)
+    fig.text(0.5, 0.01, "brown = glasses (stems + rough front), black = clip + lever arm (dyed-black MJF nylon), orange = exciter, pink / blue bears = dangles (mic + amp PCB), silver = chain + ear wires, black = cables, bee = necklace box. Schematic; generic CC0 body.", ha="center", fontsize=9)
     fig.tight_layout(rect=(0, 0.02, 1, 1)); os.makedirs(os.path.dirname(path), exist_ok=True); fig.savefig(path, dpi=75); plt.close(fig)
 
 

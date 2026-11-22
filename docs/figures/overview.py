@@ -51,7 +51,7 @@ def worn_ear(labels=True):
     fig = plt.figure(figsize=(7.2, 7.2), dpi=110, facecolor="white"); ax = fig.add_axes([0, 0, 1, 1], projection="3d"); xl = A.X0(0, 0) + 10
     A.draw_scene(ax, scene(), 0, 0, 62, (xl, -12, 8), 0.55, ortho=True); ov, W, H = overlay(fig); an = A.ANCHORS
     if not labels: return fig
-    tag(ov, px(ax, an["clipA"]), (W * 0.52, H * 0.94), "clips on the glasses arm", "#444444")
+    tag(ov, px(ax, an["clip"]), (W * 0.52, H * 0.94), "clips on the glasses arm", "#444444")
     tag(ov, px(ax, an["arm"]), (W * 0.03, H * 0.76), "spring arm around the ear", "#444444")
     tag(ov, px(ax, an["exciter"]), (W * 0.03, H * 0.30), "exciter on the mastoid bone\nbehind the ear", "#c46a00")
     tag(ov, px(ax, an["mic"]), (W * 0.55, H * 0.12), "microphone opening", PINKD)
@@ -123,7 +123,7 @@ def parts():
         r, c = divmod(k, 3); x0 = 0.01 + c * 0.33; y0 = 0.545 - r * 0.49
         ax = fig.add_axes([x0, y0 + 0.13, 0.31, 0.30], projection="3d") if k not in (3, 5) else fig.add_axes([x0, y0 + 0.13, 0.31, 0.30])
         if k == 0:
-            T = load_mesh(os.path.join(ROOT, "cad", "print", "clipB_arm2.8_L_B2.stl")); draw_tris(ax, [(T, "#b9c0cb")], el=15, az=-35)
+            T = load_mesh(os.path.join(ROOT, "cad", "print", "clip_arm2.8_L_N.stl")); draw_tris(ax, [(T, "#b9c0cb")], el=15, az=-35)
         elif k == 1: draw_tris(ax, [(shape_tris(Box(13, 26.5, 5.75)), "#f08a24")], el=28, az=-45)
         elif k == 2:
             s1, _, _ = gd.build(gd.GP(), "L"); s2, _, _ = gd.build(gd.GP(), "R"); T1, T2 = shape_tris(s1), shape_tris(s2).copy(); T2[:, :, 0] += 36; draw_tris(ax, [(T1, PINK), (T2, BLUE)], el=70, az=-90)

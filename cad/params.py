@@ -44,7 +44,7 @@ class GlassesParams:
     temple_h_paddle: float = 9.36 # MEASURED (calipers): max height of the rear paddle, before it tapers quickly
     paddle_station: float = 135.0 # DERIVED: straight-line hinge-to-tallest-point 134.72 mm (MEASURED); the path is slightly longer because the stem bends
     temple_h_tip: float = 4.0    # ASSUMED: height at the very tip after tapering
-    clip_len: float = 14.0       # DESIGN: length of each C-clip along the stem
+    clip_len: float = 14.0       # DESIGN: legacy straight C-clip (glasses.clip_at, self-check only; the printed clip is the spring-jaw clip, glasses.FlexParams)
     clip_wall: float = 1.6       # DESIGN
     clip_clear: float = 0.25     # DESIGN: gap between stem and clip cavity
     clip_stations: tuple = (100.0, 127.0)   # DESIGN: mm from the hinge along the stem

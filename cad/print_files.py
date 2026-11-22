@@ -1,10 +1,10 @@
 """Generate every printable STL (plus manifest) into cad/print/.  uv run python print_files.py   (QUICK=1 builds one variant of each, for testing)
 
-Printed in plain grey MJF nylon (PA12). Per ear (LEFT built, RIGHT = exact mirror):
-  clip A      : C-clip at station 100 mm along the stem            -> fit matrix  T (stem thickness) x H (stem height offset)
-  clip B + arm: C-clip at station 127 mm FUSED to the spring arm + exciter plate -> same fit matrix at arm 2.8 mm, plus arm 2.4 / 3.2 mm at the middle fit
-  Both: ID text engraved 0.6 mm deep.  clips: top face "L"/"R" + T letter + H digit; arm plate: side + arm thickness.
-Fit codes:  T letter A..D = stem thickness 3.34 / 3.54 / 3.74 / 3.94 mm (3.54 measured);  H digit 1..3 = stem height offset -0.4 / 0 / +0.4 mm (vs. the measured/interpolated profile).
+Printed in MJF nylon (PA12): clips and arms and the bee base dyed black, the rest natural grey. Per ear (LEFT built, RIGHT = exact mirror):
+  clip + arm: a spring-jaw clip (V-shaped jaws, see clips.clip_flex) at station 127 mm on the glasses stem, FUSED to the spring arm + exciter plate.
+                Grip variants N (nominal) and T (tight, a firmer grip if the print comes out loose) at arm 2.8 mm, plus arm 2.4 / 3.2 mm at variant N.
+  There is no clip A any more: a separate clip 27 mm along the stem was not connected to anything and could not stabilise the clip (analysis in manual chapter 4); the surviving clip used to be called clip B.
+  The ID text is engraved 0.6 mm deep: clip top "L"/"R" + variant letter; arm plate: side + arm thickness.
 Also: gummy bear shells + back plates (L/R) and the bee box base + cover."""
 import os, csv, sys
 import numpy as np
@@ -18,12 +18,10 @@ from bee_box import HP
 
 OUT = "print"; os.makedirs(OUT, exist_ok=True)
 QUICK = bool(os.environ.get("QUICK"))
-T_LIST = {"A": 3.34, "B": 3.54, "C": 3.74, "D": 3.94}
-H_LIST = {"1": -0.4, "2": 0.0, "3": 0.4}
 ARM_MAIN, ARM_EXTRA = 2.8, (2.4, 3.2)
 DENS = 1.0                    # g/cm3 effective for MJF PA12 parts
 ENGRAVE = 0.6      # JLC3DP lists 0.5-0.8 mm as the minimum engraved detail depth/width; 0.6 mm leaves a 1.0 mm floor in the 1.6 mm clip wall (was 0.8 mm deep, 0.8 mm floor)
-from clips import stem, P3, s, g_for, vec, clip_geom, arm_geom
+from clips import stem, P3, s, vec, arm_geom, clip_flex, FLEX, FLEX_TIGHT
 MANIFEST = []
 
 def mirrored(shape, specs):
@@ -39,55 +37,49 @@ def engrave(shape, spec, txt):
     t = pl * Text(txt, font_size=spec["size"], font="Helvetica", font_style=FontStyle.BOLD)
     return shape - extrude(t, amount=-(ENGRAVE + 0.05))
 
-def finish(shape, name, qty, note):
+def centred(shape):
     bb = shape.bounding_box()
-    shape = shape.move(Location((-(bb.min.X + bb.max.X) / 2, -(bb.min.Y + bb.max.Y) / 2, -bb.min.Z)))      # centre on the origin, lowest point on z=0
-    nsol = len(shape.solids()); vol = shape.volume / 1000.0; bb = shape.bounding_box()
-    export_stl(shape, f"{OUT}/{name}.stl")
-    MANIFEST.append((name + ".stl", qty, round(vol, 2), round(vol * DENS, 1), f"{bb.size.X:.1f} x {bb.size.Y:.1f} x {bb.size.Z:.1f}", "ok" if (shape.is_valid and nsol == 1) else f"CHECK valid={shape.is_valid} solids={nsol}", note))
-    print(f"{name:34s} {vol:6.2f} cm3  {bb.size.X:5.1f} x {bb.size.Y:5.1f} x {bb.size.Z:5.1f}  {'ok' if (shape.is_valid and nsol == 1) else 'CHECK'}", flush=True)
+    return shape.moved(Location((-(bb.min.X + bb.max.X) / 2, -(bb.min.Y + bb.max.Y) / 2, -bb.min.Z)))      # centre on the origin, lowest point on z=0 (moved() returns a copy; move() would change the shape in place)
+
+def strip_stray(path):
+    """the STL export leaves a few single zero-area triangles (0.04 mm) from sliver faces of the B-rep; drop every component of fewer than 10 faces"""
+    import trimesh
+    m = trimesh.load(path, force="mesh"); m.merge_vertices(); parts = m.split(only_watertight=False)      # vertices must be merged first or every triangle is its own component
+    keep = [p for p in parts if len(p.faces) >= 10]
+    if len(keep) != len(parts): trimesh.util.concatenate(keep).export(path)
+
+def finish(shape, name, qty, note):
+    """export one STL and add it to the manifest (a part must be one valid solid)"""
+    shape = centred(shape)
+    nsol = len(shape.solids()); vol = shape.volume / 1000.0; bb = shape.bounding_box(); good = shape.is_valid and nsol == 1
+    export_stl(shape, f"{OUT}/{name}.stl"); strip_stray(f"{OUT}/{name}.stl")
+    MANIFEST.append((name + ".stl", qty, round(vol, 2), round(vol * DENS, 1), f"{bb.size.X:.1f} x {bb.size.Y:.1f} x {bb.size.Z:.1f}", "ok" if good else f"CHECK valid={shape.is_valid} solids={nsol}", note))
+    print(f"{name:34s} {vol:6.2f} cm3  {bb.size.X:5.1f} x {bb.size.Y:5.1f} x {bb.size.Z:5.1f}  {'ok' if good else 'CHECK'}", flush=True)
+    return shape
 
 def ear_pairs(shape, specs):
     return (("L", shape, specs), ("R",) + mirrored(shape, specs))
 
-# ---------------- clips A and B+arm
-fits = [(tl, hd) for tl in T_LIST for hd in H_LIST]
-if QUICK: fits = [("B", "2")]
-for tl, hd in fits:
-    T, dh = T_LIST[tl], H_LIST[hd]
-    ca, g, ia, sa = clip_geom(100.0, T, dh)
-    for side, shp, specs in ear_pairs(ca, [sa]):
-        finish(engrave(shp, specs[0], f"{side}A{tl}{hd}"), f"clipA_{side}_{tl}{hd}", 1, f"stem thickness {T}, height {dh:+.1f} vs nominal; station 100")
-    cb, g, ib, sb = clip_geom(127.0, T, dh)
-    arm = arm_geom(g, ib, ARM_MAIN)
-    part = cb + arm
-    plate_x = A.X0(H.mastoid_y, H.mastoid_z) + P.exc_t - H.preload + P.jaw_t
-    sp_plate = dict(origin=np.array([plate_x, H.mastoid_y, H.mastoid_z + 4.0]), normal=np.array([1.0, 0, 0]), xdir=np.array([0, 1.0, 0]), size=5.0)
-    for side, shp, specs in ear_pairs(part, [sb, sp_plate]):
-        shp = engrave(shp, specs[0], f"{side}B{tl}{hd}"); shp = engrave(shp, specs[1], f"{side}{ARM_MAIN}")
-        finish(shp, f"clipB_arm{ARM_MAIN}_{side}_{tl}{hd}", 1, f"stem thickness {T}, height {dh:+.1f}; spring arm {ARM_MAIN} mm; station 127")
-    del arm, part
-
-# extra spring-arm stiffness variants at the middle fit (B2)
-if not QUICK:
-    T, dh = T_LIST["B"], H_LIST["2"]
-    cb, g, ib, sb = clip_geom(127.0, T, dh)
-    for at in ARM_EXTRA:
-        part = cb + arm_geom(g, ib, at)
-        plate_x = A.X0(H.mastoid_y, H.mastoid_z) + P.exc_t - H.preload + P.jaw_t
-        sp_plate = dict(origin=np.array([plate_x, H.mastoid_y, H.mastoid_z + 4.0]), normal=np.array([1.0, 0, 0]), xdir=np.array([0, 1.0, 0]), size=5.0)
+# ---------------- clip + arm
+plate_x = A.X0(H.mastoid_y, H.mastoid_z) + P.exc_t - H.preload + P.jaw_t
+sp_plate = dict(origin=np.array([plate_x, H.mastoid_y, H.mastoid_z + 4.0]), normal=np.array([1.0, 0, 0]), xdir=np.array([0, 1.0, 0]), size=6.5)      # 6.5 mm bold: strokes about 0.75 mm (5 mm gave 0.5 mm strokes that JLC3DP's heatmap flagged red)
+VARIANTS = {"N": FLEX} if QUICK else {"N": FLEX, "T": FLEX_TIGHT}
+for vn, fp in VARIANTS.items():
+    cb, g, ib, sb, lat = clip_flex(127.0, fp)
+    for at in ((ARM_MAIN,) + (ARM_EXTRA if (vn == "N" and not QUICK) else ())):
+        part = cb + arm_geom(g, ib, at, lat)
         for side, shp, specs in ear_pairs(part, [sb, sp_plate]):
-            shp = engrave(shp, specs[0], f"{side}BB2"); shp = engrave(shp, specs[1], f"{side}{at}")
-            finish(shp, f"clipB_arm{at}_{side}_B2", 1, f"stem thickness {T}, nominal height; spring arm {at} mm; station 127")
+            shp = engrave(shp, specs[0], f"{side}{vn}"); shp = engrave(shp, specs[1], f"{side}{at}")
+            finish(shp, f"clip_arm{at}_{side}_{vn}", 1, f"spring-jaw clip, grip {'nominal' if vn == 'N' else 'tight'} (tip gap {fp.gap_tip} mm); spring arm {at} mm; station 127")
 
 # ---------------- gummy bears and bee box
 for side in ("L", "R"):
     sh, lid, _ = gd.build(gd.GP(), side)
-    finish(sh, f"bear_shell_{side}", 2, "painted; 1 spare")
+    finish(sh, f"bear_shell_{side}", 2, "natural grey, painted; 1 spare")
     finish(lid, f"bear_backplate_{side}", 2, "engraved letter on the back; 1 spare")
 bb_, bc_, _ = bee.build(HP())
-finish(bb_, "bee_base", 1, "chain hole through the head; cosmetic flat wings fused to the base")
-finish(bc_, "bee_cover", 1, "painted: yellow bumps, black valleys")
+finish(bb_, "bee_base", 2, "dyed black (head, stinger, antennae need no paint; wings painted silver); chain hole through the head; 1 spare")
+finish(bc_, "bee_cover", 2, "natural grey, painted: yellow bumps, black valleys; 1 spare")
 
 with open(f"{OUT}/manifest.csv", "w", newline="") as f:
     w = csv.writer(f); w.writerow(["file", "qty", "volume_cm3", "mass_g_est", "bbox_mm", "check", "note"]); w.writerows(MANIFEST)

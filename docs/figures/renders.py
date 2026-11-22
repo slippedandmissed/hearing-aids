@@ -5,9 +5,11 @@ from PIL import Image, ImageChops
 from common import *
 
 PRINT = os.path.join(ROOT, "cad", "print")
-NYLON, PINK, BLUE, YEL = "#b9c0cb", "#ff8ec8", "#52b6ff", "#ffd23f"
+NYLON, PINK, BLUE, YEL = "#59616e", "#ff8ec8", "#52b6ff", "#ffd23f"      # NYLON = dyed-black MJF PA12 (clips, arms, bee base); the bears and the bee cover are natural grey under their paint
 
-def mesh(name): return load_mesh(os.path.join(PRINT, name + ".stl"))
+def mesh(name):
+    p = os.path.join(PRINT, name + ".stl")
+    return load_mesh(p)
 
 def one(ax, items, el=28, az=-55, edge=False):
     draw_tris(ax, items, el=el, az=az, edge=edge)
@@ -18,29 +20,30 @@ def grid(rows, cols, size, **kw):
 
 # ============================================================================== clips
 def clips_matrix():
-    fig, axs = grid(3, 4, (12, 8.2))
-    k = 0
-    for h in "123":
-        for t in "ABCD":
-            ax = axs[k]; k += 1; one(ax, [(mesh(f"clipA_L_{t}{h}"), NYLON)], el=35, az=-40); ax.set_title(f"A-type fit {t}{h}", fontsize=9)
-    fig.suptitle("Clip A, left ear: 4 stem thicknesses (columns A–D = 3.34 / 3.54 / 3.74 / 3.94 mm) × 3 stem heights (rows 1–3 = −0.4 / 0 / +0.4 mm)", fontsize=9.5, y=0.985)
+    """the spring-jaw clip end of clip + arm (grip N), cropped to the clip, in four views"""
+    T = mesh("clip_arm2.8_L_N"); c = T.mean(1); keep = c[:, 2] > T[:, :, 2].max() - 15.0           # triangles within 15 mm of the clip end (the top of the printed part)
+    clip = T[keep]
+    fig, axs = grid(1, 4, (13, 3.8))
+    for ax, (el, az, ttl) in zip(axs, ((-60, -90, "from below: the V-shaped mouth"), (25, -40, "3/4 view"), (5, -90, "side"), (65, -90, "from above: engraved ID"))):
+        one(ax, [(clip, NYLON)], el=el, az=az); ax.set_title(ttl, fontsize=9)
+    fig.subplots_adjust(top=0.84); fig.suptitle("Spring-jaw clip end of clip + arm, left ear, grip N (grip T looks the same; its jaws are 0.3 mm closer together)", fontsize=9.5, y=0.97)
     return fig
 
 def arms():
     fig = plt.figure(figsize=(13, 6.2), facecolor="white")
-    ax = fig.add_subplot(1, 3, 1, projection="3d"); one(ax, [(mesh("clipB_arm2.8_L_B2"), NYLON)], el=18, az=-35); ax.set_title("clip B + spring arm + exciter plate (3/4 view)", fontsize=9)
-    ax = fig.add_subplot(1, 3, 2, projection="3d"); one(ax, [(mesh("clipB_arm2.8_L_B2"), NYLON)], el=5, az=-90); ax.set_title("seen from the side", fontsize=9)
+    ax = fig.add_subplot(1, 3, 1, projection="3d"); one(ax, [(mesh("clip_arm2.8_L_N"), NYLON)], el=18, az=-35); ax.set_title("clip + spring arm + exciter plate (3/4 view)", fontsize=9)
+    ax = fig.add_subplot(1, 3, 2, projection="3d"); one(ax, [(mesh("clip_arm2.8_L_N"), NYLON)], el=5, az=-90); ax.set_title("seen from the side", fontsize=9)
     ax = fig.add_subplot(1, 3, 3, projection="3d")
     tr = []
-    for k, name in enumerate(("clipB_arm2.4_L_B2", "clipB_arm2.8_L_B2", "clipB_arm3.2_L_B2")):
-        T = mesh(name).copy(); T[:, :, 1] += k * 40; tr.append((T, (NYLON, "#9aa4b2", "#7e8998")[k]))
+    for k, name in enumerate(("clip_arm2.4_L_N", "clip_arm2.8_L_N", "clip_arm3.2_L_N")):
+        T = mesh(name).copy(); T[:, :, 1] += k * 40; tr.append((T, (NYLON, "#677080", "#7a8494")[k]))
     one(ax, tr, el=12, az=-90); ax.set_title("arm thickness variants 2.4 / 2.8 / 3.2 mm", fontsize=9)
     fig.subplots_adjust(left=0.01, right=0.99, top=0.92, bottom=0.01, wspace=0.0)
     return fig
 
 def engraving():
     fig = plt.figure(figsize=(12, 4.2), facecolor="white")
-    for k, (nm, ttl) in enumerate((("clipA_L_B2", "clip A (left, fit B2)"), ("clipA_R_B2", "clip A (right, fit B2): mirrored part, ID still reads correctly"), ("clipB_arm2.8_R_B2", "clip B + arm (right)"))):
+    for k, (nm, ttl) in enumerate((("clip_arm2.8_L_N", "clip + arm (left, grip N)"), ("clip_arm2.8_R_N", "clip + arm (right, grip N): mirrored part, ID still reads correctly"), ("clip_arm2.8_R_T", "clip + arm (right, grip T)"))):
         ax = fig.add_subplot(1, 3, k + 1, projection="3d"); one(ax, [(mesh(nm), NYLON)], el=55, az=(-60 if k == 0 else -120 if k == 1 else -110), edge=False); ax.set_title(ttl, fontsize=8.5)
     fig.subplots_adjust(left=0.01, right=0.99, top=0.9, bottom=0.0, wspace=0.0)
     return fig
@@ -66,14 +69,14 @@ def bee():
         # black stripe valleys: abdomen top surface between the raised yellow bumps
         out[ab & (np.abs(((c[:, 1] + 29.0) / 9.5 + 0.5) % 1.0 - 0.5) > 0.3)] = (0.12, 0.12, 0.14); return out
     def base_col(t):
-        c = t.mean(1); out = np.tile(np.array(matplotlib.colors.to_rgb("#c3c9d3")), (len(t), 1)); out[np.abs(c[:, 0]) > 31.5] = (0.88, 0.92, 0.98); out[(c[:, 1] > 22.5) & (np.abs(c[:, 0]) < 13)] = (0.14, 0.14, 0.16); return out
+        c = t.mean(1); out = np.tile(np.array(matplotlib.colors.to_rgb("#3a404a")), (len(t), 1)); out[np.abs(c[:, 0]) > 31.5] = (0.88, 0.92, 0.98); return out      # base dyed black: head, stinger and antennae need no paint; only the wings are painted silver
     for k, (it, el, az, t) in enumerate((([(base, base_col), (cover, cover_col)], 75, -90, "assembled, front"), ([(base, base_col)], 75, -90, "base (cover off)"), ([(cover, cover_col)], -75, -90, "cover, seen from inside"), ([(base, base_col), (cover, cover_col)], 25, -60, "3/4 view"))):
         ax = fig.add_subplot(1, 4, k + 1, projection="3d"); one(ax, it, el=el, az=az); ax.set_title(t, fontsize=9)
     fig.subplots_adjust(left=0.01, right=0.99, top=0.9, bottom=0.01, wspace=0.0)
     return fig
 
 def overview():
-    names = [("clipA_L_B2", NYLON, "clip A"), ("clipB_arm2.8_L_B2", NYLON, "clip B + arm"), ("bear_shell_L", PINK, "bear shell L"), ("bear_backplate_L", PINK, "back plate L"), ("bear_shell_R", BLUE, "bear shell R"), ("bear_backplate_R", BLUE, "back plate R"), ("bee_base", "#c3c9d3", "bee base"), ("bee_cover", YEL, "bee cover")]
+    names = [("clip_arm2.8_L_N", NYLON, "clip + arm, left"), ("clip_arm2.8_R_N", NYLON, "clip + arm, right"), ("bear_shell_L", PINK, "bear shell L"), ("bear_backplate_L", PINK, "back plate L"), ("bear_shell_R", BLUE, "bear shell R"), ("bear_backplate_R", BLUE, "back plate R"), ("bee_base", NYLON, "bee base"), ("bee_cover", YEL, "bee cover")]
     fig = plt.figure(figsize=(14, 7), facecolor="white")
     for k, (n, c, t) in enumerate(names):
         ax = fig.add_subplot(2, 4, k + 1, projection="3d"); T = mesh(n); lo, hi = T.reshape(-1, 3).min(0), T.reshape(-1, 3).max(0)
@@ -98,6 +101,6 @@ def collect():
         if os.path.exists(src): trim(src, out_path("renders", n + ".png"), 6)
 
 if __name__ == "__main__":
-    for name, f in (("print_clips_matrix", clips_matrix), ("print_arms", arms), ("print_engraving", engraving), ("print_bears", bears), ("print_bee", bee), ("print_overview", overview)):
+    for name, f in (("print_clip", clips_matrix), ("print_arms", arms), ("print_engraving", engraving), ("print_bears", bears), ("print_bee", bee), ("print_overview", overview)):
         save(f(), "renders", name, dpi=160)
     collect()
