@@ -2,56 +2,71 @@
 
 # How each part works
 
-This chapter explains the parts for a reader who has soldered a few kits but has not designed audio hardware. Skip it if you already know it.
+For a reader who has soldered a few kits but has not designed audio hardware. Every part gets a short explanation and a **Why this one**: what else was possible and why it lost. Skip it if you already know the territory.
+
+![One ear: where each stage lives and what the signal looks like there.](assets/signal-path.svg)
 
 ## Bone conduction and the exciter
 
-Your ear has two routes for sound: **air conduction** (sound waves travel down the ear canal and move the eardrum) and **bone conduction** (the skull itself vibrates, and the fluid in the inner ear moves with it). Wax in the canal blocks the first route; the second is unaffected. A **bone-conduction exciter** is a voice-coil motor without a cone: an electrical signal pushes a small mass back and forth, and the housing vibrates whatever it is pressed against.
+Your ear has two routes for sound. In **air conduction** sound travels down the ear canal and moves the eardrum. In **bone conduction** the skull itself vibrates and the fluid in the inner ear moves with it. Wax in the canal blocks the first route; the second is unaffected.
 
-The exciter used here (Dayton DAEX-9-4SM, [@daex9]) is a flat 13 × 26.5 × 5.75 mm slab weighing 2.3 g, with a 4 Ω coil (3.6 Ω DC resistance) and a mechanical resonance around 1.2 kHz. It is designed for pressing against panels, so contact **pressure** and **position** matter far more than they do for a speaker: too loose and nothing couples into the bone, too tight and it is uncomfortable. The printed spring arm sets the pressure (about 2 – 5 N, [Mechanics](#spring-arm)); the best spot, behind the ear on the mastoid, is found by trying.
+An **exciter** is a loudspeaker motor without the cone: a coil pushes a small mass back and forth, and the housing vibrates whatever it is pressed against. The Dayton DAEX-9-4SM ([@daex9]) is a flat 13 × 26.5 × 5.75 mm slab of 2.3 g, with a 4 Ω coil (3.6 Ω DC) and a mechanical resonance around 1.2 kHz. It is made for pressing on panels, so **pressure** and **position** matter more than they would for a speaker. Too loose and nothing couples into the bone; too tight and it hurts. The printed spring arm sets the pressure (about 2 – 5 N, [Mechanics](#spring-arm)); the best spot, behind the ear on the mastoid, is found by trying.
 
-## The microphone: a digital (PDM) MEMS microphone
+**Why this one.** The first idea was a clip on the **tragus** (the flap in front of the ear canal), and then a cuff on the **helix** (the rim) with an arm back to the mastoid. A tragus clip will not stay on, and the cuff was dropped when the aid had to be tunable in software. The mastoid is a large, firm surface behind the ear, and the exciter is small and light enough to hang on a glasses stem.
 
-A **MEMS microphone** is a silicon chip with a tiny membrane. The Knowles SPH0641LM4H-1 ([@sph0641]) has the converter built in and speaks **PDM** (pulse-density modulation): you give it a clock of about a megahertz and it answers with a stream of single bits whose *density of ones* tracks the sound pressure. A louder positive swing means more ones. A low-pass filter in the processor turns the bit stream back into ordinary 16-bit samples (this is called *decimation*).
+## The microphone: digital, so the long wire does not matter
+
+A **MEMS microphone** is a silicon chip with a tiny membrane. The Knowles SPH0641LM4H-1 ([@sph0641]) has the converter built in and speaks **PDM**, pulse-density modulation: give it a clock of about a megahertz and it answers with single bits whose *density of ones* follows the sound pressure. The XIAO's hardware averages those bits back into ordinary 16-bit samples (*decimation*).
 
 ![PDM: two microphones share one clock wire and one data wire. The microphone strapped to GND answers after the rising edge, the one strapped to 3V3 after the falling edge.](figures/system/timing_pdm.png)
 
-This is why one XIAO can listen to *both* ears: the left microphone has its SELECT pin tied to ground and the right one to 3.3 V, so they take turns on the same data wire. The microphone's sound hole is the dimple in the bear's belly button, sealed to the board with a thin foam or silicone ring so that sound can only enter through it.
+That sharing is why one XIAO can hear **both** ears: the left microphone's SELECT pin is tied to ground and the right one's to 3.3 V, so they take turns on the same data wire. The sound hole is the dimple in the bear's belly button, sealed to the board by a ring of silicone so sound can only come in that way.
+
+**Why this one.** The microphone sits in the earring, 60 cm of wire from the processor. An analogue microphone would send a tiny voltage down that wire and pick up every bit of noise on the way. A digital one sends clean ones and zeros, which a long wire barely hurts (this is our reasoning; the noise on the real cable is still to be measured). It also needs no analogue front end: the nRF52840 has PDM hardware built in. The earring also had to be small, and this part is 3.5 × 2.7 mm.
 
 ## The amplifier: I2S in, class-D out
 
-The signal is processed as numbers, so it has to be turned back into a voltage. The **MAX98357A** ([@max98357a]) is a *class-D* amplifier with a digital input: it reads **I2S** (a three-wire audio bus: a bit clock, a left/right frame clock and one data wire) and drives the exciter with a pulse-width-modulated square wave at about 300 kHz. The exciter's coil and mechanical inertia smooth that into the audio waveform. Class-D is efficient (the amplifier barely warms up), which matters in an earring.
+The processed sound is numbers, which have to become a voltage again. The **MAX98357A** ([@max98357a]) is a *class-D* amplifier with a digital input. It reads **I2S**, a three-wire audio bus (a bit clock, a left/right frame clock and one data wire), and drives the exciter with a square wave at about 300 kHz whose pulse width follows the audio. The exciter's coil and mass cannot follow 300 kHz, so they follow the average, which is the sound. Class-D is efficient: the amplifier barely warms up, which matters in an earring.
 
 ![I2S: both amplifiers listen to the same three wires. Each picks the left or right half of the frame; a pull-up resistor on its SD_MODE pin chooses which (2 kΩ = left, 220 kΩ = right).](figures/system/timing_i2s.png)
 
-Two small details deserve mention. The amplifier output is *bridge-tied*: the two outputs swing in opposition, so the exciter sees up to twice the voltage of a single-ended output. And 3 dB of gain (a 100 kΩ resistor on GAIN_SLOT) is the lowest setting the part offers: we need very little power.
+Two details. The output is *bridge-tied*, the two outputs swinging in opposition, so the exciter sees up to twice the voltage of a single-ended output. And a 100 kΩ resistor on GAIN_SLOT sets 3 dB, the lowest gain the part offers, because we need very little power.
 
-## The brain: XIAO nRF52840 and where 16.129 kHz comes from
+**Why this one.** The nRF52840 has no digital-to-analogue converter, so the choice was an external DAC plus an analogue amplifier, or one chip that does both. The MAX98357A is that one chip, and its SD_MODE pin lets two of them share one bus, each taking its own channel. It was verified on the supplier listing (LCSC C910544).
 
-The Seeed XIAO nRF52840 ([@xiao_wiki]) is a thumb-sized board around Nordic's nRF52840 ([@nrf52840_ps]): a 64 MHz Cortex-M4F with hardware PDM and I2S blocks, Bluetooth, a USB-C port and a LiPo charger. It listens to the microphones, runs the DSP, and feeds the amplifiers, all with the sample timing handled in hardware.
+## The brain: one XIAO nRF52840 for both ears
+
+The Seeed XIAO nRF52840 ([@xiao_wiki]) is a thumb-sized board around Nordic's nRF52840 ([@nrf52840_ps]): a 64 MHz Cortex-M4F with hardware PDM and I2S blocks, Bluetooth, a USB-C port and a LiPo charger. It listens, runs the DSP and feeds the amplifiers, with the sample timing handled in hardware.
 
 ![Both the microphone clock and the amplifier's frame clock are divided down from the same 32 MHz crystal, so they cannot drift against each other.](figures/system/clocks.png)
 
 The one open risk is that 16.129 kHz is 0.8 % above the 16 kHz the amplifier datasheet lists. Class-D amplifiers normally tolerate a few percent, but this is **UNVERIFIED**; chapter 9 lists the fallback.
 
-## Power: one cell, three jobs
+**Why one for both ears.** Early designs put a small computer in every earring. That would have doubled the cost and put a battery in each earlobe. The nRF52840's PDM and I2S blocks are stereo, so one board handles both sides, at the price of 8 wires up each side of the neck. Both earring boards use the same 8-pad connector in the same order, so the long shared bus can be replaced by a second XIAO later without a PCB change if it turns out to be noisy.
+
+**Why the processor is in the chest.** The earring should be light and the cable thin, and a heavy battery on an earlobe is the wrong place for it. Hence the earring holds only the microphone, the amplifier and a regulator, and the necklace box holds everything else.
+
+## Power: one cell
 
 ![Power tree. The battery feeds the box electronics, the two amplifiers and, through a small regulator in each earring, the microphones.](figures/system/power_tree.png)
 
-A **LiPo cell** swings from 4.2 V (full) to about 3.0 V (empty), too variable for a microphone that wants 1.62 – 3.6 V, so each earring has a **3.3 V LDO regulator** (XC6206, [@xc6206]) just for the mic. A **P-channel MOSFET** at the battery input conducts when the cell is the right way round and blocks when it is reversed; a **resettable PTC fuse** limits fault currents; a slide switch turns everything off. The XIAO's own charger fills the cell from USB-C whenever the switch is on.
+A **LiPo cell** swings from 4.2 V (full) to about 3.0 V (empty). The microphone wants 1.62 – 3.6 V, so each earring has its own 3.3 V **LDO regulator** (XC6206, [@xc6206]) for the microphone alone. The rest, from the battery to the switch:
+
+- **A P-channel MOSFET** at the battery input conducts when the cell is the right way round and blocks when it is reversed. LiPo plugs have no standard polarity, and a reversed cell would otherwise destroy the board.
+- **A slide switch** turns everything off. The SK12D07VG4 is rated for 500 mA; another candidate, the MSK12C02, was rejected because it is only rated for 50 mA.
+- **A resettable PTC fuse** limits fault currents.
+- **The XIAO's own charger** fills the cell from USB-C whenever the switch is on.
 
 ## The hardware power cap
 
-Software can have bugs. A firmware error could in principle send a full-scale square wave to the exciter. So each earring PCB puts **two 22 Ω resistors in series** with the exciter (one in each leg). Because the exciter is only 4 Ω, the resistors take most of the voltage and bound the current whatever the firmware does:
+Software has bugs. A firmware error could send a full-scale square wave to the exciter. So each earring puts **two 22 Ω resistors in series** with the exciter, one in each leg. The exciter is only 4 Ω, so the resistors take most of the voltage and limit the current whatever the firmware does:
 
 ![Left: exciter power against frequency for different series resistances (ngspice sweep; the exciter's mechanical model is assumed). Middle: the worst case in time, a full-scale 1 kHz square wave through 44 Ω. Right: how the maximum power falls with series resistance; 44 Ω is the fitted value.](figures/sims/exciter_power.png)
 
-With 44 Ω the worst-case drive is about 30 mW at the exciter's resonance and about 88 mA peak in the square-wave case, comfortably inside what the 1206 resistors can dissipate. The price is wasted efficiency and a slightly lower maximum loudness: that is the trade this project chose for safety.
+With 44 Ω the worst-case drive is about 30 mW at the exciter's resonance and about 88 mA peak in the square-wave case, comfortably inside what the 1206 resistors can dissipate. The price is wasted efficiency and a slightly lower maximum loudness.
+
+**Why a hardware limit.** A limit in firmware is only as good as the firmware, and this device sits against your head. The resistors do not depend on any software being right.
 
 ## Feedback
 
-The microphone and the exciter are on the same person, a few centimetres apart, and bone conducts sound well. If the processed sound reaches the microphone loudly enough, it is amplified again and the system **howls**. The design fights this in three ways: the mic is mechanically separated from the exciter (earlobe versus mastoid, a spring arm in between), the microphone sees the outside world through a sealed hole, and the firmware (chapter 8) is planned to include a feedback canceller and a gain limit. Whether this is enough is the largest *behavioural* unknown of the project.
-
-## Why one microcontroller serves both ears
-
-Early designs put a small computer in every earring. That would have doubled the cost and put a battery in each earlobe. Instead, the stereo-capable PDM and I2S hardware of the nRF52840 handles both sides, at the cost of running 8 wires up each side of the neck. The wires are chosen so the two sides are *identical* (the same 8-pad connector, the same pad order): if the long shared bus turns out to be noisy, a second XIAO can replace it with no PCB change.
+The microphone and the exciter are on the same person, a few centimetres apart, and bone conducts sound well. If the processed sound reaches the microphone loudly enough it is amplified again and the system **howls**. Three things fight this: the microphone is mechanically separated from the exciter (earlobe versus mastoid, a spring arm between them); it sees the outside world through a sealed hole; and the firmware (chapter 8) is planned to have a feedback canceller and a gain limit. Whether that is enough is the largest *behavioural* unknown of the project.

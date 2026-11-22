@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 700" width="640" height="700" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<!-- Bench tests (Steps 1 and 10). HAND-AUTHORED SOURCE. Boards drawn in millimetres from pcb/carrier/build_carrier.py (5.5 px/mm) and pcb/build_dangle.py (8 px/mm); probe points:
+     carrier J_BAT (11,31)/(11,33), ear pad 3 VBAT (9.3,3.8), ear pad 6 GND (7.95,6.3), LED D1 (50,36); dangle pad 3 (7.3,23.8), pads 6 and 8 (5.95,25.9) and (11.3,25.9), C4 (11.9,16.3).
+     Expected readings are ESTIMATES (design values); update them with what you measure. Checked 2026-11-23. -->
+<style>
+ .t{font-size:14px;fill:#1f2933} .tb{font-size:14px;fill:#1f2933;font-weight:700} .m{font-size:12.5px;fill:#6b7785}
+ .nb{font-size:12px;fill:#fff;font-weight:700;text-anchor:middle} .lead{stroke:#1f2933;stroke-width:1;fill:none}
+</style>
+<rect width="640" height="700" fill="#fff"/>
+<text x="14" y="22" class="tb">Where to put the probes</text>
+<!-- carrier -->
+<g transform="translate(14,44) scale(5.5)">
+  <rect x="0" y="0" width="56" height="40" rx="9" fill="#dcefe3" stroke="#2e7d5b" stroke-width=".3"/>
+  <rect x="19.5" y="12.1" width="21" height="17.8" rx=".8" fill="#e8eef5" stroke="#1f2933" stroke-width=".2"/>
+  <rect x="15.15" y="1.6" width="8.7" height="4.4" fill="#f4f1ea" stroke="#1f2933" stroke-width=".2"/>
+  <rect x="4" y="29" width="8.4" height="6" rx=".5" fill="#f4f1ea" stroke="#1f2933" stroke-width=".2"/>
+  <g fill="#17a2a2" stroke="#1f2933" stroke-width=".12"><circle cx="9.3" cy="3.8" r=".7"/><circle cx="7.95" cy="6.3" r=".7"/><circle cx="3.9" cy="3.8" r=".7"/><circle cx="6.6" cy="3.8" r=".7"/><circle cx="12" cy="3.8" r=".7"/><circle cx="5.25" cy="6.3" r=".7"/><circle cx="10.65" cy="6.3" r=".7"/><circle cx="13.35" cy="6.3" r=".7"/></g>
+  <circle cx="11" cy="31" r=".7" fill="#7a5fd0"/><circle cx="11" cy="33" r=".7" fill="#7a5fd0"/>
+  <rect x="49.5" y="34.9" width="1" height="2.2" fill="#e08a8a" stroke="#6b7785" stroke-width=".1"/>
+</g>
+<!-- carrier markers -->
+<g fill="none" stroke-width="2.5">
+  <circle cx="74.5" cy="214.5" r="9" stroke="#f08a24"/><circle cx="74.5" cy="225.5" r="9" stroke="#f08a24"/>
+  <circle cx="65" cy="65" r="8" stroke="#2f8bd6"/><circle cx="57.7" cy="78.6" r="8" stroke="#2f8bd6"/>
+  <circle cx="289.5" cy="241.5" r="9" stroke="#d64545"/>
+</g>
+<text class="nb" x="0" y="0" opacity="0">.</text>
+<g class="lead"><path d="M84 220 L118 220"/><path d="M73 66 L118 66"/><path d="M299 241 L330 241"/></g>
+<g><circle cx="124" cy="220" r="11" fill="#f08a24"/><text class="nb" x="124" y="224">a</text><circle cx="124" cy="66" r="11" fill="#2f8bd6"/><text class="nb" x="124" y="70">b</text><circle cx="338" cy="241" r="13" fill="#d64545"/><text class="nb" x="338" y="245" style="font-size:10px">LED</text></g>
+<!-- dangle -->
+<g transform="translate(450,44) scale(8)">
+  <rect x="0" y="0" width="13" height="28" rx="1" fill="#dcefe3" stroke="#2e7d5b" stroke-width=".15"/>
+  <g fill="#b8c0c8" stroke="#6b7785" stroke-width=".06"><rect x="5" y="8.3" width="3" height="3"/><rect x="8.7" y="17.3" width="3" height="2.6"/><rect x="2.15" y="17.65" width="3.5" height="2.7"/><rect x="11.5" y="15.5" width=".8" height="1.6"/></g>
+  <g fill="#f08a24" stroke="#1f2933" stroke-width=".08"><circle cx="7.3" cy="23.8" r=".75"/><circle cx="5.95" cy="25.9" r=".75"/><circle cx="11.3" cy="25.9" r=".75"/></g>
+  <g fill="#fff" stroke="#1f2933" stroke-width=".08"><circle cx="1.9" cy="23.8" r=".75"/><circle cx="4.6" cy="23.8" r=".75"/><circle cx="10" cy="23.8" r=".75"/><circle cx="3.25" cy="25.9" r=".75"/><circle cx="8.65" cy="25.9" r=".75"/></g>
+</g>
+<g fill="none" stroke-width="2.5"><circle cx="508.4" cy="234.4" r="11" stroke="#f08a24"/><circle cx="497.6" cy="251.2" r="11" stroke="#f08a24"/><circle cx="540.4" cy="251.2" r="11" stroke="#f08a24"/><circle cx="545.2" cy="174.4" r="10" stroke="#2f8bd6"/></g>
+<g class="lead"><path d="M556 175 L586 175"/><path d="M552 251 L586 251"/></g>
+<g><circle cx="594" cy="175" r="11" fill="#2f8bd6"/><text class="nb" x="594" y="179">c</text><circle cx="594" cy="251" r="11" fill="#f08a24"/><text class="nb" x="594" y="255">a</text></g>
+<text class="m" x="14" y="296">carrier, top side</text><text class="m" x="450" y="296">dangle, component side</text>
+
+<!-- readings -->
+<line x1="14" y1="312" x2="626" y2="312" stroke="#d3d9df"/>
+<text x="14" y="336" class="tb">Before power: battery unplugged, multimeter on continuity</text>
+<g><circle cx="26" cy="362" r="11" fill="#f08a24"/><text class="nb" x="26" y="366">a</text></g>
+<text class="t" x="46" y="360">Must NOT beep: carrier + to &#8722; at the battery socket; dangle pad 3 to pad 6, and</text><text class="t" x="46" y="378">pad 3 to pad 8. A brief chirp as the capacitors charge is normal; a steady beep is a short.</text>
+<text x="14" y="418" class="tb">Powered: firmware flashed, battery plugged in, switch on, multimeter on volts</text>
+<g><circle cx="26" cy="444" r="11" fill="#2f8bd6"/><text class="nb" x="26" y="448">b</text></g>
+<text class="t" x="46" y="442">Carrier ear pad 3 (VBAT) against pad 6 (GND): 3.7&#8211;4.2 V on a charged cell.</text>
+<g><circle cx="26" cy="472" r="11" fill="#2f8bd6"/><text class="nb" x="26" y="476">c</text></g>
+<text class="t" x="46" y="470">Dangle, ribbon connected: across C4, one end against pad 6: about 3.3 V.</text>
+<g><circle cx="26" cy="500" r="11" fill="#d64545"/><text class="nb" x="26" y="504" style="font-size:9px">LED</text></g>
+<text class="t" x="46" y="498">The red LED is lit.</text>
+
+<line x1="14" y1="522" x2="626" y2="522" stroke="#d3d9df"/>
+<text x="14" y="546" class="tb">Tone test</text>
+<g stroke="#1f2933" stroke-width="1.6" fill="#fff"><rect x="14" y="574" width="100" height="56" rx="6"/><rect x="164" y="574" width="130" height="56" rx="6" fill="#fff6d6"/><rect x="344" y="574" width="100" height="56" rx="6" fill="#ffb3d6"/><rect x="494" y="574" width="132" height="56" rx="6" fill="#d9dde2"/></g>
+<g text-anchor="middle"><text class="tb" x="64" y="600">Laptop</text><text class="m" x="64" y="617">USB-C</text><text class="tb" x="229" y="600">Bee box</text><text class="m" x="229" y="617">switch on</text><text class="tb" x="394" y="600">Dangle</text><text class="m" x="394" y="617">on the ribbon</text><text class="tb" x="560" y="600">Exciter</text><text class="m" x="560" y="617">in your fingers</text></g>
+<g stroke="#1f2933" stroke-width="2"><path d="M114 602 H164"/><path d="M294 602 H344"/><path d="M444 602 H494"/></g>
+<text class="m" x="14" y="660">Quiet room, volume low, raise slowly. Hold the exciter in your fingers, not on your skull:</text>
+<text class="m" x="14" y="676">expect a clean tone and no squeal. Keep it away from the microphone.</text>
+</svg>

@@ -8,6 +8,8 @@ SYSROOT   := $(shell rustc --print sysroot 2>/dev/null)
 OBJCOPY    = $(firstword $(wildcard $(SYSROOT)/lib/rustlib/*/bin/llvm-objcopy))
 FW_ELF     = firmware/passthrough/target/thumbv7em-none-eabihf/release/passthrough
 FIG        = docs/build/figures
+ASSET_SVG  = $(wildcard docs/assets/*.svg)
+ASSET_PDF  = $(patsubst docs/assets/%.svg,docs/build/assets/%.pdf,$(ASSET_SVG))
 TAB        = docs/build/tables
 PDF        = docs/build/hearing-manual.pdf
 
@@ -121,7 +123,10 @@ docs/build/manual.md: docs/assemble.py $(CHAPTERS) $(TAB)/tables.stamp
 	$(UV) docs/assemble.py $@
 $(FIG)/build_graph.png: Makefile tools/make_graph.py
 	$(UV) tools/make_graph.py
-$(PDF): docs/build/manual.md docs/build/references.bib docs/manual/metadata.yaml docs/manual/header.tex $(FIG_STAMPS) $(FIG)/build_graph.png
+docs/build/assets/%.pdf: docs/assets/%.svg
+	@mkdir -p $(dir $@); rsvg-convert -f pdf -o $@ $<
+
+$(PDF): docs/build/manual.md docs/build/references.bib docs/manual/metadata.yaml docs/manual/header.tex $(FIG_STAMPS) $(FIG)/build_graph.png $(ASSET_PDF)
 	cd docs/build && pandoc manual.md ../manual/metadata.yaml -o $(notdir $@) --from markdown+pipe_tables+grid_tables+implicit_figures \
 	  --pdf-engine=xelatex --citeproc --bibliography=references.bib --number-sections \
 	  --include-in-header=../manual/header.tex --resource-path=.:figures:../manual

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 502" width="640" height="502" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<!-- Parts and tools checklist (Step 0). HAND-AUTHORED SOURCE. Quantities from docs/data/orders.toml and cad/print/manifest.csv, checked 2026-11-23. Edit when an order changes. -->
+<style>.t{font-size:13.5px;fill:#1f2933} .h{font-size:14px;fill:#fff;font-weight:700} .tb{font-size:14px;fill:#1f2933;font-weight:700}</style>
+<rect width="640" height="502" fill="#fff"/>
+<text x="14" y="26" class="tb">Tick everything off before you start</text>
+<rect x="14" y="54" width="300" height="26" rx="5" fill="#2e7d5b"/><text class="h" x="24" y="72">Circuit boards (JLCPCB)</text>
+<rect x="18" y="89" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="40" y="100">Dangle L board: 5 (use 1)</text>
+<rect x="18" y="113" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="40" y="124">Dangle R board: 5 (use 1)</text>
+<rect x="18" y="137" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="40" y="148">Carrier board: 5 (use 1)</text>
+<rect x="14" y="174" width="300" height="26" rx="5" fill="#2f8bd6"/><text class="h" x="24" y="192">Electronics</text>
+<rect x="18" y="209" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="40" y="220">XIAO nRF52840: 2 (1 + a practice one)</text>
+<rect x="18" y="233" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="40" y="244">LiPo 500 mAh with JST plug: 1</text>
+<rect x="18" y="257" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="40" y="268">Exciter DAEX-9-4SM: 3 (2 + a spare)</text>
+<rect x="18" y="281" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="40" y="292">4-wire ribbon, 1 m: 5 (4 + a spare)</text>
+<rect x="18" y="305" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="40" y="316">JST-PH socket and slide switch</text>
+<rect x="14" y="342" width="300" height="26" rx="5" fill="#17a2a2"/><text class="h" x="24" y="360">Printed parts (JLC3DP): 14 files</text>
+<rect x="18" y="377" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="40" y="388">Clips with arms: 8 (2 in use, 6 swaps)</text>
+<rect x="18" y="401" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="40" y="412">Bear shells and back plates: 2 of each</text>
+<rect x="18" y="425" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="40" y="436">Bee base and cover: 2 of each</text>
+<rect x="18" y="449" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="40" y="460">Every clip is engraved with its code</text>
+<rect x="330" y="54" width="300" height="26" rx="5" fill="#7a5fd0"/><text class="h" x="340" y="72">Hardware</text>
+<rect x="334" y="89" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="356" y="100">Screws: M1.6 x 4 (bears), M2 x 4 (bee)</text>
+<rect x="334" y="113" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="356" y="124">Ear hooks and 4 mm jump rings</text>
+<rect x="334" y="137" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="356" y="148">2 mm chain, 60 cm</text>
+<rect x="334" y="161" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="356" y="172">28 AWG wire, heat-shrink, twist ties</text>
+<rect x="330" y="198" width="300" height="26" rx="5" fill="#f08a24"/><text class="h" x="340" y="216">Consumables</text>
+<rect x="334" y="233" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="356" y="244">Epoxy, clear silicone, gesso</text>
+<rect x="334" y="257" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="356" y="268">Acrylic paints (pink, blue, yellow,</text>
+<rect x="334" y="281" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="356" y="292">black, silver) and fine brushes</text>
+<rect x="330" y="318" width="300" height="26" rx="5" fill="#6b7785"/><text class="h" x="340" y="336">You bring</text>
+<rect x="334" y="353" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="356" y="364">Soldering iron, rosin-core solder</text>
+<rect x="334" y="377" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="356" y="388">Wire strippers, side cutters, pliers</text>
+<rect x="334" y="401" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="356" y="412">Tweezers, multimeter, PH0 screwdriver</text>
+<rect x="334" y="425" width="13" height="13" rx="2" fill="#fff" stroke="#1f2933" stroke-width="1.4"/><text class="t" x="356" y="436">400-grit paper, painter's tape</text>
+</svg>

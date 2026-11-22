@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 590" width="640" height="590" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<!-- System overview, schematic (not to scale). HAND-AUTHORED SOURCE. Shows where each part sits on the body and the signal path.
+     Checked against the architecture in PLAN.md on 2026-11-23: 2 exciters + 2 earring PCBs (mic + amp), one XIAO + LiPo in the bee box, 8-wire ribbons. -->
+<style>
+ .t{font-size:14px;fill:#1f2933} .tb{font-size:14px;fill:#1f2933;font-weight:700} .m{font-size:12.5px;fill:#6b7785}
+ .skin{fill:#f6dcc8;stroke:#b98f74;stroke-width:1.5} .lead{stroke:#6b7785;stroke-width:1;fill:none}
+ .box{fill:#fff;stroke:#1f2933;stroke-width:1.6}
+</style>
+<rect width="640" height="590" fill="#fff"/>
+<!-- body -->
+<path d="M200 370 C200 285 250 250 290 240 L350 240 C390 250 440 285 440 370 Z" fill="#e8eef5" stroke="#9aa5b1" stroke-width="1.5"/>
+<rect x="296" y="196" width="48" height="50" fill="#f6dcc8" stroke="#b98f74" stroke-width="1.5"/>
+<ellipse cx="320" cy="120" rx="68" ry="86" class="skin"/>
+<ellipse cx="249" cy="128" rx="9" ry="22" class="skin"/><ellipse cx="391" cy="128" rx="9" ry="22" class="skin"/>
+<!-- glasses -->
+<g fill="none" stroke="#1f2933" stroke-width="3"><rect x="272" y="104" width="38" height="28" rx="9"/><rect x="330" y="104" width="38" height="28" rx="9"/><path d="M310 114 Q320 108 330 114"/><path d="M272 112 L252 114"/><path d="M368 112 L388 114"/></g>
+<g fill="none" stroke="#1f2933" stroke-width="3" stroke-linecap="round"><path d="M256 113 C238 112 224 118 222 134 C221 142 227 146 233 146"/><path d="M384 113 C402 112 416 118 418 134 C419 142 413 146 407 146"/></g>
+<g fill="#1f2933"><rect x="252" y="108" width="10" height="11" rx="2"/><rect x="378" y="108" width="10" height="11" rx="2"/></g>
+<!-- exciters behind the ears (dashed: hidden) -->
+<g fill="#cfd6dd" stroke="#1f2933" stroke-width="1.5" stroke-dasharray="4 3"><rect x="226" y="140" width="14" height="26" rx="3"/><rect x="400" y="140" width="14" height="26" rx="3"/></g>
+<!-- bears -->
+<g stroke="#1f2933" stroke-width="1.5"><path d="M246 150 V168" fill="none"/><circle cx="246" cy="182" r="14" fill="#ff73b8"/><circle cx="237" cy="172" r="5" fill="#ff73b8"/><circle cx="255" cy="172" r="5" fill="#ff73b8"/>
+ <path d="M394 150 V168" fill="none"/><circle cx="394" cy="182" r="14" fill="#3db9ff"/><circle cx="385" cy="172" r="5" fill="#3db9ff"/><circle cx="403" cy="172" r="5" fill="#3db9ff"/></g>
+<!-- chain + ribbons -->
+<path d="M297 234 C282 290 300 318 320 326 C340 318 358 290 343 234" fill="none" stroke="#6b7785" stroke-width="3" stroke-dasharray="1 4" stroke-linecap="round"/>
+<path d="M244 196 C238 270 282 316 312 330" fill="none" stroke="#e5489b" stroke-width="3"/><path d="M396 196 C402 270 358 316 328 330" fill="none" stroke="#2f8bd6" stroke-width="3"/>
+<!-- bee -->
+<g stroke="#1f2933" stroke-width="1.6"><rect x="294" y="326" width="52" height="38" rx="14" fill="#f5c518"/><path d="M312 328 V362 M326 328 V362" stroke-width="5"/><circle cx="320" cy="324" r="4" fill="#1f2933"/></g>
+<!-- labels left -->
+<g class="lead"><path d="M170 96 L252 110"/><path d="M170 200 L232 184"/><path d="M170 276 L224 160"/></g>
+<text class="tb" x="14" y="86">Clip + spring arm</text><text class="m" x="14" y="104">on the glasses stem</text>
+<text class="tb" x="14" y="190">Left bear earring</text><text class="m" x="14" y="208">mic + amplifier PCB</text>
+<text class="tb" x="14" y="272">Exciter</text><text class="m" x="14" y="290">presses on the bone</text><text class="m" x="14" y="306">behind the ear</text>
+<!-- labels right -->
+<g class="lead"><path d="M470 96 L388 114"/><path d="M470 200 L408 184"/><path d="M470 276 L395 250"/><path d="M470 352 L346 346"/></g>
+<text class="tb" x="474" y="86">Glasses</text><text class="m" x="474" y="104">your own, unmodified</text>
+<text class="tb" x="474" y="190">Right bear earring</text><text class="m" x="474" y="208">same, mirrored</text>
+<text class="tb" x="474" y="268">Chain + ribbons</text><text class="m" x="474" y="286">8 wires to each ear</text>
+<text class="tb" x="474" y="346">Bee box</text><text class="m" x="474" y="364">XIAO, LiPo, switch</text>
+<!-- signal path -->
+<text class="tb" x="14" y="398">The signal, one ear</text>
+<g class="box"><rect x="45" y="446" width="112" height="62" rx="6"/><rect x="201" y="446" width="112" height="62" rx="6" fill="#fff6d6"/><rect x="357" y="446" width="112" height="62" rx="6"/><rect x="513" y="446" width="112" height="62" rx="6"/></g>
+<g text-anchor="middle"><text class="tb" x="101" y="472">Microphone</text><text class="m" x="101" y="490">in the bear</text>
+ <text class="tb" x="257" y="470">XIAO</text><text class="m" x="257" y="487">filter, gain</text><text class="m" x="257" y="502">in the bee</text>
+ <text class="tb" x="413" y="472">Amplifier</text><text class="m" x="413" y="490">in the bear</text>
+ <text class="tb" x="569" y="472">Exciter</text><text class="m" x="569" y="490">behind the ear</text></g>
+<g stroke="#1f2933" stroke-width="2" fill="none"><path d="M157 477 H201"/><path d="M313 477 H357"/><path d="M469 477 H513"/><path d="M101 420 V444"/><path d="M569 510 V540"/></g>
+<g fill="#1f2933"><path d="M196 472 l8 5 -8 5z"/><path d="M352 472 l8 5 -8 5z"/><path d="M508 472 l8 5 -8 5z"/><path d="M96 440 l5 8 5 -8z"/><path d="M564 536 l5 8 5 -8z"/></g>
+<g text-anchor="middle"><text class="m" x="179" y="540">PDM, 2 wires</text><text class="m" x="335" y="540">I2S, 3 wires</text><text class="m" x="491" y="540">amp output</text></g>
+<text class="t" x="112" y="434">sound</text><text class="t" x="626" y="562" text-anchor="end">vibration through the skull</text>
+<text class="m" x="14" y="580">Power (VBAT, GND) runs down the same ribbon: 8 wires = 5 signal + power + 2 ground.</text>
+</svg>

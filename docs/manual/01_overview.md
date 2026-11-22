@@ -14,6 +14,10 @@ The design goals, in the order they were decided:
 4. **Designed on screen**: CAD, PCBs and documentation are all generated from code; assembly needs only through-hole soldering and one fiddly pair of wires.
 5. **Appearance**: pink and blue gummy-bear earrings (the microphones) and a bee-shaped necklace pendant (the microcontroller and battery).
 
+## The whole thing in one picture
+
+![Where everything sits, and the path one ear's sound takes.](assets/system-overview.svg)
+
 ## What is in it
 
 ![What lives where: the glasses stems and earlobes carry the sensors and transducers, the neck carries two thin cables, the chest carries the computer and battery.](figures/system/architecture.png)

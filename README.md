@@ -53,7 +53,7 @@ make all          # build everything (about 10 minutes the first time)
 | `make reroute` | re-run Freerouting for all boards and rewrite the routing locks (then review and commit `pcb/routes/`) |
 | `make firmware` | build the passthrough firmware: `.elf`, `.bin`, `.uf2` |
 | `make figures` | every figure of the manual: circuit diagrams, system diagrams, blueprints, print-file renders, assembly steps, simulations, cost charts |
-| `make docs` | the manual: `docs/build/hearing-manual.pdf` |
+| `make docs` | the manual: `docs/build/hearing-manual.pdf` (generated figures plus the hand-authored SVGs in `docs/assets/`, converted to vector PDF) |
 | `make graph` | redraw the dependency graph below (and `docs/build/figures/build_graph.png`) |
 | `make check` | compile all Python, check the print files and that the DRC reports have no unconnected nets |
 | `make clean` | delete everything generated (keeps downloads and the Python environment) |
@@ -81,71 +81,74 @@ flowchart LR
   n12(["dangle-R"])
   n13(["docs"])
   n14["docs/assemble.py"]
-  n15["figures/assembly.stamp"]
-  n16["figures/blueprints.stamp"]
-  n17["figures/build_graph.png"]
-  n18["figures/circuits.stamp"]
-  n19["figures/costs.stamp"]
-  n20["figures/measure.stamp"]
-  n21["figures/overview.stamp"]
-  n22["figures/renders.stamp"]
-  n23["figures/sims.stamp"]
-  n24["figures/system.stamp"]
-  n25["docs/build/hearing-manual.pdf"]
-  n26["docs/build/manual.md"]
-  n27["tables/tables.stamp"]
-  n28["docs/data/orders.toml"]
-  n29["docs/figures/assembly.py"]
-  n30["docs/figures/blueprints.py"]
-  n31["docs/figures/circuits.py"]
-  n32["docs/figures/common.py"]
-  n33["docs/figures/costs.py"]
-  n34["docs/figures/measure_mastoid.py"]
-  n35["docs/figures/overview.py"]
-  n36["docs/figures/renders.py"]
-  n37["docs/figures/sims.py"]
-  n38["docs/figures/system.py"]
-  n39["docs/figures/tables.py"]
-  n40["docs/manual/*.md"]
-  n41(["figures"])
-  n42(["firmware"])
-  n43["firmware src/*.rs"]
-  n44["firmware/passthrough/Cargo.toml"]
-  n45["firmware/passthrough/memory.x"]
-  n46["firmware/passthrough/passthrough.uf2"]
-  n47["firmware/tools/bin2uf2.py"]
-  n48(["pcb"])
-  n49["pcb scripts + footprint libs"]
-  n50(["pcb-renders"])
-  n51["pcb/fab/carrier.zip"]
-  n52["pcb/fab/dangle_L.zip"]
-  n53["pcb/fab/dangle_R.zip"]
-  n54["pcb/renders/carrier_bottom.png"]
-  n55["pcb/renders/carrier_top.png"]
-  n56["pcb/renders/dangle_L_bottom.png"]
-  n57["pcb/renders/dangle_L_top.png"]
-  n58["pcb/renders/dangle_R_bottom.png"]
-  n59["pcb/renders/dangle_R_top.png"]
-  n60["pcb/routes/carrier_C.edits.json"]
-  n61["pcb/routes/carrier_C.placement.sha256"]
-  n62["pcb/routes/carrier_C.ses"]
-  n63["pcb/routes/dangle_L.edits.json"]
-  n64["pcb/routes/dangle_L.placement.sha256"]
-  n65["pcb/routes/dangle_L.ses"]
-  n66["pcb/routes/dangle_R.edits.json"]
-  n67["pcb/routes/dangle_R.placement.sha256"]
-  n68["pcb/routes/dangle_R.ses"]
-  n69(["previews"])
-  n70(["print-audit"])
-  n71(["print-files"])
-  n72["tools/freerouting-1.9.0.jar"]
-  n73["tools/make_graph.py"]
-  n0 --> n17
+  n15["docs/build/assets/carrier-solder-map.pdf"]
+  n16["docs/build/assets/necklace-assembly.pdf"]
+  n17["docs/build/assets/system-overview.pdf"]
+  n18["figures/assembly.stamp"]
+  n19["figures/blueprints.stamp"]
+  n20["figures/build_graph.png"]
+  n21["figures/circuits.stamp"]
+  n22["figures/costs.stamp"]
+  n23["figures/measure.stamp"]
+  n24["figures/overview.stamp"]
+  n25["figures/renders.stamp"]
+  n26["figures/sims.stamp"]
+  n27["figures/system.stamp"]
+  n28["docs/build/hearing-manual.pdf"]
+  n29["docs/build/manual.md"]
+  n30["tables/tables.stamp"]
+  n31["docs/data/orders.toml"]
+  n32["docs/figures/assembly.py"]
+  n33["docs/figures/blueprints.py"]
+  n34["docs/figures/circuits.py"]
+  n35["docs/figures/common.py"]
+  n36["docs/figures/costs.py"]
+  n37["docs/figures/measure_mastoid.py"]
+  n38["docs/figures/overview.py"]
+  n39["docs/figures/renders.py"]
+  n40["docs/figures/sims.py"]
+  n41["docs/figures/system.py"]
+  n42["docs/figures/tables.py"]
+  n43["docs/manual/*.md"]
+  n44(["figures"])
+  n45(["firmware"])
+  n46["firmware src/*.rs"]
+  n47["firmware/passthrough/Cargo.toml"]
+  n48["firmware/passthrough/memory.x"]
+  n49["firmware/passthrough/passthrough.uf2"]
+  n50["firmware/tools/bin2uf2.py"]
+  n51(["pcb"])
+  n52["pcb scripts + footprint libs"]
+  n53(["pcb-renders"])
+  n54["pcb/fab/carrier.zip"]
+  n55["pcb/fab/dangle_L.zip"]
+  n56["pcb/fab/dangle_R.zip"]
+  n57["pcb/renders/carrier_bottom.png"]
+  n58["pcb/renders/carrier_top.png"]
+  n59["pcb/renders/dangle_L_bottom.png"]
+  n60["pcb/renders/dangle_L_top.png"]
+  n61["pcb/renders/dangle_R_bottom.png"]
+  n62["pcb/renders/dangle_R_top.png"]
+  n63["pcb/routes/carrier_C.edits.json"]
+  n64["pcb/routes/carrier_C.placement.sha256"]
+  n65["pcb/routes/carrier_C.ses"]
+  n66["pcb/routes/dangle_L.edits.json"]
+  n67["pcb/routes/dangle_L.placement.sha256"]
+  n68["pcb/routes/dangle_L.ses"]
+  n69["pcb/routes/dangle_R.edits.json"]
+  n70["pcb/routes/dangle_R.placement.sha256"]
+  n71["pcb/routes/dangle_R.ses"]
+  n72(["previews"])
+  n73(["print-audit"])
+  n74(["print-files"])
+  n75["tools/freerouting-1.9.0.jar"]
+  n76["tools/make_graph.py"]
+  n0 --> n20
   n1 --> n4
   n1 --> n5
   n1 --> n9
-  n1 --> n16
-  n1 --> n21
+  n1 --> n19
+  n1 --> n24
   n2 --> n1
   n3 --> n4
   n3 --> n5
@@ -153,137 +156,140 @@ flowchart LR
   n3 --> n7
   n3 --> n8
   n3 --> n9
-  n3 --> n15
-  n3 --> n16
-  n3 --> n21
-  n4 --> n22
-  n4 --> n69
-  n5 --> n22
-  n5 --> n69
-  n6 --> n22
-  n6 --> n69
-  n7 --> n22
-  n7 --> n69
-  n8 --> n70
+  n3 --> n18
+  n3 --> n19
+  n3 --> n24
+  n4 --> n25
+  n4 --> n72
+  n5 --> n25
+  n5 --> n72
+  n6 --> n25
+  n6 --> n72
+  n7 --> n25
+  n7 --> n72
+  n8 --> n73
   n9 --> n8
-  n9 --> n19
   n9 --> n22
-  n9 --> n27
-  n9 --> n71
-  n10 --> n48
-  n11 --> n48
-  n12 --> n48
-  n14 --> n26
-  n15 --> n25
-  n15 --> n41
-  n16 --> n21
-  n16 --> n25
-  n16 --> n41
-  n17 --> n25
-  n17 --> n41
-  n18 --> n21
-  n18 --> n25
-  n18 --> n41
-  n19 --> n25
-  n19 --> n41
-  n20 --> n25
-  n20 --> n41
-  n21 --> n15
-  n21 --> n25
-  n21 --> n41
-  n22 --> n15
-  n22 --> n21
-  n22 --> n25
-  n22 --> n41
-  n23 --> n25
-  n23 --> n41
-  n24 --> n25
-  n24 --> n41
-  n25 --> n13
-  n26 --> n25
-  n27 --> n26
-  n28 --> n19
-  n28 --> n27
-  n29 --> n15
-  n30 --> n16
-  n31 --> n18
-  n32 --> n15
-  n32 --> n16
+  n9 --> n25
+  n9 --> n30
+  n9 --> n74
+  n10 --> n51
+  n11 --> n51
+  n12 --> n51
+  n14 --> n29
+  n15 --> n28
+  n16 --> n28
+  n17 --> n28
+  n18 --> n28
+  n18 --> n44
+  n19 --> n24
+  n19 --> n28
+  n19 --> n44
+  n20 --> n28
+  n20 --> n44
+  n21 --> n24
+  n21 --> n28
+  n21 --> n44
+  n22 --> n28
+  n22 --> n44
+  n23 --> n28
+  n23 --> n44
+  n24 --> n18
+  n24 --> n28
+  n24 --> n44
+  n25 --> n18
+  n25 --> n24
+  n25 --> n28
+  n25 --> n44
+  n26 --> n28
+  n26 --> n44
+  n27 --> n28
+  n27 --> n44
+  n28 --> n13
+  n29 --> n28
+  n30 --> n29
+  n31 --> n22
+  n31 --> n30
   n32 --> n18
-  n32 --> n19
-  n32 --> n20
-  n32 --> n21
-  n32 --> n22
-  n32 --> n23
-  n32 --> n24
   n33 --> n19
-  n34 --> n20
+  n34 --> n21
+  n35 --> n18
+  n35 --> n19
   n35 --> n21
+  n35 --> n22
+  n35 --> n23
+  n35 --> n24
+  n35 --> n25
+  n35 --> n26
+  n35 --> n27
   n36 --> n22
   n37 --> n23
   n38 --> n24
-  n39 --> n19
-  n39 --> n27
-  n40 --> n25
+  n39 --> n25
   n40 --> n26
-  n43 --> n46
-  n44 --> n46
-  n45 --> n46
-  n46 --> n42
-  n47 --> n46
-  n48 --> n50
-  n49 --> n51
-  n49 --> n52
-  n49 --> n53
-  n51 --> n10
-  n51 --> n15
-  n51 --> n22
-  n51 --> n27
-  n51 --> n54
-  n51 --> n55
-  n52 --> n11
-  n52 --> n22
-  n52 --> n27
+  n41 --> n27
+  n42 --> n22
+  n42 --> n30
+  n43 --> n28
+  n43 --> n29
+  n46 --> n49
+  n47 --> n49
+  n48 --> n49
+  n49 --> n45
+  n50 --> n49
+  n51 --> n53
+  n52 --> n54
+  n52 --> n55
   n52 --> n56
-  n52 --> n57
-  n53 --> n12
-  n53 --> n22
-  n53 --> n58
-  n53 --> n59
-  n55 --> n50
-  n57 --> n50
-  n59 --> n50
-  n60 --> n51
-  n60 --> n52
+  n54 --> n10
+  n54 --> n18
+  n54 --> n25
+  n54 --> n30
+  n54 --> n57
+  n54 --> n58
+  n55 --> n11
+  n55 --> n25
+  n55 --> n30
+  n55 --> n59
+  n55 --> n60
+  n56 --> n12
+  n56 --> n25
+  n56 --> n61
+  n56 --> n62
+  n58 --> n53
   n60 --> n53
-  n61 --> n51
-  n61 --> n52
-  n61 --> n53
-  n62 --> n51
-  n62 --> n52
   n62 --> n53
-  n63 --> n51
-  n63 --> n52
-  n63 --> n53
-  n64 --> n51
-  n64 --> n52
-  n64 --> n53
-  n65 --> n51
-  n65 --> n52
-  n65 --> n53
-  n66 --> n51
-  n66 --> n52
-  n66 --> n53
-  n67 --> n51
-  n67 --> n52
-  n67 --> n53
-  n68 --> n51
-  n68 --> n52
-  n68 --> n53
-  n72 --> n51
-  n72 --> n52
-  n72 --> n53
-  n73 --> n17
+  n63 --> n54
+  n63 --> n55
+  n63 --> n56
+  n64 --> n54
+  n64 --> n55
+  n64 --> n56
+  n65 --> n54
+  n65 --> n55
+  n65 --> n56
+  n66 --> n54
+  n66 --> n55
+  n66 --> n56
+  n67 --> n54
+  n67 --> n55
+  n67 --> n56
+  n68 --> n54
+  n68 --> n55
+  n68 --> n56
+  n69 --> n54
+  n69 --> n55
+  n69 --> n56
+  n70 --> n54
+  n70 --> n55
+  n70 --> n56
+  n71 --> n54
+  n71 --> n55
+  n71 --> n56
+  n75 --> n54
+  n75 --> n55
+  n75 --> n56
+  n76 --> n20
 ```
 <!-- BUILD-GRAPH:END -->
 

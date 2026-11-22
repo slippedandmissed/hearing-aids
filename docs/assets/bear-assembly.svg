@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 550" width="640" height="550" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<!-- Gummy-bear assembly, exploded cross-section, schematic (not to scale). HAND-AUTHORED SOURCE.
+     Stack from the front wall up, as built with the shell lying front-down: shell with sound port and ring (cad/gummy_dangle.py boss) -> silicone bead on the ring ->
+     PCB (bare face down against the ring, components up) -> back plate with edge pillars -> 4 x M1.6 x 4 screws. Checked against the stack-up in gummy_dangle.py 2026-11-23. -->
+<style>
+ .t{font-size:14px;fill:#1f2933} .tb{font-size:14px;fill:#1f2933;font-weight:700} .m{font-size:12.5px;fill:#6b7785}
+ .lead{stroke:#6b7785;stroke-width:1;fill:none} .nb{font-size:13px;fill:#fff;font-weight:700;text-anchor:middle}
+</style>
+<rect width="640" height="550" fill="#fff"/>
+<text x="14" y="22" class="tb">One bear, in the order the parts go in (shell lying front-down on the bench)</text>
+<g transform="translate(215,0) scale(0.75,1)">
+ <!-- 5 screws, 4 back plate with pillars -->
+ <g stroke="#1f2933" stroke-width="1.8">
+  <rect x="150" y="78" width="270" height="22" rx="4" fill="#d9dde2"/>
+  <rect x="172" y="100" width="22" height="22" fill="#d9dde2"/><rect x="376" y="100" width="22" height="22" fill="#d9dde2"/>
+  <rect x="176" y="62" width="18" height="16" fill="#8a949e"/><rect x="232" y="62" width="18" height="16" fill="#8a949e"/><rect x="320" y="62" width="18" height="16" fill="#8a949e"/><rect x="376" y="62" width="18" height="16" fill="#8a949e"/>
+ </g>
+ <!-- 3 PCB, components up, mic over the hole -->
+ <g stroke="#1f2933" stroke-width="1.8">
+  <rect x="170" y="180" width="230" height="12" fill="#2e7d5b"/>
+  <rect x="226" y="164" width="30" height="16" fill="#b8c0c8"/><rect x="290" y="168" width="38" height="12" fill="#b8c0c8"/><rect x="342" y="172" width="24" height="8" fill="#b8c0c8"/>
+ </g>
+ <rect x="238.5" y="180" width="5" height="12" fill="#fff"/>
+ <!-- 2 silicone bead on the ring -->
+ <ellipse cx="241" cy="264" rx="22" ry="6" fill="#f4f1ea" stroke="#1f2933" stroke-width="1.4"/>
+ <!-- 1 shell with ring -->
+ <g stroke="#1f2933" stroke-width="1.8" fill="#ff73b8">
+  <path d="M130 216 L130 246 C130 286 190 306 285 306 C380 306 440 286 440 246 L440 216 L418 216 L418 242 C418 270 370 282 285 282 C200 282 152 270 152 242 L152 216 Z"/>
+  <rect x="219" y="268" width="44" height="14"/>
+ </g>
+ <rect x="238.5" y="268" width="5" height="39" fill="#fff"/>
+</g>
+<g fill="none" stroke="#1f2933" stroke-width="1.5" stroke-dasharray="4 4"><path d="M606 300 V84"/></g><g fill="#1f2933"><path d="M600 90 l6 -12 6 12z"/></g>
+<g>
+ <circle cx="30" cy="282" r="11" fill="#1f2933"/><text class="nb" x="30" y="287">1</text>
+ <text class="tb" x="50" y="278">Shell</text><text class="m" x="50" y="296">sound hole + ring</text>
+ <circle cx="30" cy="236" r="11" fill="#1f2933"/><text class="nb" x="30" y="241">2</text>
+ <text class="tb" x="50" y="232">Silicone bead</text><text class="m" x="50" y="250">on the ring, cured 24 h</text>
+ <circle cx="30" cy="176" r="11" fill="#1f2933"/><text class="nb" x="30" y="181">3</text>
+ <text class="tb" x="50" y="172">PCB</text><text class="m" x="50" y="190">bare face on the ring,</text><text class="m" x="50" y="206">components up</text>
+ <circle cx="30" cy="102" r="11" fill="#1f2933"/><text class="nb" x="30" y="107">4</text>
+ <text class="tb" x="50" y="98">Back plate</text><text class="m" x="50" y="116">pillars on the board edge</text>
+ <circle cx="30" cy="54" r="11" fill="#1f2933"/><text class="nb" x="30" y="59">5</text>
+ <text class="tb" x="50" y="50">Four screws</text><text class="m" x="50" y="68">M1.6 &#215; 4, just snug</text>
+</g>
+<text class="m" x="318" y="330">mic hole over the sound hole</text>
+<line x1="14" y1="344" x2="626" y2="344" stroke="#d3d9df"/>
+<!-- cable route, top view -->
+<text class="tb" x="14" y="370">Cable route before the back plate goes on (top of the bear)</text>
+<g transform="translate(60,388)" stroke="#1f2933" stroke-width="1.6">
+ <path d="M0 110 C0 40 40 20 130 20 C220 20 260 40 260 110 Z" fill="#ff73b8" opacity=".55"/>
+ <rect x="104" y="0" width="52" height="22" rx="4" fill="#ff73b8"/><circle cx="130" cy="11" r="4" fill="#fff"/>
+ <rect x="56" y="60" width="124" height="50" fill="#2e7d5b" opacity=".45" stroke="none"/>
+ <rect x="190" y="14" width="44" height="10" fill="#fff" stroke-width="1"/>
+ <circle cx="196" cy="46" r="5" fill="#8a949e"/><circle cx="226" cy="46" r="5" fill="#8a949e"/>
+ <g fill="#fff" stroke-width="1"><circle cx="70" cy="68" r="3"/><circle cx="86" cy="68" r="3"/><circle cx="102" cy="68" r="3"/><circle cx="118" cy="68" r="3"/><circle cx="78" cy="80" r="3"/><circle cx="94" cy="80" r="3"/><circle cx="110" cy="80" r="3"/><circle cx="126" cy="80" r="3"/></g>
+</g>
+<path d="M130 456 C130 440 170 436 190 428 C204 422 196 404 204 396 C210 392 214 394 214 388 V370" fill="none" stroke="#2f8bd6" stroke-width="3.5" opacity="0"/>
+<g fill="none" stroke-width="3.5" stroke-linecap="round">
+ <path d="M146 456 C200 452 236 446 250 442 C262 440 268 430 260 426 C252 422 254 410 262 402 V378" stroke="#2f8bd6"/>
+ <path d="M154 468 C214 462 260 458 282 450 C294 446 296 436 290 430 C284 424 282 412 278 402 V378" stroke="#f08a24"/>
+</g>
+<text class="t" x="340" y="422">cables leave by the slot at the top,</text><text class="t" x="340" y="442">once round each peg</text>
+<text class="m" x="340" y="468">the slot is on the back-of-head side:</text><text class="m" x="340" y="484">opposite sides on the left and right bears</text>
+<text class="m" x="14" y="530">After the bench test (Step 10), a dab of silicone round the slot is the strain relief.</text>
+</svg>

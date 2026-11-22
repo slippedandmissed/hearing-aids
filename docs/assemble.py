@@ -26,6 +26,10 @@ def prefer_vector(text):
     """use the vector PDF version of a figure when one exists (figures/<group>/<name>.png -> .pdf)"""
     return re.sub(r"(figures/(?:circuits|system|sims|costs)/[A-Za-z0-9_]+)\.png", lambda m: m.group(1) + (".pdf" if os.path.exists(os.path.join(build, m.group(1) + ".pdf")) else ".png"), text)
 
+def svg_assets(text):
+    """hand-authored diagrams: assets/name.svg in a chapter -> the PDF that the Makefile makes from docs/assets/name.svg"""
+    return re.sub(r"\]\((assets/[A-Za-z0-9_-]+)\.svg\)", r"](\1.pdf)", text)
+
 def landscape(text):
     """schematics and blueprints get their own landscape page (a stand-alone figure line under figures/circuits or figures/blueprints)"""
     out = []
@@ -35,4 +39,4 @@ def landscape(text):
     return "\n".join(out)
 
 os.makedirs(os.path.dirname(out), exist_ok=True)
-open(out, "w").write(landscape(prefer_vector(fix_glyphs("\n\n".join(parts)))) + "\n"); print("assembled", len(parts), "chapters ->", os.path.relpath(out, ROOT))
+open(out, "w").write(svg_assets(landscape(prefer_vector(fix_glyphs("\n\n".join(parts))))) + "\n"); print("assembled", len(parts), "chapters ->", os.path.relpath(out, ROOT))

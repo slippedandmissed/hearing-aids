@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<!-- Necklace assembly, schematic (not to scale except the 10 px per cm scale of the top strip). HAND-AUTHORED SOURCE.
+     Lengths (ribbon 60 cm, bound run about 20 cm, slack loop 3-4 cm, twist tie every 8-10 cm) are the plan in docs/manual/06_assembly.md; edit both together. -->
+<style>
+ .t{font-size:14px;fill:#1f2933} .tb{font-size:14px;fill:#1f2933;font-weight:700} .m{font-size:12.5px;fill:#6b7785} .dim{stroke:#6b7785;stroke-width:1;fill:none}
+ .nb{font-size:13px;fill:#fff;font-weight:700;text-anchor:middle}
+</style>
+<rect width="640" height="640" fill="#fff"/>
+<text x="14" y="22" class="tb">Laid out flat, 10 px = 1 cm (ribbons are 60 cm, bound to the chain for about 20 cm)</text>
+<!-- chain with bee in the middle -->
+<path d="M30 112 H610" stroke="#6b7785" stroke-width="4" stroke-dasharray="1 5" stroke-linecap="round"/>
+<g stroke="#1f2933" stroke-width="1.6"><rect x="290" y="92" width="60" height="42" rx="16" fill="#f5c518"/><path d="M310 94 V132 M326 94 V132" stroke-width="5"/></g>
+<!-- ribbons: bound run then free run with slack loop to each bear -->
+<g fill="none" stroke-width="4" stroke-linecap="round">
+ <path d="M290 100 H100 C70 100 60 110 56 120" stroke="#e5489b"/><path d="M290 106 H100" stroke="#e5489b" stroke-width="3" opacity=".55"/>
+ <path d="M350 100 H540 C570 100 580 110 584 120" stroke="#2f8bd6"/><path d="M350 106 H540" stroke="#2f8bd6" stroke-width="3" opacity=".55"/>
+</g>
+<!-- free run + slack loops -->
+<g fill="none" stroke-width="4" stroke-linecap="round"><path d="M56 120 C40 160 90 168 64 190 C48 204 40 196 38 226" stroke="#e5489b"/><path d="M584 120 C600 160 550 168 576 190 C592 204 600 196 602 226" stroke="#2f8bd6"/></g>
+<!-- twist ties every ~9 cm -->
+<g stroke="#1f2933" stroke-width="2.2" stroke-linecap="round" fill="none">
+ <path d="M262 92 l6 22 M262 114 l6 -22"/><path d="M172 92 l6 22 M172 114 l6 -22"/><path d="M118 92 l6 22 M118 114 l6 -22"/>
+ <path d="M372 92 l6 22 M378 114 l-6 -22"/><path d="M462 92 l6 22 M468 114 l-6 -22"/><path d="M516 92 l6 22 M522 114 l-6 -22"/>
+</g>
+<!-- bears -->
+<g stroke="#1f2933" stroke-width="1.5"><circle cx="38" cy="244" r="17" fill="#ff73b8"/><circle cx="27" cy="232" r="6" fill="#ff73b8"/><circle cx="49" cy="232" r="6" fill="#ff73b8"/>
+ <circle cx="602" cy="244" r="17" fill="#3db9ff"/><circle cx="591" cy="232" r="6" fill="#3db9ff"/><circle cx="613" cy="232" r="6" fill="#3db9ff"/></g>
+<!-- dimensions -->
+<g class="dim"><path d="M100 152 H290 M100 146 v12 M290 146 v12"/><path d="M350 152 H540 M350 146 v12 M540 146 v12"/></g>
+<text class="t" x="195" y="172" text-anchor="middle">bound to the chain, ~20 cm</text><text class="t" x="445" y="172" text-anchor="middle">bound to the chain, ~20 cm</text>
+<text class="t" x="320" y="76" text-anchor="middle">bee</text>
+<text class="m" x="64" y="266">slack loop 3&#8211;4 cm, then the free run to the ear</text>
+<text class="m" x="330" y="196">&#215; = twist tie every 8&#8211;10 cm, tails folded flat</text>
+
+<!-- details -->
+<line x1="14" y1="292" x2="626" y2="292" stroke="#d3d9df"/>
+<!-- (a) twist tie -->
+<text class="tb" x="14" y="318">A  Twist tie</text>
+<g transform="translate(100,400)">
+ <circle cx="-34" cy="0" r="12" fill="#e8eef5" stroke="#6b7785" stroke-width="3" stroke-dasharray="2 3"/>
+ <rect x="-10" y="-9" width="40" height="18" rx="4" fill="#e5489b"/><rect x="-10" y="-9" width="40" height="18" rx="4" fill="none" stroke="#1f2933" stroke-width="1"/><rect x="34" y="-9" width="40" height="18" rx="4" fill="#2f8bd6" stroke="#1f2933" stroke-width="1"/>
+ <path d="M-52 -4 C-52 -30 78 -30 78 -4 C78 24 -52 24 -52 4" fill="none" stroke="#1f2933" stroke-width="2.4"/>
+ <path d="M-52 4 l-8 -14 l10 6 l-10 -2" fill="none" stroke="#1f2933" stroke-width="2.4" stroke-linejoin="round"/>
+</g>
+<text class="m" x="14" y="450">chain + both ribbons in one loop,</text><text class="m" x="14" y="466">two full turns, snug not tight</text>
+<!-- (b) bee end -->
+<text class="tb" x="228" y="318">B  Entering the bee</text>
+<g transform="translate(232,330)">
+ <rect x="0" y="62" width="150" height="62" rx="18" fill="#f5c518" stroke="#1f2933" stroke-width="1.6"/>
+ <rect x="30" y="62" width="30" height="6" fill="#fff" stroke="#1f2933" stroke-width="1.2"/>
+ <path d="M45 66 V20" stroke="#e5489b" stroke-width="5" fill="none"/>
+ <rect x="39" y="26" width="12" height="26" rx="2" fill="#3a3f45" opacity=".85"/>
+ <path d="M45 66 C45 108 80 108 80 90 C80 76 56 76 56 90" stroke="#e5489b" stroke-width="3" fill="none" stroke-dasharray="1 0"/>
+</g>
+<text class="m" x="232" y="474">heat-shrink sleeve over the pair</text><text class="m" x="232" y="490">(slid on before soldering),</text><text class="m" x="232" y="506">and a loop of ribbon inside the box</text>
+<!-- (c) jump ring -->
+<text class="tb" x="452" y="318">C  Bear to ear hook</text>
+<g transform="translate(500,366) scale(2.2)" fill="none" stroke-linecap="round">
+ <path d="M-14 -12 C-14 -2 -7 -1 0 -1 C8 -1 8 -8 0 -8" stroke="#1f2933" stroke-width="1.4"/>
+ <circle cx="0" cy="3" r="5.5" stroke="#1f2933" stroke-width="1.4"/>
+ <ellipse cx="0" cy="17" rx="8" ry="13" stroke="#6b7785" stroke-width="1.6"/>
+ <path d="M7 9 L10 13" stroke="#fff" stroke-width="3"/>
+ <rect x="-9" y="26" width="18" height="14" rx="4" fill="#ff73b8" stroke="#1f2933" stroke-width="1.2"/><circle cx="0" cy="33" r="3" fill="#fff" stroke="#1f2933" stroke-width="1"/>
+</g>
+<circle cx="560" cy="372" r="6" fill="none" stroke="#1f2933" stroke-width="1.5"/><circle cx="560" cy="372" r="1.8" fill="#1f2933"/>
+<circle cx="560" cy="398" r="6" fill="none" stroke="#1f2933" stroke-width="1.5"/><path d="M556 394 l8 8 M564 394 l-8 8" stroke="#1f2933" stroke-width="1.5"/>
+<text class="m" x="572" y="376">toward you</text><text class="m" x="572" y="402">away</text>
+<text class="m" x="452" y="466">4 mm jump ring: open it by</text><text class="m" x="452" y="482">twisting the ends apart, one</text><text class="m" x="452" y="498">toward you, one away;</text><text class="m" x="452" y="514">close it flush, same way back</text>
+<text class="m" x="14" y="580">Order: heat-shrink on first, then solder the ribbon ends, then bind to the chain,</text><text class="m" x="14" y="596">then hang the bears. Paint a dab on wire 1 at both ends before cutting anything.</text>
+</svg>
