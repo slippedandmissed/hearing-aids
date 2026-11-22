@@ -1,5 +1,9 @@
 \clearpage
 
+```{=latex}
+\part{The project}
+```
+
 # Overview
 
 ## The idea
@@ -39,8 +43,8 @@ Per ear there are four things: **clips** that snap onto the glasses stem, a prin
 | Charging | USB-C, 50 or 100 mA (firmware selects), about 5 – 10 h | DATASHEET / ESTIMATE |
 | Mass on the head, per side | about 6 g on the glasses + about 6 g on the lobe | ESTIMATE |
 | Necklace box | 105 × 116 × 17 mm including wings, about 50 g | DERIVED / ESTIMATE |
-| Cost, everything | £300.05 paid (every order placed); about £305 – 317 projected in total, the difference being UK import charges still to come (see chapter 5) | MEASURED (paid) / ESTIMATE (rest) |
+| Cost, everything | £300.05 paid (every order placed); about £305 – 317 projected in total, the difference being UK import charges still to come (see [Parts and cost](#parts-and-cost)) | MEASURED (paid) / ESTIMATE (rest) |
 
 ## What is *not* done
 
-The firmware is a compile-only skeleton (chapter 8). The PCBs have not been ordered or powered. The 16.129 kHz sample rate is outside the amplifier's listed rates by 0.8 % and has not been tried. The stems of the author's glasses were measured with calipers, but the printer's tolerance is as large as the clip clearance, so the clips are printed in a range of sizes (chapter 4). The risks are listed honestly in chapter 9.
+The firmware is a compile-only skeleton (see [Firmware](#firmware-placeholder)). All the parts are ordered, but nothing has arrived, been assembled or been powered. The 16.129 kHz sample rate is outside the amplifier's listed rates by 0.8 % and has not been tried. The clip's grip on the real glasses is unproven. The risks are listed in [Decisions and open risks](#decisions-and-open-risks).

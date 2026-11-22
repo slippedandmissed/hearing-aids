@@ -4,14 +4,13 @@
 
 # About this document {-}
 
-This is a **working document**: a combined *datasheet* (what each part is and what it can do), *user manual* (how to build, wear and look after it) and *project log* (what was decided and why). Everything in it is generated from the repository: change a parameter in the CAD, a netlist in the PCB scripts or a number in the parts list, run `make docs`, and every drawing, table, render and cost figure is rebuilt.
+This is a **working document**, and it may be unfinished: the project is designed on screen and the parts are being ordered and assembled. It has three parts.
 
-**Reading guide.**
+- **The project** (chapters 1 – 4) is the part to read. The idea, how each piece works and why it was chosen, why the plastic is shaped as it is, and the decisions and open risks.
+- **Build and use** (chapters 5 – 7) is the assembly guide for when the parts arrive, followed by use, care and safety, and the firmware status.
+- **Reference** (chapters 8 – 11 and the appendix) is for looking things up: the electronics and mechanical datasheets, the cost ledger, and the project log.
 
-- Chapter 1 gives the idea in two pages. Chapter 2 explains how each piece works at a hobbyist level.
-- Chapters 3 and 4 are the datasheet half: the electronics (two custom PCBs, wiring, simulations) and the mechanics (glasses clips, spring arm, bears, bee box, blueprints and renders of the print files).
-- Chapter 5 lists every part and what it should cost. Chapter 6 is the IKEA-style assembly guide for when the parts arrive.
-- Chapter 7 covers use, safety and troubleshooting; chapter 8 is a placeholder for the firmware; chapter 9 is the project log with open risks. The appendix explains the repository and how to regenerate this PDF.
+The diagrams in the first two parts are mostly drawn by hand (plain-text SVG files in `docs/assets/`) and are edited when the design changes. The pictures in the reference part, the tables and the cost figures are generated from the repository: change a parameter, a netlist or a number in the parts list, run `make docs`, and they are rebuilt.
 
 **Status words used throughout.** The project is designed entirely on screen; **no part has been built or powered yet**. So every number carries one of these tags:
 

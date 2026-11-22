@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 830" width="640" height="830" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
-<!-- Why the clip is a spring-jaw clip: five problems, each forcing one feature. HAND-AUTHORED SOURCE. Numbers from PLAN.md and docs/manual/04_mechanical.md (ESTIMATES from the stem model, nothing tested on glasses):
+<!-- Why the clip is a spring-jaw clip: five problems, each forcing one feature. HAND-AUTHORED SOURCE. Numbers from PLAN.md and docs/manual/09_mechanical.md (ESTIMATES from the stem model, nothing tested on glasses):
      pad about 45 mm from a 14 mm clip; 0.25 mm slack per side rocks the clip about 2 degrees = about 1.6 mm at the pad (of a 5 mm preload); stem 7.0 -> 9.2 mm tall within +-7 mm of the clip,
      faces twist about 5 degrees over 14 mm, 41 degree bend between 100 and 127 mm; stem 3.54 mm thick; grips N 3.2-4.2 mm and T 2.9-3.9 mm; arms 2.4 / 2.8 / 3.2 mm. Checked 2026-11-23. -->
 <style>

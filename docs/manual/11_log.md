@@ -37,42 +37,16 @@ A dated record of decisions and findings, newest last. The detailed running note
 ## 2026-11-22: manufacturing checks and the first order
 
 - **Calipers and JLC3DP limits** (2026-11-21, applied): stem measured; clip matrix recentred; bear screw posts 3.4 mm, PCB stops 1.0 mm, engraving 0.8 mm deep, exciter pocket clearance 0.45 mm.
-- **JLCDFM, two rounds.** JLCPCB's free checker was run on all three boards; every red and orange item was opened. Changes: 0.7 mm vias (0.2 mm annular ring), ground vias 0.2 mm from pads, flat exciter resistors, silkscreen outlines of SMD parts removed, pad digits and text moved or thinned to 0.17 mm, router keep-outs for the mic ring bridge and the bottom text. What is left, and why it is acceptable, is in chapter 3.
+- **JLCDFM, two rounds.** JLCPCB's free checker was run on all three boards; every red and orange item was opened. Changes: 0.7 mm vias (0.2 mm annular ring), ground vias 0.2 mm from pads, flat exciter resistors, silkscreen outlines of SMD parts removed, pad digits and text moved or thinned to 0.17 mm, router keep-outs for the mic ring bridge and the bottom text. What is left, and why it is acceptable, is in the [Electronics datasheet](#electronics-datasheet).
 - **Placement files wrong, then right.** JLCPCB's assembly preview showed the parts 28 mm above the board: the CPL counted Y from the bottom edge, the gerbers from the top. Fixed (`Y = -y`). On the carrier the transistor Q1 (reverse-polarity P-FET, the standard KiCad `SOT-23`) had JLCPCB's pin-1 marker half a turn from ours, which would have fitted it backwards; the CPL now adds 180° for that footprint. The LED polarity was checked in the same viewer.
 - **Hand edits survive the router.** Every router run is a dice roll, so small fixes (move a via, delete or add a track) are kept in `pcb/routes/<board>.edits.json` and applied after the committed routing lock is imported.
 - **Print audit and screws.** A mesh-level audit of every STL (`make print-audit`) found thin floors under the bear screw heads (0.5 mm), the cable notch (0.5 mm) and the clip engraving (0.8 mm). Fixed: shallower counterbore, shallower notch, engraving 0.6 mm deep. The audit also showed the bee box's M2 × 8 screws would have poked 2.8 mm out of the back; the screws are now M1.6 × 4 (bears) and M2 × 4 (box), and the pilot hole continues into the base wall. Cable: 30 AWG silicone ribbon (0.8 mm wires).
 - **JLC3DP quote.** A quote of 10 representative parts gave the price rule (a $0.95 minimum per file, then about $0.34 per cm³; black dye about $0.10 extra) and JLC3DP's own thin-wall check, which flagged only the bee cover. Chasing it found a 0.3 mm strip of wall under the switch window and slivers of lip behind the cable slots; both were cut away. Colours: clips, arms and bee base dyed black; bears and bee cover natural grey.
 - **First order placed** (three assembled PCB orders, one parcel, ordered in the JLCONE desktop app for a discount). £94.84 paid; the cost chapter became a ledger of orders with categorised line items.
 
-## Decisions at a glance
+The decisions table and the open risks that used to sit here are now in [Decisions and open risks](#decisions-and-open-risks).
 
-| decision | alternatives considered | why |
-|---|---|---|
-| Bone conduction on the mastoid | tragus (cartilage) clip, helix cuff | the clip would not stay on; the mastoid is a large firm surface |
-| Digital signal processing | analogue AGC chain | tuning without a soldering iron; app later |
-| One XIAO for both ears | one per ear | half the cost and one battery; risk is the long shared bus |
-| Microphone in the earring, processor in the chest | everything in the ear | weight on the ear and thin cables |
-| Soldered XIAO pins, battery in a wing | sockets, thick box | 24 – 29 mm versus 16 mm thick |
-| Hardware power cap of 2 × 22 Ω | firmware limit only | protects against firmware bugs |
-| Clips in a size range | measure first | no calipers; cheaper than a wrong guess |
-| Paint, not colour printing | full-colour nylon, dye | MJF is grey or black only; colour nylon is muted and dearer |
-| Makefile | justfile | file-based dependencies; no extra tool to install |
-| Commit the router result as a lock | regenerate every time | the router input is not reproducible, so a rebuild could route worse |
-
-## Open risks and what would settle each
-
-| # | risk | settled by |
-|---:|---|---|
-| 1 | Amplifier rejects 16.129 kHz | first power-up with a scope on LRCLK |
-| 2 | Microphone clock margin of 0.8 % | bench test across temperature |
-| 3 | 8 wires × 60 cm shared bus noise | a real cable test |
-| 4 | Feedback between exciter and microphone | listening test, then the feedback canceller |
-| 5 | Bone-conduction coupling quality at the mastoid | wearing it |
-| 6 | Stem thickness and height (ruler only) | measured with calipers 2026-11-21: 3.54 mm thick, 6.40 / 4.7 / 9.36 mm tall; the clip matrix stays because of print tolerance |
-| 7 | Assumed heights of JST, headers and battery | the real parts |
-| 8 | JLCPCB's review of the assembled order (microphone flagged *difficult*, 0.5 mm NPTH, final placement) | their email after the order |
-| 9 | Weight on the lobe (about 6 g) | wearing it |
-| 10 | Print cost above the old estimate | a real quote |
+## 2026-11-22 and after: prints, parts and orders
 
 - **2026-11-22, lean print set chosen.** Clip stem thickness B and C only (34 single files, about £58–68 with shipping and VAT; the full set would be £82–93), after two re-measurements of the stem thickness fell inside the go/no-go window. Optional bundle files exist, but JLC3DP flags them as assemblies. Fixed the section 3.5 battery chart (its two-column legend squeezed the axes to nothing at the manual's 65 % shrink) and the bee base colour in the section 4.6 overview.
 

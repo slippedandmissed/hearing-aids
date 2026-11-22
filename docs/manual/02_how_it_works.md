@@ -40,7 +40,7 @@ The Seeed XIAO nRF52840 ([@xiao_wiki]) is a thumb-sized board around Nordic's nR
 
 ![Both the microphone clock and the amplifier's frame clock are divided down from the same 32 MHz crystal, so they cannot drift against each other.](figures/system/clocks.png)
 
-The one open risk is that 16.129 kHz is 0.8 % above the 16 kHz the amplifier datasheet lists. Class-D amplifiers normally tolerate a few percent, but this is **UNVERIFIED**; chapter 9 lists the fallback.
+The one open risk is that 16.129 kHz is 0.8 % above the 16 kHz the amplifier datasheet lists. Class-D amplifiers normally tolerate a few percent, but this is **UNVERIFIED**; [Decisions and open risks](#decisions-and-open-risks) lists what would settle it.
 
 **Why one for both ears.** Early designs put a small computer in every earring. That would have doubled the cost and put a battery in each earlobe. The nRF52840's PDM and I2S blocks are stereo, so one board handles both sides, at the price of 8 wires up each side of the neck. Both earring boards use the same 8-pad connector in the same order, so the long shared bus can be replaced by a second XIAO later without a PCB change if it turns out to be noisy.
 
@@ -69,4 +69,4 @@ With 44 Ω the worst-case drive is about 30 mW at the exciter's resonance and ab
 
 ## Feedback
 
-The microphone and the exciter are on the same person, a few centimetres apart, and bone conducts sound well. If the processed sound reaches the microphone loudly enough it is amplified again and the system **howls**. Three things fight this: the microphone is mechanically separated from the exciter (earlobe versus mastoid, a spring arm between them); it sees the outside world through a sealed hole; and the firmware (chapter 8) is planned to have a feedback canceller and a gain limit. Whether that is enough is the largest *behavioural* unknown of the project.
+The microphone and the exciter are on the same person, a few centimetres apart, and bone conducts sound well. If the processed sound reaches the microphone loudly enough it is amplified again and the system **howls**. Three things fight this: the microphone is mechanically separated from the exciter (earlobe versus mastoid, a spring arm between them); it sees the outside world through a sealed hole; and the firmware ([Firmware](#firmware-placeholder)) is planned to have a feedback canceller and a gain limit. Whether that is enough is the largest *behavioural* unknown of the project.

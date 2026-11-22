@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" width="640" height="300" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<!-- Why the bee box is a flat board plus a battery wing: thickness of three layouts at 8 px per mm. HAND-AUTHORED SOURCE.
+     15.8 mm = thorax with the XIAO soldered straight into the carrier (cad/bee_box.py); 24-29 mm = a socketed XIAO (recorded in the project log); a battery stacked on the board adds
+     at least its 5.5 mm thickness plus 1.0 mm clearance (bat_t, bat_clear in cad/bee_box.py), so about 22 mm. The last figure is arithmetic, not a model. Checked 2026-11-23. -->
+<style>.t{font-size:14px;fill:#1f2933} .tb{font-size:14px;fill:#1f2933;font-weight:700} .m{font-size:12.5px;fill:#6b7785}</style>
+<rect width="640" height="300" fill="#fff"/>
+<text x="14" y="22" class="tb">Thickness of the box, three ways (8 px per mm)</text>
+<g stroke="#1f2933" stroke-width="1.4">
+ <rect x="14" y="48" width="126.4" height="50" fill="#f5c518"/>
+ <rect x="14" y="132" width="192" height="50" fill="#f5c518"/><rect x="206" y="132" width="40" height="50" fill="#f5c518" fill-opacity=".35" stroke-dasharray="4 3"/>
+ <rect x="14" y="216" width="176" height="50" fill="#f5c518"/>
+</g>
+<g class="t"><text x="156" y="68">15.8 mm</text><text x="256" y="152">24 &#8211; 29 mm</text><text x="206" y="236">about 22 mm</text></g>
+<g class="tb"><text x="156" y="88">XIAO soldered into the carrier,</text><text x="262" y="172">XIAO in a socket</text><text x="206" y="256">XIAO soldered, battery on top</text></g>
+<g class="m"><text x="156" y="104" opacity="0"></text><text x="156" y="104">battery in a wing beside the board: this design</text><text x="262" y="188">(sockets and headers stack up)</text><text x="206" y="272">(5.5 mm cell + 1 mm clearance)</text></g>
+</svg>

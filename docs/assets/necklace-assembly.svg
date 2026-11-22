@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
 <!-- Necklace assembly, schematic (not to scale except the 10 px per cm scale of the top strip). HAND-AUTHORED SOURCE.
-     Lengths (ribbon 60 cm, bound run about 20 cm, slack loop 3-4 cm, twist tie every 8-10 cm) are the plan in docs/manual/06_assembly.md; edit both together. -->
+     Lengths (ribbon 60 cm, bound run about 20 cm, slack loop 3-4 cm, twist tie every 8-10 cm) are the plan in docs/manual/05_assembly.md; edit both together. -->
 <style>
  .t{font-size:14px;fill:#1f2933} .tb{font-size:14px;fill:#1f2933;font-weight:700} .m{font-size:12.5px;fill:#6b7785} .dim{stroke:#6b7785;stroke-width:1;fill:none}
  .nb{font-size:13px;fill:#fff;font-weight:700;text-anchor:middle}

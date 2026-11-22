@@ -14,7 +14,7 @@ This chapter is a ledger. Each order, meaning each movement of money, is recorde
 
 <!-- include: tables/cost_category.md -->
 
-**£300.05 has been paid** so far (every order, see the ledger above); the projected total, once the UK import charges on the exciters are added, is about **£305 – 317**. The prints are priced with JLC3DP's real rule from a quote (a $0.95 minimum per file, then about $0.34 per cm³). They are 14 single files (one spring-jaw clip + arm per ear in two grips, two extra arm thicknesses, the bears and the bee; see chapter 4), because JLC3DP treats a file holding several loose parts as an assembly and wants it split. Nothing is left to order: the only open item is the UK import VAT and any courier fee on the exciters.
+**£300.05 has been paid** so far (every order, see the ledger above); the projected total, once the UK import charges on the exciters are added, is about **£305 – 317**. The prints are priced with JLC3DP's real rule from a quote (a $0.95 minimum per file, then about $0.34 per cm³). They are 14 single files (one spring-jaw clip + arm per ear in two grips, two extra arm thicknesses, the bears and the bee; see [The mechanics, and why](#the-mechanics-and-why)), because JLC3DP treats a file holding several loose parts as an assembly and wants it split. Nothing is left to order: the only open item is the UK import VAT and any courier fee on the exciters.
 
 ## The JLCPCB order (2026-11-22)
 
@@ -36,16 +36,18 @@ All three boards were ordered together, **5 boards and 5 assembled of each**, in
 
 The microphone (LCSC C497724) is an *extended* part that JLCPCB flags as difficult; the order includes it, so expect a review and possibly an email. The website unticks the microphone and the ten 33 Ω resistors every time a BOM is re-uploaded; they were ticked again before saving each order.
 
-## Ordering checklist
+## Where each part came from
 
-1. **JLCPCB, three separate orders: DONE 2026-11-22** (see above): `pcb/fab/dangle_L.zip`, `dangle_R.zip`, `carrier.zip` with their `*_BOM.csv` and `*_CPL.csv`.
-2. **3D prints**: upload the files in `cad/print/` (the website takes at most 10 per upload) to JLC3DP or a UK MJF bureau; choose MJF nylon PA12: **black (dyed)** for the clips, spring arms and bee base, **natural grey** for the bear shells, back plates and bee cover; one spare of each non-matrix part (bears and bee are ordered twice). The 14 files are one clip + arm per ear in two grips (N, T) plus the two extra arm thicknesses, the bears and the bee.
-3. **Exciters** (3 × DAEX-9-4SM): no UK stockist was found; order EU/US and allow for import VAT.
-4. **XIAO nRF52840 ×2, LiPo, ribbon cable**: The Pi Hut or similar UK shop. The cable is *Silicone Cover Stranded-Core Ribbon Cable, 4 wires, 1 m, **30 AWG** black* (Adafruit 3889), 5 pieces; its wires are 0.8 mm across, so a ribbon is about 0.8 × 3.2 mm. The **28 AWG** version (1.2 mm wires) is too fat for the cable slot. The Pi Hut's own page could not be read when this was written (rate-limited), so its price and stock are unconfirmed.
-5. **Hand-soldered parts**: JST-PH S2B-PH-K socket and SK12D07VG4 switch (LCSC numbers in the carrier BOM).
-6. **Hardware and consumables: ORDERED 2026-11-22** from Amazon UK, one checkout (£82.15 after a £2.02 promotion, free delivery): a 630-piece 304 stainless screw kit (it has the M1.6 × 4 mm and M2 × 4 mm sizes needed, 30 of each; **not 5 or 8 mm for these holes**; low flat round heads, not ISO pan heads), French ear hooks and 4 mm jump rings (the bear's loop hole is 2.2 mm), a 2 mm box chain, cutters and needle-nose pliers, 28 AWG wire, heat-shrink, wire twist ties, 5-minute epoxy, clear silicone, white gesso, a 12-colour acrylic set and fine brushes. Bought separately or already owned: solder, wire strippers, tweezers, multimeter, screwdriver, sandpaper and painter's tape.
+| part | source | note |
+|---|---|---|
+| The three boards, assembled | JLCPCB, three orders in one parcel | `pcb/fab/` holds the gerber, BOM and placement zips; 5 of each board |
+| 3D prints, 14 files | JLC3DP, MJF nylon PA12 | dyed black: clips, arms and bee base; natural grey: the rest; bears and bee ordered twice |
+| Exciters, 3 | SoundImports (Netherlands) | no UK stockist was found; import VAT is still to come |
+| XIAO nRF52840 ×2, LiPo, ribbon cable | The Pi Hut | the cable is 30 AWG, 4 wires, 5 pieces: its 0.8 mm wires make a ribbon about 0.8 × 3.2 mm, while 28 AWG (1.2 mm) is too fat for the cable slot |
+| JST-PH socket and slide switch | LCSC | the minimum order was 20 of each |
+| Hardware, consumables, tools | Amazon UK, one checkout, £82.15 | stainless screws (M1.6 × 4 and M2 × 4 are the sizes needed, **not 5 or 8 mm**), ear hooks and 4 mm jump rings, a 2 mm chain, wire, heat-shrink, twist ties, epoxy, silicone, gesso, paints; the owner already had solder, strippers, tweezers, a multimeter, a screwdriver, sandpaper and painter's tape |
 
-**Lead times (rough).** JLCPCB: the quotes said a 24-hour build and 1 – 2 days of assembly, plus courier 2 – 4 days; prints 1 – 2 weeks; exciters 1 – 3 weeks; UK shop items 2 – 3 days.
+**Lead times (rough).** JLCPCB: 24 hours to build and 1 – 2 days of assembly, plus courier 2 – 4 days; prints 1 – 2 weeks; exciters 1 – 3 weeks; UK shop items 2 – 3 days.
 
 ## Not in the ledger
 

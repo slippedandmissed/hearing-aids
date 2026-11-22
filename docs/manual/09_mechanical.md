@@ -16,15 +16,7 @@ The glasses are a 57□17-145 frame (lens 57 mm, bridge 17 mm, temple 145 mm). T
 
 ### The clip {#clip}
 
-![Five problems, and the feature each one forces.](assets/clip-reasoning.svg)
-
-One **spring-jaw clip** at 127 mm from the hinge carries the spring arm; the arm and clip are one printed part. The picture is the argument. These are the numbers behind problems 2 and 3, all from the stem model and ESTIMATES, nothing tested on glasses:
-
-- The pad hangs about 45 mm below the clip, 3.3 times the clip's 14 mm length. Any slack in the fit shows up at the pad three times larger: 0.25 mm of clearance each side lets the clip rock about 2°, which moves the pad about 1.6 mm out of the 5 mm preload, and the printer's ±0.3 mm tolerance can make that about 3.6 mm.
-- Within ±7 mm of the clip the stem grows from 7.0 to 9.2 mm tall, its flat faces twist by about 5° over the clip length, and 27 mm further forward it bends by 41°. A straight cavity sized for one height touches the stem only at its ends.
-- The stem height at 127 mm is interpolated, not measured. A grip that works on thickness, which is measured (3.54 mm), does not care.
-
-**The spring-jaw clip.** Two thin jaws hang from a top plate and are angled towards each other, like a V. The stem is pushed in from below, wedges where the free gap equals its thickness and, pushed up to the top plate, springs the jaws apart. The grip is then a spring force, not a fit: any stem within the jaws' travel is held, and the height of the stem hardly matters because the jaws only touch its flat faces and the cavity is deep (the top plate sits 0.3 mm above the stem's top edge at its tallest point over the clip). Each jaw is split into three fingers by two 1 mm slits, so the fingers can follow the twist of the stem faces independently. The arm hangs from a rigid shelf on the top plate, not from a jaw: an arm fused to a jaw would make that jaw rigid and force the other one to take all the spring travel (found by measuring the first version, where the arm ran through the jaw over nearly its whole height).
+The reasoning is in [The mechanics, and why](#the-mechanics-and-why); these are the numbers. One **spring-jaw clip** at 127 mm from the hinge carries the spring arm, and the arm and clip are one printed part. Each jaw is split into three fingers by two 1 mm slits, the top plate sits 0.3 mm above the stem's top edge at its tallest point over the clip, and the arm hangs from a rigid shelf on the top plate. The stem height at 127 mm is interpolated, not measured.
 
 | dimension | value | status |
 |---|---|---|
@@ -71,7 +63,7 @@ The **thorax** (62 × 46 mm, 15.8 mm thick) holds the 56 × 40 carrier PCB on tw
 
 ![The bee as printed, with the intended paint zones coloured: yellow bumps and black stripe valleys, silver wings.](figures/renders/print_bee.png)
 
-**Assumed heights** that must be checked with the real parts before printing: JST-PH socket 7.8 mm, XIAO pin-header plastic 2.5 mm, USB plug opening 11.6 × 6.8 mm, battery 30 × 35 × 5.5 mm.
+**Assumed heights**, to be checked against the real parts: JST-PH socket 7.8 mm, XIAO pin-header plastic 2.5 mm, USB plug opening 11.6 × 6.8 mm, battery 30 × 35 × 5.5 mm.
 
 ![Glasses front close-up on the head model (preview only).](figures/renders/glasses_check.png)
 
@@ -97,7 +89,7 @@ Every part carries an engraved ID so the many near-identical clips can be told a
 
 : Print volume by group (all files, with the spare bears) {#tbl:print}
 
-The full file list with volumes, bounding boxes and validity checks is in the appendix. Cost is discussed in chapter 5; **no price has been quoted yet**.
+The full file list with volumes, bounding boxes and validity checks is in the appendix. Cost is in [Parts and cost](#parts-and-cost).
 
 ### Mesh audit against JLC3DP's limits
 
