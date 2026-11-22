@@ -16,9 +16,9 @@ Follow the pictures; the text under each picture has the detail. Allow a weekend
 
 ![](figures/assembly/step00c.png)
 
-- 3 PCBs (2 dangle variants and the carrier), 2 XIAO nRF52840, a LiPo with JST plug, 4 ribbon cables, 3 exciters, screws, hooks and a chain.
+- 3 PCBs (2 dangle variants and the carrier), 2 XIAO nRF52840, a LiPo with JST plug, 4 ribbon cables, 3 exciters, screws, ear hooks with jump rings and a chain.
 - The printed set (see chapter 4); every clip is marked with its fit code.
-- Tools: soldering iron with a fine tip, solder, flux pen, side cutters, wire strippers, tweezers, a multimeter, a small Phillips screwdriver, 400-grit sandpaper, primer, paints, clear lacquer, tape, hot glue or epoxy.
+- Tools: soldering iron with a fine tip and rosin-core electronics solder (about 20 g is plenty), side cutters and needle-nose pliers, wire strippers, tweezers (eyebrow tweezers do), a multimeter, a small Phillips screwdriver (PH0 or PH00), 400-grit sandpaper, white acrylic gesso, acrylic paints and fine brushes, painter's tape, 5-minute epoxy and clear silicone. A flux pen and a matt varnish are optional and were not bought.
 
 ## Step 1: Look before you solder {-}
 
@@ -33,10 +33,10 @@ Follow the pictures; the text under each picture has the detail. Allow a weekend
 ![](figures/assembly/step02.png)
 
 1. Sand lightly with 400-grit and wipe clean.
-2. Plastic primer, thin coats.
+2. White acrylic gesso as the primer, thin coats (**untested** on MJF nylon: try it on one of the spare prints first; a spray primer is the fallback).
 3. Base colours: left bear bubblegum pink (about `#FF6FB5`), right bear fizzy blue (about `#3DB9FF`), bee yellow.
 4. Details: black into the bee's stripe valleys on the cover, silver on the wings of the base (the base is printed black, so its head, stinger and antennae need no paint), bear eyes and nose.
-5. Clear lacquer. **Do not paint the clips or the spring arm** (paint cracks where they flex).
+5. Optional: a matt acrylic varnish (not bought; without it the paint can rub off where an earring touches skin). **Do not paint the clips or the spring arm** (paint cracks where they flex).
 
 Keep paint out of the microphone hole, the screw holes and the clip cavities.
 
@@ -104,8 +104,8 @@ Solder from the top side of the carrier: ribbon A to pads 1 – 4 (front row), r
 
 ![](figures/assembly/step09.png)
 
-1. Lay the foam or silicone ring on the ring around the microphone port in the shell.
-2. Lay the PCB in: **components down**, bare face against the ring, microphone hole over the belly-button hole.
+1. Seal the microphone: run a **thin bead of clear silicone on the printed ring around the microphone port in the shell** (not on the board), keep it out of the 0.5 mm sound hole, and let it cure for about 24 hours in the open air before going on. The cheap bathroom silicone is probably the vinegar (acetoxy) type, whose fumes corrode copper while it cures, which is why the bead is cured on the shell and the board is fitted against the cured ring. A foam ring cut from 1 mm adhesive foam also works.
+2. Lay the PCB in: **components down**, bare face against the cured ring, microphone hole over the belly-button hole.
 3. Fit the back plate with its two pillars on the board's bare edge strips. Pass both cables through the slot at the top and take them once around each peg.
 4. Four M1.6 × 4 mm screws, just snug (nylon strips easily). The heads stand proud of the back; the tips end inside the posts.
 5. After testing, a dab of silicone around the cable slot for strain relief.
@@ -148,7 +148,7 @@ With the clip on at 127 mm, the arm curves behind the ear to the mastoid. Put th
 
 ![](figures/assembly/step14.png)
 
-Bear hook loops onto the earring hooks; the neck cables go down behind the ear and along the neck; Velcro or cable ties every 8 – 10 cm along the chain; **leave a loop of slack at the ear** so head movement never pulls on the PCB.
+Join each bear's loop (a **2.2 mm hole**, too small for the ear wire) to its ear hook with a 4 mm jump ring: open the ring sideways with the needle-nose pliers and the tweezers, thread it through the loop and the hook's eye, and close it tightly, because 0.7 mm wire opens under load; the neck cables go down behind the ear and along the neck; bind the ribbons to the chain with a wire twist tie every 8 – 10 cm (the chain's 2 mm links thread the bee's 6.2 mm head hole); **leave a loop of slack at the ear** so head movement never pulls on the PCB.
 
 ## Step 15: First power-up with the exciter against your head {-}
 

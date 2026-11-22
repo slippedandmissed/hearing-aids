@@ -52,7 +52,7 @@ The clip carries a **leaf-spring arm** that curves behind the ear and ends in a 
 The bear is a hollow shell with a flat back plate. Seen from the front it is 32.2 × 46.3 mm and 7.6 mm thick. Inside:
 
 - the 13 × 28 mm dangle PCB lies *component side toward the back plate*, its bare bottom face against the front wall, the **microphone port under the belly button**;
-- a **ring** around the port presses against the board (add a foam ring or a dab of silicone to seal it);
+- a **ring** around the port presses against the board (seal it with a thin bead of silicone cured beforehand, or a foam ring);
 - **four screw posts** (M1.6 × 4 mm pan-head screws that cut their own thread, pilot Ø1.3 mm, 5.8 mm deep) hold the back plate; each head sits in a Ø3.6 mm counterbore 0.4 mm deep (head about 3.2 mm wide and 1.3 mm tall, not measured; it stands about 0.9 mm proud of the back face), with a Ø2.0 mm clearance hole for the 1.6 mm shank; and two **pillars** on the back plate clamp the board's bare edge strips;
 - small **stops** keep the board from sliding sideways; two **pegs** in the head let each cable make a turn before it leaves, as strain relief;
 - **all cables leave through one slot at the top of the head**; the hook loop sits above it. The slot is on the *back-of-head* side, so it is on opposite sides of the left and right bears.

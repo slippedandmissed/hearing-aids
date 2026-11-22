@@ -17,7 +17,7 @@ def md(rows, header, align=None):
 def csv_rows(path): return list(csv.DictReader(open(path))) if os.path.exists(path) else []
 
 # ------------------------------------------------------------------ cost ledger (shared with costs.py): docs/data/orders.toml
-CATS = ["Parts", "Manufacturing", "Labour", "Fees", "Consumables", "Shipping", "Tax", "Discounts", "Rounding"]      # display order; a new category in the data is appended
+CATS = ["Parts", "Manufacturing", "Labour", "Fees", "Consumables", "Tools", "Shipping", "Tax", "Discounts", "Rounding"]      # display order; a new category in the data is appended
 
 def money(lo, hi=None):
     """2 decimals for an exact amount (minus sign for a discount); a rounded range for an estimate"""
@@ -69,7 +69,7 @@ def bom_tables():
         for l in o["lines"]: rows.append([f"\u2003{l['item']}", "", l["category"], money(l["lo"], l["hi"]), l.get("note", "")])
     paid = sum(o["lo"] for o in orders if o["paid"]); plo = sum(o["lo"] for o in orders if not o["paid"]); phi = sum(o["hi"] for o in orders if not o["paid"])
     rows.append(["**Paid so far**", "", "", f"**{money(paid)}**", "net of discounts, including tax and shipping"])
-    rows.append(["**Still to buy (estimate)**", "", "", f"**{money(plo, phi)}**", f"prints: {lean['files']} files, priced by the JLC3DP rule"])
+    rows.append(["**Still to buy (estimate)**", "", "", f"**{money(plo, phi)}**", "UK import VAT and any courier fee on the exciters (estimate)"])
     rows.append(["**Projected total**", "", "", f"**{money(paid + plo, paid + phi)}**", "paid + estimate"])
     write("bom_cost", md(rows, ["Order / line item", "Date", "Category", "\u00a3", "Vendor, reference, note"], ["l", "l", "l", "r", "l"]))
     cats = by_category(orders); rows = []

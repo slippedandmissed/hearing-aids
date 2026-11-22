@@ -15,7 +15,7 @@
 print_usd_min = 0.95
 print_usd_per_cm3 = 0.339
 print_usd_dye_small = 0.10          # per black part; the bee base (a large part) is not quoted separately, so the same figure is used: ESTIMATE
-usd_to_gbp = 0.7625                 # the rate on the JLCPCB invoice of the same day (USD 124.37 = GBP 94.84)
+usd_to_gbp = 0.7625                 # the rate on the JLCPCB invoice of the day before (USD 124.37 = GBP 94.84); also used for the JLC3DP order, whose invoice is in USD only
 print_black = ["clip", "bee_base"]  # file name prefixes printed black (dyed); the rest is natural grey
 
 # ---------------------------------------------------------------------------------------------------------------- paid
@@ -140,118 +140,203 @@ note = "USD 20.73"
 # ------------------------------------------------------------------------------------------------------------ planned
 
 [[order]]
-id = "prints"
-vendor = "JLC3DP or a UK MJF bureau"
+id = "jlc3dp-1"
+vendor = "JLC3DP"
 title = "3D prints (MJF nylon PA12, black and grey)"
-status = "planned"
-note = "Priced with the JLC3DP rule from the 2026-11-22 quote (see [rates]; 10 representative parts quoted; 14 files: clip + arm per ear in two grips, two extra arm thicknesses, bears, bee; every part a separate file). Shipping is a guess (the sample of 0.22 kg quoted USD 5.55 by the cheapest line); UK VAT is 20 % of goods + shipping. Not yet ordered."
+date = "2026-11-22"
+status = "paid"
+paid_total = 47.02
+ref = "proforma invoice 14200484A2026112302284137, batch W2026112302284137; placed in the JLCONE desktop app"
+note = "The proforma invoice is in USD only (merchandise 34.70 + DHL Express 23.87 + import taxes 10.28 = 68.85); the order page shows a further discount of USD 7.19, so USD 61.66 is due. Every line is converted at 0.7625 like the PCB order, so the card statement will differ by the card's rate. 14 files, 20 pieces: 8 clips with arms (1 each), bear shells and back plates, bee base and bee cover (2 each, one spare). Clips, arms and bee base dyed black, the rest natural grey."
+
 [[order.line]]
-item = "MJF nylon prints"
+item = "Clips with spring arms, 8 files (2.8 mm arm in grips N and T for both ears, 2.4 and 3.2 mm arms in grip N), dyed black (USD 10.20)"
 category = "Manufacturing"
-kind = "prints"
+amount = 7.78
 [[order.line]]
-item = "Shipping to the UK (about 1 kg of parts)"
+item = "Bear shells and back plates, 4 files × 2 (USD 7.60)"
+category = "Manufacturing"
+amount = 5.80
+[[order.line]]
+item = "Bee cover × 2, natural grey (USD 7.64)"
+category = "Manufacturing"
+amount = 5.83
+[[order.line]]
+item = "Bee base × 2, dyed black (USD 9.26)"
+category = "Manufacturing"
+amount = 7.06
+[[order.line]]
+item = "DHL Express to the UK"
 category = "Shipping"
-low = 6
-high = 15
+amount = 18.20
+note = "USD 23.87"
 [[order.line]]
-item = "UK VAT on goods and shipping (20 %)"
+item = "Shipping special saving"
+category = "Discounts"
+amount = -4.48
+note = "USD −5.87"
+[[order.line]]
+item = "Discount for ordering in the JLCONE desktop app"
+category = "Discounts"
+amount = -1.01
+note = "USD −1.32"
+[[order.line]]
+item = "UK import taxes collected by JLC3DP"
 category = "Tax"
-kind = "vat"
+amount = 7.84
+note = "USD 10.28"
 
 [[order]]
-id = "exciters"
-vendor = "EU/US stockist (Soundimports, Audiophonics, Parts Express)"
+id = "soundimports-1"
+vendor = "SoundImports (Netherlands)"
 title = "Bone-conduction exciters"
-status = "planned"
-note = "No UK stockist found. The estimate already includes shipping and import VAT (about $6.99 each + both)."
+date = "2026-11-23"
+status = "paid"
+paid_total = 25.93
+ref = "order confirmed on the shop's thank-you page (no order number shown); FedEx 2-3 days"
+note = "Dayton DAEX-9-4SM × 3 (2 + 1 spare) at EUR 6.98 each, sold VAT-free to the UK (EUR 20.95), plus FedEx EUR 9.95 = EUR 30.90. The amount charged was GBP 25.93, split between the two lines in proportion to the euro prices. UK import VAT and any courier handling fee are collected on delivery and are a separate planned order below."
 [[order.line]]
-item = "Dayton DAEX-9-4SM exciter (2 + 1 spare)"
+item = "Dayton DAEX-9-4SM exciter × 3 (EUR 20.95)"
 category = "Parts"
-qty = 3
-low = 8.3
-high = 11.7
+amount = 17.58
+[[order.line]]
+item = "FedEx to the UK, 2-3 days (EUR 9.95)"
+category = "Shipping"
+amount = 8.35
 
 [[order]]
-id = "pihut"
+id = "exciters-import"
+vendor = "FedEx (collected on delivery)"
+title = "UK import charges on the exciters"
+status = "planned"
+note = "20 % UK import VAT on EUR 30.90 is about GBP 5.2; the courier may add a handling fee (amount unknown, up to about GBP 12). Replace by the real amounts when the parcel arrives."
+[[order.line]]
+item = "UK import VAT (about GBP 5.2) and a possible courier handling fee"
+category = "Tax"
+qty = 1
+low = 5
+high = 17
+
+[[order]]
+id = "pihut-1"
 vendor = "The Pi Hut"
 title = "Microcontrollers, battery, cable"
-status = "planned"
+date = "2026-11-22"
+status = "paid"
+paid_total = 42.40
+ref = "The Pi Hut invoice 1668272"
+note = "Prices include UK VAT (GBP 7.07 of the total). XIAO nRF52840 with pre-soldered headers (SKU 106326), PKCELL 500 mAh LiPo with JST-PH (105189), 4-wire 30 AWG silicone ribbon cable 1 m (104397). The ribbon is the 30 AWG version: wires 0.8 mm each, a ribbon about 0.8 × 3.2 mm (inferred; the seller gives no ribbon size), NOT the 28 AWG or 26 AWG listings, which will not fit the cable slot. CHECK the battery plug polarity against the carrier silkscreen on arrival (red wire to +)."
+
 [[order.line]]
-item = "Seeed XIAO nRF52840 with pre-soldered pins (1 + 1 practice); the Sense variant also works"
+item = "Seeed XIAO nRF52840, board with headers pre-soldered × 2 (1 + 1 practice), GBP 10.00 each"
 category = "Parts"
-qty = 2
-low = 14
-high = 17
+amount = 20.00
 [[order.line]]
-item = "LiPo 3.7 V 500 mAh, JST-PH, protected (CHECK the plug polarity against the carrier silkscreen)"
+item = "PKCELL 500 mAh 3.7 V LiPo, JST-PH, protected"
 category = "Parts"
-qty = 1
-low = 6
-high = 8
+amount = 6.10
 [[order.line]]
-item = "Silicone Cover Stranded-Core Ribbon Cable, 4 wires, 1 m, 30 AWG black (The Pi Hut / Adafruit 3889): 5 pieces = four 60 cm ribbons and one spare. Wires 0.8 mm each (±0.1), so a ribbon is about 0.8 mm thick x 3.2 mm wide (inferred; the seller gives no ribbon size). NOT the 28 AWG (1.2 mm wires) or 26 AWG versions: they will not fit the cable slot"
+item = "Silicone cover stranded-core ribbon cable, 4 wires, 1 m, 30 AWG black × 5 (four 60 cm ribbons and one spare), GBP 1.70 each"
 category = "Parts"
-qty = 5
-low = 1.7
-high = 2.0
+amount = 8.50
+[[order.line]]
+item = "Delivery"
+category = "Shipping"
+amount = 7.80
 
 [[order]]
-id = "lcsc-hand"
-vendor = "LCSC / Farnell / RS"
+id = "lcsc-1"
+vendor = "LCSC"
 title = "Hand-soldered carrier parts"
-status = "planned"
+date = "2026-11-23"
+status = "paid"
+paid_total = 7.71
+ref = "LCSC order, standard shipping (Global Direct Standard Line, 10-18 business days)"
+note = "20 × JST S2B-PH-K-S(LF)(SN) (C173752) and 20 × SHOU HAN SK12D07VG4 slide switch (C393937); 20 is the minimum for each, so there are plenty of spares to practise on. The cart totalled USD 10.08 (parts 1.45, discount -0.03, shipping 5.66, handling fee 3.00) and GBP 7.71 was charged; the lines below split the GBP amount in proportion to the dollar lines. No UK import VAT was added at checkout; whether any is collected on delivery is not known."
+
 [[order.line]]
-item = "JST-PH S2B-PH-K socket + SK12D07VG4 slide switch (LCSC C173752 and C393937)"
+item = "JST-PH battery socket × 20 and slide switch × 20 (USD 1.45)"
 category = "Parts"
-qty = 1
-low = 3
-high = 6
+amount = 1.11
+[[order.line]]
+item = "LCSC discount"
+category = "Discounts"
+amount = -0.02
+note = "USD −0.03"
+[[order.line]]
+item = "Global Direct Standard Line shipping"
+category = "Shipping"
+amount = 4.33
+note = "USD 5.66"
+[[order.line]]
+item = "Handling fee for a small order"
+category = "Fees"
+amount = 2.29
+note = "USD 3.00"
 
 [[order]]
-id = "hardware"
-vendor = "various (fastener, craft and hardware shops)"
-title = "Hardware, consumables and paint"
-status = "planned"
-[[order.line]]
-item = "Screws, A2 stainless, pan head, cross recess (ISO 7045 / DIN 7985): M1.6 × 4 mm ×12 (8 used, 4 spare) and M2 × 4 mm ×4 (2 used, 2 spare); they cut their own thread in the nylon, 4 mm so the tip never leaves the post. Sold in packs of 50 - 100, so one pack of each"
-category = "Parts"
-qty = 1
-low = 4
-high = 6
-[[order.line]]
-item = "Ear hook wires or French hooks (silver, 1 pair)"
-category = "Parts"
-qty = 1
-low = 3
-high = 5
-[[order.line]]
-item = "Foam ring or silicone dab for the mic seal"
-category = "Parts"
-qty = 1
-low = 2
-high = 3
-[[order.line]]
-item = "Flux pen, solder, 28 AWG wire, heat-shrink, velcro ties, hot glue"
-category = "Consumables"
-qty = 1
-low = 15
-high = 25
-[[order.line]]
-item = "Plastic primer, acrylic paints (pink, blue, yellow, black, silver), brush, clear lacquer (only if you paint the prints yourself)"
-category = "Consumables"
-qty = 1
-low = 10
-high = 15
+id = "amazon-1"
+vendor = "Amazon UK (several marketplace sellers, one checkout)"
+title = "Hardware, consumables and tools"
+date = "2026-11-22"
+status = "paid"
+paid_total = 82.15
+ref = "Amazon order 026-0254992-3440309; Prime, free delivery, two deliveries"
+note = "Prices include UK VAT (GBP 14.02 of the GBP 84.17 item total). A promotion took GBP 2.02 off. Bought with the owner's own solder, wire strippers, tweezers, multimeter, screwdriver, sandpaper and painter's tape; not bought: flux pen, foam, varnish. Notes on fit: the hooks pass the bear's 2.2 mm loop only through a 4 mm jump ring; the chain is a 2 mm 316L box chain, which threads the bee's 6.2 mm head hole; the screw kit's heads are low (flat round), not ISO pan heads."
 
-[[order]]
-id = "owned"
-vendor = "already owned"
-title = "Necklace chain (silver)"
-status = "owned"
 [[order.line]]
-item = "Necklace chain"
+item = "Swpeet 630-piece 304 stainless screw kit (M1.6 × 3/4/5 and M2 × 4/5/6, 30 of each)"
 category = "Parts"
-qty = 1
-low = 0
-high = 0
+amount = 5.83
+[[order.line]]
+item = "SUNNYCLUE 100 French ear hooks, 304 stainless"
+category = "Parts"
+amount = 5.59
+[[order.line]]
+item = "sourcing map 150 open jump rings, 4 mm, 0.7 mm wire, stainless"
+category = "Parts"
+amount = 4.29
+[[order.line]]
+item = "2 mm 316L stainless box chain, 60 cm"
+category = "Parts"
+amount = 7.99
+[[order.line]]
+item = "2-piece mini flush cutters + needle-nose pliers"
+category = "Tools"
+amount = 8.99
+[[order.line]]
+item = "28 AWG silicone hook-up wire, 6 colours × 3 m"
+category = "Consumables"
+amount = 6.29
+[[order.line]]
+item = "Heat-shrink tubing assortment, 560 pieces"
+category = "Consumables"
+amount = 6.50
+[[order.line]]
+item = "Reusable wire twist ties, 800 × 10 cm (to bind the ribbon cables to the chain)"
+category = "Consumables"
+amount = 4.23
+[[order.line]]
+item = "Araldite Rapid epoxy syringe, 24 ml"
+category = "Consumables"
+amount = 8.51
+[[order.line]]
+item = "Clear silicone sealant, 2 × 70 g (mic seal and cable strain relief)"
+category = "Consumables"
+amount = 7.99
+[[order.line]]
+item = "Décopatch white gesso, 300 g (primer for the painted prints)"
+category = "Consumables"
+amount = 5.43
+[[order.line]]
+item = "Crafts 4 ALL 12-colour acrylic paint set (CHECK it has pink, blue, yellow, black and silver)"
+category = "Consumables"
+amount = 5.94
+[[order.line]]
+item = "30 fine detail paint brushes (#0, #00, #000)"
+category = "Consumables"
+amount = 6.59
+[[order.line]]
+item = "Promotion applied by Amazon"
+category = "Discounts"
+amount = -2.02

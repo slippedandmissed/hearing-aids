@@ -4,13 +4,13 @@ Last updated 2026-11-21 (end of the documentation and figure-readability pass). 
 
 ## Goal
 
-Two independent open-ear bone-conduction hearing aids for temporary help on bad-wax days, plus fun and learning. Worn as: glasses-stem clips with a spring arm pressing an exciter on the mastoid, a **gummy-bear earring** (pink left, blue right) holding the microphone and amplifier PCB, and a **bumblebee necklace box** with one XIAO nRF52840 and a LiPo. Not a medical device. Budget ceiling about £200 (flexible; the estimate is now above it).
+Two independent open-ear bone-conduction hearing aids for temporary help on bad-wax days, plus fun and learning. Worn as: glasses-stem clips with a spring arm pressing an exciter on the mastoid, a **gummy-bear earring** (pink left, blue right) holding the microphone and amplifier PCB, and a **bumblebee necklace box** with one XIAO nRF52840 and a LiPo. Not a medical device.
 
 ## State at a glance
 
 | area | state | where |
 |---|---|---|
-| CAD: stem clips, spring arm, bears (L/R), bee box | **done on screen**, 14 print STLs (one spring-jaw clip + arm per ear in 2 grips and 3 arm thicknesses, bears, bee), all valid | `cad/`, `make print-files` |
+| CAD: stem clips, spring arm, bears (L/R), bee box | **done on screen**, 14 print STLs (one spring-jaw clip + arm per ear in 2 grips and 3 arm thicknesses, bears, bee), all valid; **ORDERED 2026-11-22 (JLC3DP, £47.02), not yet arrived** | `cad/`, `make print-files` |
 | Blueprint drawings, print renders, previews | done | `make docs` |
 | Dangle PCB L/R, carrier PCB | **designed, routed, DRC: 0 unconnected nets**; checked in JLCDFM and the assembly preview; **ORDERED 2026-11-22 (£94.84, 5 of each, all 5 assembled); not yet arrived or powered** | `pcb/`, `make pcb` |
 | Routing | accepted results committed as locks | `pcb/routes/` (`make reroute` to redo) |
@@ -39,7 +39,7 @@ Everything is **unverified on hardware**.
 ## Numbers worth remembering (all ESTIMATES unless noted)
 
 - Sample rate 16.129 kHz (32 MHz / 31 / 64), latency about 3–4 ms, worst-case exciter power about 30 mW (assumed exciter model), about 15 mA typical → about 30 h on 500 mAh, mass about 6 g per stem and 6 g per lobe.
-- Cost: **£94.84 paid** (JLCPCB, 3 orders, 2026-11-22); projected total about £237–291 (prints: 14 files, about £26 goods by JLC3DP's quoted rule ($0.95 minimum per file, then $0.34/cm³) + shipping £6–15 guess + 20 % VAT; exciters £25–35; XIAO ×2 £28–34; rest £50–70).
+- Cost: **£300.05 paid**, everything ordered (JLCPCB 3 orders £94.84 and JLC3DP prints £47.02; The Pi Hut XIAO ×2, LiPo, ribbon £42.40; SoundImports exciters £25.93; LCSC JST socket + switch £7.71; Amazon UK hardware, consumables and tools £82.15); projected total about £305–317 (only the UK import VAT and any courier fee on the exciters, £5–17, are still to come). Ledger in `docs/data/orders.toml`.
 
 ## Open risks (what would settle each)
 
@@ -53,9 +53,9 @@ Everything is **unverified on hardware**.
 
 ## TODO (next steps, roughly in order)
 
-- [x] JLC3DP quote 2026-11-22 (MJF PA12-HP, 10 representative parts; nothing ordered): price = max($0.95, $0.339/cm³) per file; black = Surface Finish Yes → Dyeing → Dyed Black, about +$0.10; the page takes at most 10 files per upload (and the browser tool 10.4 MB per call). Colour split decided: **black (dyed): clips + arms, bee base; natural grey: bear shells, back plates, bee cover**. Bee and bear parts ordered twice (spares). Product descriptions: Plastic Bracket (HS 392690) for the clips, Plastic Decorations (HS 392640) for bears and bee. JLC3DP flags the bee cover (thin walls), accepted. JLC3DP treats a file holding several loose parts as an assembly and wants it split, so multi-part bundles were dropped. The print set is now 14 single files after the clip redesign. **State 2026-11-22: all 14 files are in the JLC3DP cart as two quotes (the quote list holds at most 10 lines): 10 lines = 8 clips + bee base + bee cover, then 4 bear files; nothing is ordered.** The checkout (JLCONE app) is the user's; the bee cover needs its 'Yes, I will take the risks' box ticked by them. Still to do: check out, then test-fit the clip on the glasses (and re-measure the stem height at 127 mm).
+- [x] JLC3DP quote 2026-11-22 (MJF PA12-HP, 10 representative parts; nothing ordered): price = max($0.95, $0.339/cm³) per file; black = Surface Finish Yes → Dyeing → Dyed Black, about +$0.10; the page takes at most 10 files per upload (and the browser tool 10.4 MB per call). Colour split decided: **black (dyed): clips + arms, bee base; natural grey: bear shells, back plates, bee cover**. Bee and bear parts ordered twice (spares). Product descriptions: Plastic Bracket (HS 392690) for the clips, Plastic Decorations (HS 392640) for bears and bee. JLC3DP flags the bee cover (thin walls), accepted. JLC3DP treats a file holding several loose parts as an assembly and wants it split, so multi-part bundles were dropped. The print set is now 14 single files after the clip redesign. **ORDERED 2026-11-22 in the JLCONE app (£47.02 incl. DHL Express and import taxes, USD 7.19 discount): 14 files in two quotes (the quote list holds at most 10 lines);** Not yet arrived. Still to do: test-fit the clip on the glasses (and re-measure the stem height at 127 mm).
 - [x] Gerbers reviewed in JLCDFM, CPL rotations checked in the assembly preview, **three PCB orders placed 2026-11-22** (£94.84 incl. shipping and import VAT; JLCONE desktop-app discount −£13.64). Watch for JLCPCB's email about the microphone (extended, flagged difficult) and their post-order DFM/placement analysis.
-- [ ] Order exciters, XIAO ×2, LiPo (check plug polarity), ribbon cable, small parts, consumables (estimates in `docs/data/orders.toml`; record each real order there as a ledger entry).
+- [x] All parts ordered (2026-11-22/23): PCBs, prints, XIAO ×2 + LiPo + ribbon, exciters, JST socket + switch, hardware/consumables/tools (Amazon UK, £82.15). Still to come: the UK import VAT and any courier fee on the exciters; check the Amazon paint set for pink, blue, yellow, black and silver; check the LiPo plug polarity on arrival; check the gesso on a spare print; own solder, wire strippers, tweezers, multimeter, Phillips screwdriver, sandpaper and painter's tape from the owner's stock.
 - [x] Glasses stem measured with calipers (thickness, three heights); `GlassesParams` and the clip matrix updated.
 - [x] Stations measured (straight section 105.33 mm; tallest point 134.72 mm chord).
 - [ ] Measure the stem height at 50 mm and at the tip (currently interpolated; tip assumed 4.0 mm).

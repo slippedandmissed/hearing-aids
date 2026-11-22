@@ -8,7 +8,7 @@ from tables import ledger, by_category, money, CATS
 def gbp(lo, hi=None):
     s = money(lo, hi); return ("\u2212\u00a3" + s[1:]) if s.startswith("\u2212") else "\u00a3" + s
 
-CCOL = {"Parts": C["blue"], "Manufacturing": C["green"], "Labour": C["orange"], "Fees": C["yellow"], "Consumables": C["violet"], "Shipping": C["teal"], "Tax": C["red"], "Discounts": C["pink"], "Rounding": C["mute"]}
+CCOL = {"Parts": C["blue"], "Manufacturing": C["green"], "Labour": C["orange"], "Fees": C["yellow"], "Consumables": C["violet"], "Tools": "#8d6e63", "Shipping": C["teal"], "Tax": C["red"], "Discounts": C["pink"], "Rounding": C["mute"]}
 
 def breakdown():
     orders, vol, lean = ledger(); cats = by_category(orders); names = list(cats)
@@ -41,7 +41,7 @@ def breakdown():
         if c["hi"] > c["lo"]: ax.barh(k, c["hi"] - c["lo"], left=left, color="#d5dae0", hatch="..", ec="white"); left += c["hi"] - c["lo"]
         xmax = max(xmax, left); lab = (gbp(p) if p else "") + ((" + " if p else "") + gbp(c["lo"], c["hi"]) + " est." if c["hi"] else ""); ax.text(max(left, 0) + 1.5, k, lab, va="center", fontsize=10.5)
     ax.set_yticks(range(len(names))); ax.set_yticklabels(names, fontsize=11); ax.invert_yaxis(); ax.axvline(0, color=C["ink"], lw=0.8); ax.set_xlim(xmin - 4, xmax * 1.4); ax.grid(axis="x", alpha=0.3)
-    ax.set_xlabel("\u00a3   paid + estimate still to buy", fontsize=10.5); ax.set_title(f"By category: projected {gbp(paid + plo, paid + phi)} (ceiling \u2248 \u00a3200)", loc="left", fontsize=12)
+    ax.set_xlabel("\u00a3   paid + estimate still to buy", fontsize=10.5); ax.set_title(f"By category: projected {gbp(paid + plo, paid + phi)}", loc="left", fontsize=12)
     # 3. share of the mid-point of (paid + planned), EXCLUDING discounts
     ax = axs[2]; mid = {n: max(0.0, cats[n]["paid"] + (cats[n]["lo"] + cats[n]["hi"]) / 2) for n in names}; tot = sum(mid.values()); left = 0
     for n in names:
