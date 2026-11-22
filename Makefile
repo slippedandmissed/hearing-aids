@@ -109,10 +109,10 @@ $(FIG)/measure.stamp: docs/figures/measure_mastoid.py $(FIG_PY)
 	$(UV) docs/figures/measure_mastoid.py && touch $@
 $(FIG)/overview.stamp: docs/figures/overview.py $(FIG_PY) $(CAD_PY) assets/body_upper.npz $(FIG)/renders.stamp $(FIG)/circuits.stamp $(FIG)/blueprints.stamp
 	$(UV) docs/figures/overview.py && touch $@
-$(FIG)/assembly.stamp: docs/figures/assembly.py $(FIG_PY) $(CAD_PY) pcb/fab/carrier.zip $(FIG)/renders.stamp $(FIG)/overview.stamp
+$(FIG)/assembly.stamp: docs/figures/assembly.py $(FIG_PY) cad/print/manifest.csv
 	cd docs/figures && $(UV) assembly.py && touch ../../$@
 
-figures: $(FIG_STAMPS) $(FIG)/build_graph.png ## every figure of the manual (schematics, diagrams, blueprints, print renders, assembly steps, sims)
+figures: $(FIG_STAMPS) $(FIG)/build_graph.png ## every figure of the manual (schematics, diagrams, blueprints, print renders, the printed-parts pages of the assembly guide, sims)
 
 docs/build/references.bib: sources.toml tools/fetch.py
 	@mkdir -p docs/build; $(UV) tools/fetch.py bib $@

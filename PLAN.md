@@ -15,7 +15,7 @@ Two independent open-ear bone-conduction hearing aids for temporary help on bad-
 | Dangle PCB L/R, carrier PCB | **designed, routed, DRC: 0 unconnected nets**; checked in JLCDFM and the assembly preview; **ORDERED 2026-11-22 (£94.84, 5 of each, all 5 assembled); not yet arrived or powered** | `pcb/`, `make pcb` |
 | Routing | accepted results committed as locks | `pcb/routes/` (`make reroute` to redo) |
 | Firmware | compile-only stereo PDM→I2S passthrough | `firmware/passthrough/`, `make firmware` |
-| Manual (datasheet + user manual + log) | generated, 70 pages: illustrated front matter, datasheets, 18 assembly pages, BOM and cost, log. Figures reviewed by eye for colliding text (schematics, block diagrams, charts, blueprints, assembly steps); not every small label has been re-checked | `docs/`, `make docs` |
+| Manual (datasheet + user manual + log) | 88 pages in three parts (project, build and use, reference), with hand-drawn SVG diagrams in `docs/assets/` and generated figures; the assembly guide is 15 pages, one step per page. Figures reviewed by eye for colliding text; not every small label in the generated figures has been re-checked | `docs/`, `make docs` |
 | Prints / other parts ordered | **PCBs ordered; prints, exciters, XIAO etc. not ordered; no print quote yet** | the Parts and cost chapter of the manual, `docs/data/orders.toml` |
 
 Everything is **unverified on hardware**.
