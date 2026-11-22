@@ -177,10 +177,10 @@ qty = 1
 low = 6
 high = 8
 [[order.line]]
-item = "Silicone ribbon cable, 4 wire 30 AWG, 1 m (4 pieces; two ribbons per ear)"
+item = "Silicone Cover Stranded-Core Ribbon Cable, 4 wires, 1 m, 30 AWG black (The Pi Hut / Adafruit 3889): 5 pieces = four 60 cm ribbons and one spare. Wires 0.8 mm each (±0.1), so a ribbon is about 0.8 mm thick x 3.2 mm wide (inferred; the seller gives no ribbon size). NOT the 28 AWG (1.2 mm wires) or 26 AWG versions: they will not fit the cable slot"
 category = "Parts"
-qty = 4
-low = 1.75
+qty = 5
+low = 1.7
 high = 2.0
 
 [[order]]

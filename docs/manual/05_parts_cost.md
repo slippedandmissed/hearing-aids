@@ -45,7 +45,7 @@ The microphone (LCSC C497724) is an *extended* part that JLCPCB flags as difficu
 1. **JLCPCB, three separate orders: DONE 2026-11-22** (see above): `pcb/fab/dangle_L.zip`, `dangle_R.zip`, `carrier.zip` with their `*_BOM.csv` and `*_CPL.csv`.
 2. **3D prints**: upload the files in `cad/print/` to JLC3DP or a UK MJF bureau for an instant quote; choose MJF nylon PA12, grey. Decide between the full set and the lean set after seeing the price.
 3. **Exciters** (3 × DAEX-9-4SM): no UK stockist was found; order EU/US and allow for import VAT.
-4. **XIAO nRF52840 ×2, LiPo, ribbon cable**: The Pi Hut or similar UK shop.
+4. **XIAO nRF52840 ×2, LiPo, ribbon cable**: The Pi Hut or similar UK shop. The cable is *Silicone Cover Stranded-Core Ribbon Cable, 4 wires, 1 m, **30 AWG** black* (Adafruit 3889), 5 pieces; its wires are 0.8 mm across, so a ribbon is about 0.8 × 3.2 mm. The **28 AWG** version (1.2 mm wires) is too fat for the cable slot. The Pi Hut's own page could not be read when this was written (rate-limited), so its price and stock are unconfirmed.
 5. **Hand-soldered parts**: JST-PH S2B-PH-K socket and SK12D07VG4 switch (LCSC numbers in the carrier BOM).
 6. **Hardware and consumables**: **screws** (A2 stainless pan head, cross recess: M1.6 × 4 mm for the bears, 12 pieces; M2 × 4 mm for the box, 4 pieces; **not 5 or 8 mm**, which would reach the end of the hole or poke out of the back), earring hooks, foam ring or silicone, flux, wire, heat-shrink, velcro ties, paint.
 

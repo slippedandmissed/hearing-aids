@@ -22,6 +22,7 @@ class GP:
     # SCREW: M1.6 x 4 mm pan head, cross recess, A2 stainless, metric thread cutting its own thread in the PA12 post (head ~3.2 wide x 1.3 tall: ISO 7045 maxima, NOT measured)
     pilot_depth: float = 5.8                    # a 4 mm screw seated at z = cb_depth ends at 4.4, so it never bottoms out (a 5 mm screw ends at 5.4, still short of 5.8)
     cb_r: float = 1.8; cb_depth: float = 0.4    # counterbore: 3.6 mm wide (head 3.2 + 0.4), 0.4 mm deep, leaving a 0.8 mm floor in the 1.2 mm plate (was 3.2 x 0.7 = 0.5 mm floor)
+    notch_floor: float = 0.8                    # back-plate skin left under the cable notch (was 0.5): 3.0 mm of room under the shell slot. CABLE: 30 AWG silicone ribbon, wires 0.8 mm (+-0.1) side by side, so ~0.8 mm thick x 3.2 mm wide each; two stacked ~1.6 mm (INFERRED from the wire size, the seller gives no ribbon size). Confirm with the real cable at the first test fit
     hole_r: float = 1.0                         # plate clearance hole 2.0 mm for the 1.6 mm shank (MJF shrinks holes; JLC3DP: 0.2-0.4 mm clearance)
     slot_x: float = -5.4; slot_w: float = 4.4   # cable exit slot (top of head, on the back-of-head side)
 
@@ -79,7 +80,7 @@ def build(g: GP = GP(), side: str = "L"):
         lid = lid - Pos(px, py, 0.6) * Cylinder(g.hole_r, 1.4)
         lid = lid - Pos(px, py, (g.cb_depth - 0.1) / 2) * Cylinder(g.cb_r, g.cb_depth + 0.1)    # shallow counterbore for the screw head (z -0.1 .. cb_depth)
     for sx in (-1, 1): lid = lid + Pos(sx * 5.7, g.pcb_y - 5.5, (g.lid_t + z_pcb_bot) / 2) * Box(1.0, 4.0, z_pcb_bot - g.lid_t)   # lands on the bare strips at the board edges
-    lid = lid - Pos(slot_x, 20.0, 1.2) * Box(g.slot_w + 0.6, 8.0, 1.4)                       # notch so the wires can pass the lid
+    lid = lid - Pos(slot_x, 20.0, (g.notch_floor + 1.9) / 2) * Box(g.slot_w + 0.6, 8.0, 1.9 - g.notch_floor)   # notch so the wires can pass the lid (z notch_floor .. 1.9)
     letter = mirror(Text(side, font_size=10.0, font="Helvetica", font_style=FontStyle.BOLD), about=Plane.YZ)           # mirrored so it reads correctly when looking at the back face
     lid = lid - Pos(0, -4.0, 0) * extrude(letter, amount=0.45)                                                       # engraved 0.45 mm into the back face (z=0)
     pcb = Pos(0, g.pcb_y, (g.lid_t + z_pcb_top) / 2) * Box(g.pcb_w + 2 * g.pcb_clear, g.pcb_l + 2 * g.pcb_clear, z_pcb_top - g.lid_t)
