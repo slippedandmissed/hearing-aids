@@ -42,17 +42,17 @@ cad/        params.py, glasses.py, earhook.py (stem, clip, spring arm); gummy_da
 pcb/        build_dangle.py, carrier/build_carrier.py (placement)  →  pipeline.py (Freerouting, ground plane, silk, DRC, BOM/CPL, gerbers, renders)
             import_ses*.py, ground_plane.py, finish*.py, bom*.py, fingerprint.py; lib/ + carrier/lib/ (vendored footprints); routes/ (routing locks)
 firmware/   passthrough/ (Rust, compile-only), tools/bin2uf2.py
-docs/       manual/*.md (chapters), figures/*.py (every figure), data/parts.toml (BOM + prices), assemble.py
+docs/       manual/*.md (chapters), figures/*.py (every figure), data/orders.toml (cost ledger), assemble.py
 tools/      fetch.py (downloads + bibliography), make_graph.py (dependency graph)
 ```
 
 ## Workflows
 
-- **Change a dimension** → edit the parameter → `make print-files previews` (and `make docs` for blueprints). `cad/print_files.py` validates every STL (valid single solid) and fails loudly in the manifest (`CHECK`).
+- **Change a dimension** → edit the parameter → `make print-files previews` (then `make print-audit` measures the real wall thickness: the percentages and the 1st-percentile wall are meaningful, the minimum is not, because every sharp edge is a wedge) (and `make docs` for blueprints). `cad/print_files.py` validates every STL (valid single solid) and fails loudly in the manifest (`CHECK`).
 - **Change a PCB** → edit `build_dangle.py` / `carrier/build_carrier.py` (+ `finish*.py` for silkscreen) → `make pcb`. If the placement fingerprint no longer matches the lock in `pcb/routes/`, the pipeline re-routes and writes a *new* lock: **review the DRC report and renders, then commit the new lock files**. `make reroute` forces it.
 - **Add a figure** → write `docs/figures/<group>.py` using `docs/figures/common.py` (`save(fig, group, name)`), add the group to `FIG_GROUPS` and a stamp rule in the Makefile, reference it from a chapter as `figures/<group>/<name>.png`.
 - **Add a source/citation** → entry in `sources.toml` (add `fetch` + `dest` for files that should be downloaded), cite `[@key]`.
-- **Change a price or add a part** → `docs/data/parts.toml`; tables and the cost chart regenerate.
+- **Record an order or change an estimate** → `docs/data/orders.toml`: one `[[order]]` per movement of money, line items with a category, discounts as negative lines; a `paid` order must add up to its invoice total (the build checks). Tables and the by-order / by-category charts regenerate. **Never copy personal details from an invoice** (name, address, email, phone) into the repo: only dates, references and amounts.
 - Before finishing any change run `make check` and look at the images you changed. After a figure change run `make docs` and look at the figure *in the PDF* at page size (`pdftoppm -r 60`), because that is the size a reader sees.
 
 ## Conventions and gotchas

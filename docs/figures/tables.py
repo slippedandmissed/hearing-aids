@@ -3,7 +3,7 @@ uv run python docs/figures/tables.py"""
 import os, csv, tomllib
 from common import *
 
-PARTS = tomllib.load(open(os.path.join(ROOT, "docs", "data", "parts.toml"), "rb"))
+ORDERS = tomllib.load(open(os.path.join(ROOT, "docs", "data", "orders.toml"), "rb"))
 
 def write(name, text):
     os.makedirs(TAB, exist_ok=True); open(os.path.join(TAB, name + ".md"), "w").write(text + "\n"); print("wrote", name + ".md")
@@ -16,25 +16,61 @@ def md(rows, header, align=None):
 
 def csv_rows(path): return list(csv.DictReader(open(path))) if os.path.exists(path) else []
 
-# ------------------------------------------------------------------ cost model (shared with costs.py)
-def cost_model():
-    rates = PARTS["rates"]; items = []
-    for it in PARTS["item"]:
-        lo, hi = it["qty"] * it["low"], it["qty"] * it["high"]; v = rates["vat"] if it.get("vat") else 0
-        items.append(dict(it, lo=lo * (1 + v), hi=hi * (1 + v)))
+# ------------------------------------------------------------------ cost ledger (shared with costs.py): docs/data/orders.toml
+CATS = ["Parts", "Manufacturing", "Labour", "Fees", "Consumables", "Shipping", "Tax", "Discounts", "Rounding"]      # display order; a new category in the data is appended
+
+def money(lo, hi=None):
+    """2 decimals for an exact amount (minus sign for a discount); a rounded range for an estimate"""
+    hi = lo if hi is None else hi
+    if abs(hi - lo) < 1e-9: return f"{lo:.2f}".replace("-", "\u2212")
+    return f"{lo:.0f}\u2013{hi:.0f}"
+
+def ledger():
+    """-> (orders, print volume, lean volume). Each order gets .lines (with lo/hi in GBP), .lo, .hi and .paid; paid orders must add up to their invoice total."""
+    rates = ORDERS["rates"]
     man = csv_rows(os.path.join(ROOT, "cad", "print", "manifest.csv")); vol = sum(float(r["qty"]) * float(r["volume_cm3"]) for r in man) if man else 137.0
-    plo, phi = rates["print_gbp_per_cm3"]; lean = rates["lean_print_cm3"]
-    items.append(dict(group="3D prints", item=f"MJF nylon prints, full set ({vol:.0f} cm³ incl. spares)", qty=1, lo=vol * plo, hi=vol * phi, source="JLC3DP or a UK MJF bureau (NOT quoted)", note="price per cm³ is an assumption", vat=False))
-    return items, vol, lean
+    plo, phi = rates["print_gbp_per_cm3"]; orders = []
+    for o in ORDERS["order"]:
+        lines = []
+        for l in o["line"]:
+            item = l["item"]
+            if l.get("kind") == "prints": lo, hi, item = vol * plo, vol * phi, f"{item} ({vol:.0f} cm\u00b3 incl. spares)"
+            elif "amount" in l: lo = hi = l["amount"]
+            else: q = l.get("qty", 1); lo, hi = q * l["low"], q * l["high"]; item += f" \u00d7 {q}" if q > 1 else ""
+            lines.append(dict(l, item=item, lo=lo, hi=hi))
+        o2 = dict(o, lines=lines, lo=sum(x["lo"] for x in lines), hi=sum(x["hi"] for x in lines), paid=o["status"] == "paid")
+        if o2["paid"] and abs(o2["lo"] - o["paid_total"]) > 0.005: raise SystemExit(f"orders.toml: order {o['id']} lines add up to {o2['lo']:.2f} but the invoice total is {o['paid_total']:.2f}")
+        orders.append(o2)
+    return orders, vol, rates["lean_print_cm3"]
+
+def by_category(orders):
+    """{category: dict(paid=amount paid, lo=planned low, hi=planned high)} in display order"""
+    d = {}
+    for o in orders:
+        for l in o["lines"]:
+            c = d.setdefault(l["category"], dict(paid=0.0, lo=0.0, hi=0.0))
+            if o["paid"]: c["paid"] += l["lo"]
+            else: c["lo"] += l["lo"]; c["hi"] += l["hi"]
+    return {k: d[k] for k in sorted(d, key=lambda k: CATS.index(k) if k in CATS else len(CATS))}
 
 def bom_tables():
-    items, vol, lean = cost_model(); rows = []
-    for it in items:
-        rows.append([it["group"], it["item"], it["qty"] if it["group"] != "3D prints" else "set", f"{it['lo']:.0f}–{it['hi']:.0f}" if it["hi"] else "0", it["source"] + (f" — {it['note']}" if it.get("note") else "")])
-    lo, hi = sum(i["lo"] for i in items), sum(i["hi"] for i in items)
-    rows.append(["**Total**", "", "", f"**{lo:.0f}–{hi:.0f}**", f"JLCPCB lines include 20 % VAT; with the lean print set (≈ {lean} cm³): {lo - vol * PARTS['rates']['print_gbp_per_cm3'][0] + lean * PARTS['rates']['print_gbp_per_cm3'][0]:.0f}–{hi - vol * PARTS['rates']['print_gbp_per_cm3'][1] + lean * PARTS['rates']['print_gbp_per_cm3'][1]:.0f}"])
-    write("bom_cost", md(rows, ["Group", "Item", "Qty", "£ (est.)", "Source / note"], ["l", "l", "r", "r", "l"]))
-    return lo, hi
+    orders, vol, lean = ledger(); rows = []
+    for o in orders:
+        when = o.get("date") or {"planned": "planned", "owned": "owned"}[o["status"]]
+        what = [o["vendor"]] + ([o["ref"]] if o.get("ref") else []) + ([o["note"]] if o.get("note") else [])
+        rows.append([f"**{o['title']}**", when, "", f"**{money(o['lo'], o['hi'])}**", " \u2014 ".join(what)])
+        for l in o["lines"]: rows.append([f"\u2003{l['item']}", "", l["category"], money(l["lo"], l["hi"]), l.get("note", "")])
+    paid = sum(o["lo"] for o in orders if o["paid"]); plo = sum(o["lo"] for o in orders if not o["paid"]); phi = sum(o["hi"] for o in orders if not o["paid"])
+    rates = ORDERS["rates"]["print_gbp_per_cm3"]; sav = [vol * rates[0] - lean * rates[0], vol * rates[1] - lean * rates[1]]
+    rows.append(["**Paid so far**", "", "", f"**{money(paid)}**", "net of discounts, including tax and shipping"])
+    rows.append(["**Still to buy (estimate)**", "", "", f"**{money(plo, phi)}**", f"with the lean print set (\u2248 {lean} cm\u00b3) instead of the full one: {money(plo - sav[0], phi - sav[1])}"])
+    rows.append(["**Projected total**", "", "", f"**{money(paid + plo, paid + phi)}**", "paid + estimate"])
+    write("bom_cost", md(rows, ["Order / line item", "Date", "Category", "\u00a3", "Vendor, reference, note"], ["l", "l", "l", "r", "l"]))
+    cats = by_category(orders); rows = []
+    for k, c in cats.items(): rows.append([k, money(c["paid"]) if c["paid"] else "\u2014", money(c["lo"], c["hi"]) if c["hi"] else "\u2014", money(c["paid"] + c["lo"], c["paid"] + c["hi"])])
+    rows.append(["**Total**", f"**{money(paid)}**", f"**{money(plo, phi)}**", f"**{money(paid + plo, paid + phi)}**"])
+    write("cost_category", md(rows, ["Category", "Paid", "Still to buy (est.)", "Projected"], ["l", "r", "r", "r"]))
+    return paid, plo, phi
 
 def jlc_tables():
     for nm, f in (("dangle_L", "dangle_L_BOM.csv"), ("dangle_R", "dangle_R_BOM.csv"), ("carrier", "carrier_BOM.csv")):

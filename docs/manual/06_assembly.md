@@ -107,7 +107,7 @@ Solder from the top side of the carrier: ribbon A to pads 1 – 4 (front row), r
 1. Lay the foam or silicone ring on the ring around the microphone port in the shell.
 2. Lay the PCB in: **components down**, bare face against the ring, microphone hole over the belly-button hole.
 3. Fit the back plate with its two pillars on the board's bare edge strips. Pass both cables through the slot at the top and take them once around each peg.
-4. Four M1.6 × 5 self-tapping screws, just snug (nylon strips easily).
+4. Four M1.6 × 4 mm screws, just snug (nylon strips easily). The heads stand proud of the back; the tips end inside the posts.
 5. After testing, a dab of silicone around the cable slot for strain relief.
 
 ## Step 10: Test on the bench {-}
@@ -126,7 +126,7 @@ Solder from the top side of the carrier: ribbon A to pads 1 – 4 (front row), r
 ![](figures/assembly/step11.png)
 
 1. Battery into the abdomen pocket, plug toward the thorax; its lead goes through the opening to the JST socket.
-2. Carrier board on its two screw posts (and the four supports) with two M2 × 8 self-tapping screws.
+2. Carrier board on its two screw posts (and the four supports) with two M2 × 4 mm screws (not longer: an 8 mm screw would come out of the back).
 3. Battery plug into the JST socket (check polarity).
 4. Ear cables out through the top slots with a loop inside.
 5. Cover on: press the lip into the base until it clicks. Make sure no wire is pinched.

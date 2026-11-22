@@ -12,17 +12,17 @@ Two independent open-ear bone-conduction hearing aids for temporary help on bad-
 |---|---|---|
 | CAD: stem clips, spring arm, bears (L/R), bee box | **done on screen**, 58 print STLs, all valid | `cad/`, `make print-files` |
 | Blueprint drawings, print renders, previews | done | `make docs` |
-| Dangle PCB L/R, carrier PCB | **designed, routed, DRC: 0 unconnected nets**; gerber/BOM/CPL generated; **not ordered, not powered** | `pcb/`, `make pcb` |
+| Dangle PCB L/R, carrier PCB | **designed, routed, DRC: 0 unconnected nets**; checked in JLCDFM and the assembly preview; **ORDERED 2026-11-22 (£94.84, 5 of each, all 5 assembled); not yet arrived or powered** | `pcb/`, `make pcb` |
 | Routing | accepted results committed as locks | `pcb/routes/` (`make reroute` to redo) |
 | Firmware | compile-only stereo PDM→I2S passthrough | `firmware/passthrough/`, `make firmware` |
 | Manual (datasheet + user manual + log) | generated, 70 pages: illustrated front matter, datasheets, 18 assembly pages, BOM and cost, log. Figures reviewed by eye for colliding text (schematics, block diagrams, charts, blueprints, assembly steps); not every small label has been re-checked | `docs/`, `make docs` |
-| Prints / parts ordered | **nothing ordered; no quotes yet** | chapter 5 of the manual |
+| Prints / other parts ordered | **PCBs ordered; prints, exciters, XIAO etc. not ordered; no print quote yet** | chapter 5 of the manual, `docs/data/orders.toml` |
 
 Everything is **unverified on hardware**.
 
 ## Documentation and figures (how they are built)
 
-- `make docs` regenerates every figure (stamp per group in `docs/build/figures`), the tables from `docs/data/parts.toml`, the bibliography from `sources.toml` and the PDF. Assembly instructions are one image per step (`docs/figures/assembly.py`); step 0 spans three pages (`step00`, `step00b`, `step00c`).
+- `make docs` regenerates every figure (stamp per group in `docs/build/figures`), the tables from `docs/data/orders.toml` (the cost ledger), the bibliography from `sources.toml` and the PDF. Assembly instructions are one image per step (`docs/figures/assembly.py`); step 0 spans three pages (`step00`, `step00b`, `step00c`).
 - Figures are drawn at about page width with large text, because the PDF scales them down: block labels auto-shrink to fit their box (`common.box`), schematic IC blocks wrap their titles and warn on pin/text collisions (`schem.py`), 3D renders subdivide large triangles (`common.draw_tris`) so the depth sort does not glitch.
 - Tables use alternating row shading; bibliography URLs wrap; schematics and blueprints sit on landscape pages as vector PDFs.
 
@@ -39,7 +39,7 @@ Everything is **unverified on hardware**.
 ## Numbers worth remembering (all ESTIMATES unless noted)
 
 - Sample rate 16.129 kHz (32 MHz / 31 / 64), latency about 3–4 ms, worst-case exciter power about 30 mW (assumed exciter model), about 15 mA typical → about 30 h on 500 mAh, mass about 6 g per stem and 6 g per lobe.
-- Cost about £215–330 (JLCPCB £72–103 incl. VAT; prints £40–80 at an *assumed* £0.3–0.6/cm³ for 137 cm³, lean set about 73 cm³; exciters £25–35; XIAO ×2 £28–34; rest £50–70).
+- Cost: **£94.84 paid** (JLCPCB, 3 orders, 2026-11-22); projected total about £239–322 (prints £40–80 at an *assumed* £0.3–0.6/cm³ for 137 cm³, lean set about 73 cm³; exciters £25–35; XIAO ×2 £28–34; rest £50–70).
 
 ## Open risks (what would settle each)
 
@@ -54,12 +54,12 @@ Everything is **unverified on hardware**.
 ## TODO (next steps, roughly in order)
 
 - [ ] Get print quotes (JLC3DP and a UK MJF bureau) for the full and lean sets; decide.
-- [ ] Review the gerbers in JLCPCB's viewer / a gerber viewer; check CPL rotations; confirm mic and amp stock; then order the three PCB orders.
-- [ ] Order exciters, XIAO ×2, LiPo (check plug polarity), ribbon cable, small parts, consumables (see `docs/data/parts.toml`).
+- [x] Gerbers reviewed in JLCDFM, CPL rotations checked in the assembly preview, **three PCB orders placed 2026-11-22** (£94.84 incl. shipping and import VAT; JLCONE desktop-app discount −£13.64). Watch for JLCPCB's email about the microphone (extended, flagged difficult) and their post-order DFM/placement analysis.
+- [ ] Order exciters, XIAO ×2, LiPo (check plug polarity), ribbon cable, small parts, consumables (estimates in `docs/data/orders.toml`; record each real order there as a ledger entry).
 - [x] Glasses stem measured with calipers (thickness, three heights); `GlassesParams` and the clip matrix updated.
 - [x] Stations measured (straight section 105.33 mm; tallest point 134.72 mm chord).
 - [ ] Measure the stem height at 50 mm and at the tip (currently interpolated; tip assumed 4.0 mm).
-- [x] Parameter audit against JLC3DP limits (2026-11-21): bear posts 3.4 mm, PCB stops 1.0 mm, engraving 0.8 mm deep, exciter pocket clearance 0.45 mm. Not done: a mesh-level wall-thickness check of the STLs.
+- [x] Parameter audit against JLC3DP limits (2026-11-21): bear posts 3.4 mm, PCB stops 1.0 mm, engraving 0.8 mm deep, exciter pocket clearance 0.45 mm. Mesh-level audit done 2026-11-22 (`make print-audit`; findings in manual chapter 4). Screw counterbore fixed (0.4 mm deep, 0.8 mm floor, 3.6 mm wide). **Screws chosen: M1.6 × 4 mm (12) and M2 × 4 mm (4), A2 stainless pan head cross recess; the old M2 × 8 would have poked 2.8 mm out of the back of the bee box.** Still open: 0.5 mm floor under the bear wire notch, 0.75 mm under the engraved L/R, 0.8 mm under the clip engraving.
 - [x] JLCDFM (JLCPCB's free checker) run on all three final gerbers 2026-11-21; results table in the manual (chapter 3). Changes made because of it: vias 0.7/0.3 mm; ground vias 0.2 mm from SMD pads; 0.2 mm between via pads; same-net ground stubs 0.15 mm apart; exciter resistors laid flat 2.4 mm from the wire pads (were 0.32 mm); C3 and C5 moved; silkscreen outlines of SMD parts removed; pad digits moved off the pads; bottom text clear of the mic hole; carrier Q1 moved, carrier text 0.17 mm. New routing locks committed.
 - [x] Hand edits on top of the router's result are persisted (`pcb/route_edits.py`, `pcb/routes/*.edits.json`, applied after the lock import; see manual chapter 3), so a small fix no longer means a new router run. Used for the carrier and both dangles (2026-11-22).
 - [x] Final JLCDFM round 2026-11-22: no red anywhere except carrier THT-to-SMD (8) and dangle R silkscreen-to-hole (14; three ground vias under bottom text, no legal nudge). Carrier: silkscreen text thickened to 0.17 mm and digits 0.8 mm, connector outlines 0.17 mm, one via moved by an edit; PTH-without-pad = the two NPTH mounting holes, slots = XIAO socket oval holes.

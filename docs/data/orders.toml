@@ -1,0 +1,244 @@
+# Ledger of orders: ONE ENTRY PER MOVEMENT OF MONEY, broken down into line items (GBP). Read by docs/figures/tables.py and costs.py.
+#
+# status = "paid"    : amounts are the real ones from the invoice. `paid_total` is what the invoice says was paid; the build FAILS if the lines
+#                      do not add up to it (add a "Rounding" line for pennies). Discounts are NEGATIVE lines.
+# status = "planned" : not ordered yet; each line has low/high estimates (and qty) from shop listings seen during the design. Move an order to
+#                      "paid" when it is placed: replace its estimates by the invoice lines.
+# status = "owned"   : already in hand, costs nothing.
+#
+# category: Parts | Manufacturing (made-to-order boards and prints) | Labour (assembly service) | Fees (setup, tooling, extended-part fees)
+#           | Consumables | Shipping | Tax | Discounts | Rounding
+# Add a category by using a new name; the tables and charts pick it up.
+
+[rates]
+print_gbp_per_cm3 = [0.30, 0.60]   # ASSUMED MJF PA12 price range, NOT quoted; replace with a real JLC3DP / UK bureau quote
+lean_print_cm3 = 73                # the lean print set from the print-order notes
+
+# ---------------------------------------------------------------------------------------------------------------- paid
+
+[[order]]
+id = "jlcpcb-1"
+vendor = "JLCPCB"
+title = "Three assembled PCB orders"
+date = "2026-11-22"
+status = "paid"
+paid_total = 94.84
+ref = "invoice batch W2026112220174274; placed in the JLCONE desktop app, which gave the discount"
+note = "The invoice states USD 124.37 = £94.84. The card statement may differ by the card's exchange rate. Boards: 2-layer FR-4 1.6 mm, green, lead-free HASL, 5 of each, all 5 assembled (economic PCBA, top side). The quote screens called the bare-board price the 'Special Offer'."
+
+[[order.line]]
+item = "Dangle L: 5 bare boards (13 × 28 mm; board 3.05 + lead-free HASL 0.84)"
+category = "Manufacturing"
+amount = 3.89
+[[order.line]]
+item = "Dangle L: components, 9 lines for 5 boards (incl. microphone C497724 6.39 and amplifier C910544 4.75)"
+category = "Parts"
+amount = 11.96
+[[order.line]]
+item = "Dangle L: assembly setup"
+category = "Fees"
+amount = 6.28
+[[order.line]]
+item = "Dangle L: stencil"
+category = "Fees"
+amount = 1.18
+[[order.line]]
+item = "Dangle L: extended-component fee (amplifier and microphone)"
+category = "Fees"
+amount = 4.71
+[[order.line]]
+item = "Dangle L: SMT assembly"
+category = "Labour"
+amount = 0.30
+[[order.line]]
+item = "Dangle L: nitrogen reflow soldering"
+category = "Labour"
+amount = 0.69
+
+[[order.line]]
+item = "Dangle R: 5 bare boards"
+category = "Manufacturing"
+amount = 3.89
+[[order.line]]
+item = "Dangle R: components, 9 lines for 5 boards"
+category = "Parts"
+amount = 11.95
+[[order.line]]
+item = "Dangle R: assembly setup"
+category = "Fees"
+amount = 6.28
+[[order.line]]
+item = "Dangle R: stencil"
+category = "Fees"
+amount = 1.18
+[[order.line]]
+item = "Dangle R: extended-component fee (amplifier and microphone)"
+category = "Fees"
+amount = 4.71
+[[order.line]]
+item = "Dangle R: SMT assembly"
+category = "Labour"
+amount = 0.30
+[[order.line]]
+item = "Dangle R: nitrogen reflow soldering"
+category = "Labour"
+amount = 0.69
+
+[[order.line]]
+item = "Carrier: 5 bare boards (55 × 40 mm; board 3.05 + lead-free HASL 0.92)"
+category = "Manufacturing"
+amount = 3.97
+[[order.line]]
+item = "Carrier: components, 7 lines for 5 boards"
+category = "Parts"
+amount = 1.37
+[[order.line]]
+item = "Carrier: assembly setup"
+category = "Fees"
+amount = 6.28
+[[order.line]]
+item = "Carrier: stencil"
+category = "Fees"
+amount = 1.18
+[[order.line]]
+item = "Carrier: extended-component fee (500 mA PTC fuse C163512)"
+category = "Fees"
+amount = 2.36
+[[order.line]]
+item = "Carrier: SMT assembly"
+category = "Labour"
+amount = 0.22
+[[order.line]]
+item = "Carrier: nitrogen reflow soldering"
+category = "Labour"
+amount = 0.69
+
+[[order.line]]
+item = "Rounding (the invoice converts each figure from USD)"
+category = "Rounding"
+amount = 0.01
+[[order.line]]
+item = "DHL Express to the UK, all three orders in one parcel"
+category = "Shipping"
+amount = 18.58
+note = "USD 24.37"
+[[order.line]]
+item = "Discount for ordering in the JLCONE desktop app"
+category = "Discounts"
+amount = -13.64
+note = "USD −17.89"
+[[order.line]]
+item = "UK import VAT collected by JLCPCB (20 %)"
+category = "Tax"
+amount = 15.81
+note = "USD 20.73"
+
+# ------------------------------------------------------------------------------------------------------------ planned
+
+[[order]]
+id = "prints"
+vendor = "JLC3DP or a UK MJF bureau"
+title = "3D prints (MJF nylon PA12, grey)"
+status = "planned"
+note = "NOT quoted: volume from the print manifest × an assumed price per cm³. Shipping and tax are not estimated separately."
+[[order.line]]
+item = "MJF nylon prints, full set"
+category = "Manufacturing"
+kind = "prints"
+
+[[order]]
+id = "exciters"
+vendor = "EU/US stockist (Soundimports, Audiophonics, Parts Express)"
+title = "Bone-conduction exciters"
+status = "planned"
+note = "No UK stockist found. The estimate already includes shipping and import VAT (about $6.99 each + both)."
+[[order.line]]
+item = "Dayton DAEX-9-4SM exciter (2 + 1 spare)"
+category = "Parts"
+qty = 3
+low = 8.3
+high = 11.7
+
+[[order]]
+id = "pihut"
+vendor = "The Pi Hut"
+title = "Microcontrollers, battery, cable"
+status = "planned"
+[[order.line]]
+item = "Seeed XIAO nRF52840 with pre-soldered pins (1 + 1 practice); the Sense variant also works"
+category = "Parts"
+qty = 2
+low = 14
+high = 17
+[[order.line]]
+item = "LiPo 3.7 V 500 mAh, JST-PH, protected (CHECK the plug polarity against the carrier silkscreen)"
+category = "Parts"
+qty = 1
+low = 6
+high = 8
+[[order.line]]
+item = "Silicone ribbon cable, 4 wire 30 AWG, 1 m (4 pieces; two ribbons per ear)"
+category = "Parts"
+qty = 4
+low = 1.75
+high = 2.0
+
+[[order]]
+id = "lcsc-hand"
+vendor = "LCSC / Farnell / RS"
+title = "Hand-soldered carrier parts"
+status = "planned"
+[[order.line]]
+item = "JST-PH S2B-PH-K socket + SK12D07VG4 slide switch (LCSC C173752 and C393937)"
+category = "Parts"
+qty = 1
+low = 3
+high = 6
+
+[[order]]
+id = "hardware"
+vendor = "various (fastener, craft and hardware shops)"
+title = "Hardware, consumables and paint"
+status = "planned"
+[[order.line]]
+item = "Screws, A2 stainless, pan head, cross recess (ISO 7045 / DIN 7985): M1.6 × 4 mm ×12 (8 used, 4 spare) and M2 × 4 mm ×4 (2 used, 2 spare); they cut their own thread in the nylon, 4 mm so the tip never leaves the post. Sold in packs of 50 - 100, so one pack of each"
+category = "Parts"
+qty = 1
+low = 4
+high = 6
+[[order.line]]
+item = "Ear hook wires or French hooks (silver, 1 pair)"
+category = "Parts"
+qty = 1
+low = 3
+high = 5
+[[order.line]]
+item = "Foam ring or silicone dab for the mic seal"
+category = "Parts"
+qty = 1
+low = 2
+high = 3
+[[order.line]]
+item = "Flux pen, solder, 28 AWG wire, heat-shrink, velcro ties, hot glue"
+category = "Consumables"
+qty = 1
+low = 15
+high = 25
+[[order.line]]
+item = "Plastic primer, acrylic paints (pink, blue, yellow, black, silver), brush, clear lacquer (only if you paint the prints yourself)"
+category = "Consumables"
+qty = 1
+low = 10
+high = 15
+
+[[order]]
+id = "owned"
+vendor = "already owned"
+title = "Necklace chain (silver)"
+status = "owned"
+[[order.line]]
+item = "Necklace chain"
+category = "Parts"
+qty = 1
+low = 0
+high = 0

@@ -32,7 +32,7 @@ The bear is a hollow shell with a flat back plate. Seen from the front it is 32.
 
 - the 13 × 28 mm dangle PCB lies *component side toward the back plate*, its bare bottom face against the front wall, the **microphone port under the belly button**;
 - a **ring** around the port presses against the board (add a foam ring or a dab of silicone to seal it);
-- **four screw posts** (M1.6 × 5 self-tapping, pilot Ø1.3 mm) hold the back plate, and two **pillars** on the back plate clamp the board's bare edge strips;
+- **four screw posts** (M1.6 × 4 mm pan-head screws that cut their own thread, pilot Ø1.3 mm, 5.8 mm deep) hold the back plate; each head sits in a Ø3.6 mm counterbore 0.4 mm deep (head about 3.2 mm wide and 1.3 mm tall, not measured; it stands about 0.9 mm proud of the back face), with a Ø2.0 mm clearance hole for the 1.6 mm shank; and two **pillars** on the back plate clamp the board's bare edge strips;
 - small **stops** keep the board from sliding sideways; two **pegs** in the head let each cable make a turn before it leaves, as strain relief;
 - **all cables leave through one slot at the top of the head**; the hook loop sits above it. The slot is on the *back-of-head* side, so it is on opposite sides of the left and right bears.
 
@@ -77,3 +77,17 @@ Every part carries an engraved ID so the many near-identical clips can be told a
 : Print volume by group (all files, with the spare bears) {#tbl:print}
 
 The full file list with volumes, bounding boxes and validity checks is in the appendix. Cost is discussed in chapter 5; **no price has been quoted yet**.
+
+### Mesh audit against JLC3DP's limits
+
+`make print-audit` (`cad/print_audit.py`) measures the real triangles of every STL, not the design parameters. From 12 000 random points on each surface a ray goes into the solid to the opposite wall (the local wall thickness) and out across the air to the next surface (the local gap). It reports the 1st-percentile wall and the share of the surface thinner than 1.0 mm (JLC3DP's recommended wall) and 0.8 mm, and the share of gaps narrower than 0.4 mm (the nylon clearance). Sampling is random, so a very small feature can be missed, and the minimum is not meaningful (every sharp edge is a wedge of near-zero thickness); the percentages are. Run on 2026-11-22, on the files as designed after the JLC3DP parameter audit:
+
+| part | finding | cause |
+|---|---|---|
+| bear back plates (L, R) | about 4 % of the surface has a 0.5 mm wall, about 8 % is under 1.0 mm, 7 – 8 % under 0.8 mm | three thin places, all traced in `cad/gummy_dangle.py`. The screw-head counterbores were 0.7 mm deep in the 1.2 mm plate (a 0.5 mm floor) and are now 0.4 mm deep (a measured 0.8 mm floor, 1.2 mm of material beyond the counterbore edge). Still open: the wire notch leaves 0.5 mm and the large L or R engraved 0.45 mm into the back leaves 0.75 mm |
+| clips A and B | 3 – 5 % (clip A) and about 2 % (clip B) of the surface is 0.8 mm | the engraved IDs are 0.8 mm deep in a 1.6 mm wall, so 0.8 mm is left under the letters; clip B also has a few thin spots near the arm tip (not traced) |
+| bear shells | 5 % of the surface under 1.0 mm, 0.6 % under 0.8 mm, one patch of 1.0 mm over the PCB at the top | probably a thin ceiling region near the mic seal (not traced) |
+| bee cover and base | 1 – 9 % under 1.0 mm, 1 % under 0.8 mm; two tiny patches 0.3 – 0.5 mm thick | probably lip and flange edges on the cover and an eye well on the base (not traced) |
+| narrow gaps (under 0.4 mm) | 0.1 – 0.4 % on the clips and the bear shells | the 0.25 mm clip-to-stem clearance and the 0.4 mm paint wells, by design |
+
+None of these is a wrong model; they are the places where legibility, fit and strength trade against JLC3DP's recommended 1.0 mm wall. JLC3DP's own model check, run when the STLs are uploaded for a quote, has not been consulted yet.

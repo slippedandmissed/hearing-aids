@@ -35,7 +35,7 @@ sheet([("front, pink (left ear)", [(shell, PINK)], 90, -90, 26, (0, 2, 4)), ("fr
        ("inside the shell from the back: screw posts (4), mic ring, PCB stops, strain pegs, cable slot at the top", [(shell, PINK)], -90, -90, 26, (0, 2, 0)),
        ("back plates, as seen from behind: pink L (left ear), blue R (right ear); engraved letters, cable slot at the top", [(shell, PINK), (lid, PINK), (Pos(40, 0, 0) * shellR, BLUE), (Pos(40, 0, 0) * lidR, BLUE)], -90, -90, 34, (20, 2, 0)),
        ("cut across the mic (y=-3.7): PCB between the ring and the lid pillars", [(half(shell), PINK), (half(pcb), GRN), (half(lid), PINK)], 0, 90, 22, (0, 0, 4))],
-      "out/preview_gummy.png", "Gummy bear v2: ALL cables leave through the slot at the top of the head (beside the hook loop). Screws: M1.6 x 5 self-tapping x4 into the posts. Colours illustrative.")
+      "out/preview_gummy.png", "Gummy bear v2: ALL cables leave through the slot at the top of the head (beside the hook loop). Screws: M1.6 x 4 x4 into the posts. Colours illustrative.")
 
 # ---- bee
 p = HP(); b = bb.BP(); base, cover, j = bb.build(p, b)

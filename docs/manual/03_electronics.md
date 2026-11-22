@@ -2,7 +2,7 @@
 
 # Electronics datasheet
 
-Three boards are *designed* in this project; none has been ordered. All three are drawn in KiCad's Python API from scripts, routed with Freerouting [@freerouting], checked with KiCad's design-rule checker [@kicad], and exported as Gerber/BOM/CPL files for JLCPCB assembly [@jlcpcb_cap]. Part numbers are LCSC (JLCPCB's catalogue) numbers; stock and "extended part" fees must be re-checked on the order page.
+Three boards are *designed* in this project; all three were ordered on 2026-11-22 (see chapter 5); none has arrived or been powered. All three are drawn in KiCad's Python API from scripts, routed with Freerouting [@freerouting], checked with KiCad's design-rule checker [@kicad], and exported as Gerber/BOM/CPL files for JLCPCB assembly [@jlcpcb_cap]. Part numbers are LCSC (JLCPCB's catalogue) numbers; stock and "extended part" fees must be re-checked on the order page.
 
 ## Dangle PCB (one per ear, two variants)
 

@@ -21,6 +21,7 @@ class HP:
     jst_h: float = 7.8               # ASSUMED JST-PH side-entry height above the board
     plug_h: float = 6.8; plug_w: float = 11.6                            # USB-C plug opening (ASSUMED)
     mount_hole_x: float = 25.4       # board mounting holes at (+-25.4, 0)
+    post_pilot: float = 2.6          # SCREW: M2 x 4 mm pan head, cross recess, A2 stainless (head ~4.0 wide x 1.6 tall, ISO 7045 maxima, NOT measured). Pilot from the post top down to z = 1.0: the screw (board top at z = 5.2) ends at z = 1.2, inside the base wall, leaving 1.0 mm under the tip. (M2 x 8 would poke 2.8 mm out of the back.)
     lug_hole: float = 6.2            # chain bail hole (match your chain's clasp end)
     switch_x: float = -8.5           # slide switch, top wall (board x=19.5)
 
@@ -75,6 +76,7 @@ def build(p: HP = HP(), b: BP = BP()):
     for sx in (-1, 1):
         post = Pos(sx * p.mount_hole_x, 0, (w + z_bb) / 2) * Cylinder(2.75, z_bb - w) - Pos(sx * p.mount_hole_x, 0, z_bb - 3.0) * Cylinder(0.9, 6.0)
         base = base + post
+        base = base - Pos(sx * p.mount_hole_x, 0, z_bb - p.post_pilot / 2 + 0.05) * Cylinder(0.9, p.post_pilot + 0.1)      # pilot continues into the base wall
         for sy in (-1, 1): base = base + Pos(sx * 24.0, sy * 16.0, (w + z_bb) / 2) * Cylinder(2.0, z_bb - w)
         for sy in (bat_yt, bat_yb): base = base + Pos(sx * (p.bat_x / 2 + 0.6), sy - (0.6 if sy == bat_yb else -0.6), (w + 0.4 + p.bat_t + w) / 2) * Cylinder(0.8, p.bat_t + 0.4)
     lip = extrude(offset(th, amount=-w - 0.25), amount=3.0) - extrude(offset(th, amount=-w - 1.25), amount=3.0)

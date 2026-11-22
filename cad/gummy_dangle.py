@@ -18,7 +18,11 @@ class GP:
     ceil_gap: float = 0.4            # PCB front face -> inner ceiling (solder blobs live in pockets)
     mic_dx: float = 2.6; mic_dy: float = -4.19
     loop_hole: float = 2.2
-    post_r: float = 1.7; pilot: float = 1.3     # M1.6 self-tapping screw posts; 3.4 mm posts leave a 1.05 mm wall round the pilot (JLC3DP recommends >= 1.0)
+    post_r: float = 1.7; pilot: float = 1.3     # screw posts; 3.4 mm posts leave a 1.05 mm wall round the pilot (JLC3DP recommends >= 1.0)
+    # SCREW: M1.6 x 4 mm pan head, cross recess, A2 stainless, metric thread cutting its own thread in the PA12 post (head ~3.2 wide x 1.3 tall: ISO 7045 maxima, NOT measured)
+    pilot_depth: float = 5.8                    # a 4 mm screw seated at z = cb_depth ends at 4.4, so it never bottoms out (a 5 mm screw ends at 5.4, still short of 5.8)
+    cb_r: float = 1.8; cb_depth: float = 0.4    # counterbore: 3.6 mm wide (head 3.2 + 0.4), 0.4 mm deep, leaving a 0.8 mm floor in the 1.2 mm plate (was 3.2 x 0.7 = 0.5 mm floor)
+    hole_r: float = 1.0                         # plate clearance hole 2.0 mm for the 1.6 mm shank (MJF shrinks holes; JLC3DP: 0.2-0.4 mm clearance)
     slot_x: float = -5.4; slot_w: float = 4.4   # cable exit slot (top of head, on the back-of-head side)
 
 POSTS = [(-5.8, -16.6), (5.8, -16.6), (-11.4, 3.0), (11.4, 3.0)]      # screw posts: legs + arms (clear of the PCB footprint)
@@ -48,10 +52,10 @@ def build(g: GP = GP(), side: str = "L"):
     inner = extrude(offset(silhouette(g), amount=-w), amount=z_in_top) & ell(w)
     shell = outer - inner
     # ---- internal supports (all grow from the front wall, down toward the lid)
-    for (px, py) in POSTS:                                                                    # screw posts: M1.6 x 5 mm self-tapping from the back
+    for (px, py) in POSTS:                                                                    # screw posts: M1.6 x 4 mm screws from the back
         post = Pos(px, py, (1.2 + z_in_top + 0.6) / 2) * Cylinder(g.post_r, z_in_top + 0.6 - 1.2)
         shell = shell + post
-        shell = shell - Pos(px, py, 2.5) * Cylinder(g.pilot / 2, 5.0)                         # pilot hole z 0 .. 5.0
+        shell = shell - Pos(px, py, g.pilot_depth / 2) * Cylinder(g.pilot / 2, g.pilot_depth)      # pilot hole z 0 .. pilot_depth
     mx, my = g.mic_dx, g.pcb_y + g.mic_dy
     boss = Pos(mx, my, (z_pcb_top + z_in_top + 0.4) / 2) * (Cylinder(1.9, z_in_top + 0.4 - z_pcb_top) - Cylinder(0.7, 4.0))   # ring around the port, touches the PCB
     shell = shell + boss
@@ -72,8 +76,8 @@ def build(g: GP = GP(), side: str = "L"):
     # ---- back plate: plug in the opening, with screw holes and edge pillars that clamp the PCB against the mic ring
     lid = extrude(offset(silhouette(g), amount=-w - 0.15), amount=g.lid_t)
     for (px, py) in POSTS:
-        lid = lid - Pos(px, py, 0.6) * Cylinder(0.9, 1.4)
-        lid = lid - Pos(px, py, 0.35) * Cylinder(1.6, 0.7)                                    # shallow counterbore for the screw head
+        lid = lid - Pos(px, py, 0.6) * Cylinder(g.hole_r, 1.4)
+        lid = lid - Pos(px, py, (g.cb_depth - 0.1) / 2) * Cylinder(g.cb_r, g.cb_depth + 0.1)    # shallow counterbore for the screw head (z -0.1 .. cb_depth)
     for sx in (-1, 1): lid = lid + Pos(sx * 5.7, g.pcb_y - 5.5, (g.lid_t + z_pcb_bot) / 2) * Box(1.0, 4.0, z_pcb_bot - g.lid_t)   # lands on the bare strips at the board edges
     lid = lid - Pos(slot_x, 20.0, 1.2) * Box(g.slot_w + 0.6, 8.0, 1.4)                       # notch so the wires can pass the lid
     letter = mirror(Text(side, font_size=10.0, font="Helvetica", font_style=FontStyle.BOLD), about=Plane.YZ)           # mirrored so it reads correctly when looking at the back face

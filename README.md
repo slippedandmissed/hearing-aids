@@ -46,6 +46,7 @@ make all          # build everything (about 10 minutes the first time)
 | `make fetch` | download third-party files from `sources.toml` |
 | `make previews` | software-rendered previews: whole assembly on the body (`cad/out/preview_assembly.png`), glasses close-up, bee, bears |
 | `make print-files` | the 58 printable STLs and `manifest.csv` in `cad/print/` (all validity-checked) |
+| `make print-audit` | measures the real wall thickness and narrow gaps of every STL against JLC3DP's limits: `cad/print/audit.csv` (about 5 minutes) |
 | `make dangle-L` / `dangle-R` / `carrier` | one PCB: gerbers + BOM + CPL zip in `pcb/fab/`, DRC report, KiCad 3D renders in `pcb/renders/` |
 | `make pcb` | all three PCBs |
 | `make pcb-renders` | the KiCad 3D renders of the three PCBs |
@@ -73,199 +74,216 @@ flowchart LR
   n5["cad/out/preview_assembly.png"]
   n6["cad/out/preview_bee.png"]
   n7["cad/out/preview_gummy.png"]
-  n8["cad/print/manifest.csv"]
-  n9(["carrier"])
-  n10(["dangle-L"])
-  n11(["dangle-R"])
-  n12(["docs"])
-  n13["docs/assemble.py"]
-  n14["figures/assembly.stamp"]
-  n15["figures/blueprints.stamp"]
-  n16["figures/build_graph.png"]
-  n17["figures/circuits.stamp"]
-  n18["figures/costs.stamp"]
-  n19["figures/measure.stamp"]
-  n20["figures/overview.stamp"]
-  n21["figures/renders.stamp"]
-  n22["figures/sims.stamp"]
-  n23["figures/system.stamp"]
-  n24["docs/build/hearing-manual.pdf"]
-  n25["docs/build/manual.md"]
-  n26["tables/tables.stamp"]
-  n27["docs/data/parts.toml"]
-  n28["docs/figures/assembly.py"]
-  n29["docs/figures/blueprints.py"]
-  n30["docs/figures/circuits.py"]
-  n31["docs/figures/common.py"]
-  n32["docs/figures/costs.py"]
-  n33["docs/figures/measure_mastoid.py"]
-  n34["docs/figures/overview.py"]
-  n35["docs/figures/renders.py"]
-  n36["docs/figures/sims.py"]
-  n37["docs/figures/system.py"]
-  n38["docs/figures/tables.py"]
-  n39["docs/manual/*.md"]
-  n40(["figures"])
-  n41(["firmware"])
-  n42["firmware src/*.rs"]
-  n43["firmware/passthrough/Cargo.toml"]
-  n44["firmware/passthrough/memory.x"]
-  n45["firmware/passthrough/passthrough.uf2"]
-  n46["firmware/tools/bin2uf2.py"]
-  n47(["pcb"])
-  n48["pcb scripts + footprint libs"]
-  n49(["pcb-renders"])
-  n50["pcb/fab/carrier.zip"]
-  n51["pcb/fab/dangle_L.zip"]
-  n52["pcb/fab/dangle_R.zip"]
-  n53["pcb/renders/carrier_bottom.png"]
-  n54["pcb/renders/carrier_top.png"]
-  n55["pcb/renders/dangle_L_bottom.png"]
-  n56["pcb/renders/dangle_L_top.png"]
-  n57["pcb/renders/dangle_R_bottom.png"]
-  n58["pcb/renders/dangle_R_top.png"]
-  n59["pcb/routes/carrier_C.placement.sha256"]
-  n60["pcb/routes/carrier_C.ses"]
-  n61["pcb/routes/dangle_L.placement.sha256"]
-  n62["pcb/routes/dangle_L.ses"]
-  n63["pcb/routes/dangle_R.placement.sha256"]
-  n64["pcb/routes/dangle_R.ses"]
-  n65(["previews"])
-  n66(["print-files"])
-  n67["tools/freerouting-1.9.0.jar"]
-  n68["tools/make_graph.py"]
-  n0 --> n16
+  n8["cad/print/audit.csv"]
+  n9["cad/print/manifest.csv"]
+  n10(["carrier"])
+  n11(["dangle-L"])
+  n12(["dangle-R"])
+  n13(["docs"])
+  n14["docs/assemble.py"]
+  n15["figures/assembly.stamp"]
+  n16["figures/blueprints.stamp"]
+  n17["figures/build_graph.png"]
+  n18["figures/circuits.stamp"]
+  n19["figures/costs.stamp"]
+  n20["figures/measure.stamp"]
+  n21["figures/overview.stamp"]
+  n22["figures/renders.stamp"]
+  n23["figures/sims.stamp"]
+  n24["figures/system.stamp"]
+  n25["docs/build/hearing-manual.pdf"]
+  n26["docs/build/manual.md"]
+  n27["tables/tables.stamp"]
+  n28["docs/data/orders.toml"]
+  n29["docs/figures/assembly.py"]
+  n30["docs/figures/blueprints.py"]
+  n31["docs/figures/circuits.py"]
+  n32["docs/figures/common.py"]
+  n33["docs/figures/costs.py"]
+  n34["docs/figures/measure_mastoid.py"]
+  n35["docs/figures/overview.py"]
+  n36["docs/figures/renders.py"]
+  n37["docs/figures/sims.py"]
+  n38["docs/figures/system.py"]
+  n39["docs/figures/tables.py"]
+  n40["docs/manual/*.md"]
+  n41(["figures"])
+  n42(["firmware"])
+  n43["firmware src/*.rs"]
+  n44["firmware/passthrough/Cargo.toml"]
+  n45["firmware/passthrough/memory.x"]
+  n46["firmware/passthrough/passthrough.uf2"]
+  n47["firmware/tools/bin2uf2.py"]
+  n48(["pcb"])
+  n49["pcb scripts + footprint libs"]
+  n50(["pcb-renders"])
+  n51["pcb/fab/carrier.zip"]
+  n52["pcb/fab/dangle_L.zip"]
+  n53["pcb/fab/dangle_R.zip"]
+  n54["pcb/renders/carrier_bottom.png"]
+  n55["pcb/renders/carrier_top.png"]
+  n56["pcb/renders/dangle_L_bottom.png"]
+  n57["pcb/renders/dangle_L_top.png"]
+  n58["pcb/renders/dangle_R_bottom.png"]
+  n59["pcb/renders/dangle_R_top.png"]
+  n60["pcb/routes/carrier_C.edits.json"]
+  n61["pcb/routes/carrier_C.placement.sha256"]
+  n62["pcb/routes/carrier_C.ses"]
+  n63["pcb/routes/dangle_L.edits.json"]
+  n64["pcb/routes/dangle_L.placement.sha256"]
+  n65["pcb/routes/dangle_L.ses"]
+  n66["pcb/routes/dangle_R.edits.json"]
+  n67["pcb/routes/dangle_R.placement.sha256"]
+  n68["pcb/routes/dangle_R.ses"]
+  n69(["previews"])
+  n70(["print-audit"])
+  n71(["print-files"])
+  n72["tools/freerouting-1.9.0.jar"]
+  n73["tools/make_graph.py"]
+  n0 --> n17
   n1 --> n4
   n1 --> n5
-  n1 --> n8
-  n1 --> n15
-  n1 --> n20
+  n1 --> n9
+  n1 --> n16
+  n1 --> n21
   n2 --> n1
   n3 --> n4
   n3 --> n5
   n3 --> n6
   n3 --> n7
   n3 --> n8
-  n3 --> n14
+  n3 --> n9
   n3 --> n15
-  n3 --> n20
-  n4 --> n21
-  n4 --> n65
-  n5 --> n21
-  n5 --> n65
-  n6 --> n21
-  n6 --> n65
-  n7 --> n21
-  n7 --> n65
-  n8 --> n18
-  n8 --> n21
-  n8 --> n26
-  n8 --> n66
-  n9 --> n47
-  n10 --> n47
-  n11 --> n47
-  n13 --> n25
-  n14 --> n24
-  n14 --> n40
-  n15 --> n20
-  n15 --> n24
-  n15 --> n40
-  n16 --> n24
-  n16 --> n40
-  n17 --> n20
-  n17 --> n24
-  n17 --> n40
-  n18 --> n24
-  n18 --> n40
-  n19 --> n24
-  n19 --> n40
-  n20 --> n14
-  n20 --> n24
-  n20 --> n40
-  n21 --> n14
-  n21 --> n20
-  n21 --> n24
-  n21 --> n40
-  n22 --> n24
-  n22 --> n40
-  n23 --> n24
-  n23 --> n40
-  n24 --> n12
-  n25 --> n24
+  n3 --> n16
+  n3 --> n21
+  n4 --> n22
+  n4 --> n69
+  n5 --> n22
+  n5 --> n69
+  n6 --> n22
+  n6 --> n69
+  n7 --> n22
+  n7 --> n69
+  n8 --> n70
+  n9 --> n8
+  n9 --> n19
+  n9 --> n22
+  n9 --> n27
+  n9 --> n71
+  n10 --> n48
+  n11 --> n48
+  n12 --> n48
+  n14 --> n26
+  n15 --> n25
+  n15 --> n41
+  n16 --> n21
+  n16 --> n25
+  n16 --> n41
+  n17 --> n25
+  n17 --> n41
+  n18 --> n21
+  n18 --> n25
+  n18 --> n41
+  n19 --> n25
+  n19 --> n41
+  n20 --> n25
+  n20 --> n41
+  n21 --> n15
+  n21 --> n25
+  n21 --> n41
+  n22 --> n15
+  n22 --> n21
+  n22 --> n25
+  n22 --> n41
+  n23 --> n25
+  n23 --> n41
+  n24 --> n25
+  n24 --> n41
+  n25 --> n13
   n26 --> n25
-  n27 --> n18
   n27 --> n26
-  n28 --> n14
+  n28 --> n19
+  n28 --> n27
   n29 --> n15
-  n30 --> n17
-  n31 --> n14
-  n31 --> n15
-  n31 --> n17
+  n30 --> n16
   n31 --> n18
-  n31 --> n19
-  n31 --> n20
-  n31 --> n21
-  n31 --> n22
-  n31 --> n23
+  n32 --> n15
+  n32 --> n16
   n32 --> n18
+  n32 --> n19
+  n32 --> n20
+  n32 --> n21
+  n32 --> n22
+  n32 --> n23
+  n32 --> n24
   n33 --> n19
   n34 --> n20
   n35 --> n21
   n36 --> n22
   n37 --> n23
-  n38 --> n18
-  n38 --> n26
-  n39 --> n24
-  n39 --> n25
-  n42 --> n45
-  n43 --> n45
-  n44 --> n45
-  n45 --> n41
-  n46 --> n45
-  n47 --> n49
+  n38 --> n24
+  n39 --> n19
+  n39 --> n27
+  n40 --> n25
+  n40 --> n26
+  n43 --> n46
+  n44 --> n46
+  n45 --> n46
+  n46 --> n42
+  n47 --> n46
   n48 --> n50
-  n48 --> n51
-  n48 --> n52
-  n50 --> n9
-  n50 --> n14
-  n50 --> n21
-  n50 --> n26
-  n50 --> n53
-  n50 --> n54
+  n49 --> n51
+  n49 --> n52
+  n49 --> n53
   n51 --> n10
-  n51 --> n21
-  n51 --> n26
+  n51 --> n15
+  n51 --> n22
+  n51 --> n27
+  n51 --> n54
   n51 --> n55
-  n51 --> n56
   n52 --> n11
-  n52 --> n21
+  n52 --> n22
+  n52 --> n27
+  n52 --> n56
   n52 --> n57
-  n52 --> n58
-  n54 --> n49
-  n56 --> n49
-  n58 --> n49
+  n53 --> n12
+  n53 --> n22
+  n53 --> n58
+  n53 --> n59
+  n55 --> n50
+  n57 --> n50
   n59 --> n50
-  n59 --> n51
-  n59 --> n52
-  n60 --> n50
   n60 --> n51
   n60 --> n52
-  n61 --> n50
+  n60 --> n53
   n61 --> n51
   n61 --> n52
-  n62 --> n50
+  n61 --> n53
   n62 --> n51
   n62 --> n52
-  n63 --> n50
+  n62 --> n53
   n63 --> n51
   n63 --> n52
-  n64 --> n50
+  n63 --> n53
   n64 --> n51
   n64 --> n52
-  n67 --> n50
+  n64 --> n53
+  n65 --> n51
+  n65 --> n52
+  n65 --> n53
+  n66 --> n51
+  n66 --> n52
+  n66 --> n53
   n67 --> n51
   n67 --> n52
-  n68 --> n16
+  n67 --> n53
+  n68 --> n51
+  n68 --> n52
+  n68 --> n53
+  n72 --> n51
+  n72 --> n52
+  n72 --> n53
+  n73 --> n17
 ```
 <!-- BUILD-GRAPH:END -->
 
@@ -273,7 +291,7 @@ flowchart LR
 
 - **Router results are committed.** KiCad's design export is not reproducible (random item IDs reorder it) and the autorouter's result depends on that order, so the accepted routing of each board is stored in `pcb/routes/<board>.ses` with a fingerprint of the placement it belongs to. `make pcb` re-uses the lock while the fingerprint matches and re-routes (and rewrites the lock) when the placement changes. Small fixes on top of a routed board (move a via, delete or add a track) are kept in `pcb/routes/<board>.edits.json` and applied after the lock is imported (`pcb/route_edits.py`), so they never need a new router run; a re-route sets the old edits aside as `.stale`.
 - Freerouting is run with `-dct 0`, which skips its "Start (20 s)" confirmation dialog.
-- Figures, tables, the cost model and the BOM tables in the manual are all computed from the CAD, the PCB outputs and `docs/data/parts.toml`; change an input and `make docs` updates the PDF.
+- Figures, tables, the cost model and the BOM tables in the manual are all computed from the CAD, the PCB outputs and `docs/data/orders.toml`; change an input and `make docs` updates the PDF.
 
 ## Repository layout
 
@@ -283,7 +301,7 @@ assets/    generic head mesh builder (CC0 sources are downloaded)
 cad/       parts (params.py, glasses.py, earhook.py, gummy_dangle.py, bee_box.py), print_files.py, previews
 pcb/       build_dangle.py, carrier/build_carrier.py, pipeline.py, finish*.py, routes/, lib/ (vendored footprints)
 firmware/  passthrough/ (Rust), tools/bin2uf2.py
-docs/      manual/ (chapters), figures/ (figure scripts), data/parts.toml
+docs/      manual/ (chapters), figures/ (figure scripts), data/orders.toml
 tools/     fetch.py, make_graph.py
 ```
 

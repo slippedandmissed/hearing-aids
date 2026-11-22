@@ -68,7 +68,7 @@ def step00():
         ax.text(x + wd / 2, 5.05, t, ha="center", va="top", fontsize=8.0); x += max(wd, 1.1) + 0.45
     ax.text(8.6, 6.4, "The 58 printed parts are\nshown on the next two pages.", fontsize=9.5, va="center", color="#444444")
     ax.text(0.5, 4.3, "Off the shelf (not designed here)", fontsize=9.5, fontweight="bold", va="center")
-    stuff = [("XIAO nRF52840\nwith pin headers", 2), ("500 mAh LiPo\n(JST-PH plug)", 1), ("Exciter\nDAEX-9-4SM", 3), ("Ribbon cable\n30 AWG, 1 m", 4), ("M1.6 × 5\nscrews", 8), ("M2 × 8\nscrews", 2), ("Ear-hook\nwires", 2), ("Necklace\nchain", 1), ("Foam ring /\nsilicone dab", 2)]
+    stuff = [("XIAO nRF52840\nwith pin headers", 2), ("500 mAh LiPo\n(JST-PH plug)", 1), ("Exciter\nDAEX-9-4SM", 3), ("Ribbon cable\n30 AWG, 1 m", 4), ("M1.6 × 4\nscrews", 8), ("M2 × 4\nscrews", 2), ("Ear-hook\nwires", 2), ("Necklace\nchain", 1), ("Foam ring /\nsilicone dab", 2)]
     cols = 5; cells = []
     for k, (t, q) in enumerate(stuff):
         cx = 1.3 + (k % cols) * 2.35; cy = 3.2 - (k // cols) * 1.9; cells.append((cx, cy))
@@ -245,7 +245,7 @@ def step09():
     a3 = tris_3d(fig, [0.05, 0.05, 0.55, 0.78], items, el=18, az=-60)
     for (px, py) in gd.POSTS:
         a3.plot([shell_c[0] + px] * 2, [shell_c[1] + py] * 2, [-37, 1.0], color="#555555", lw=0.8, ls=(0, (3, 3)))
-    badge(ax, 7.0, 3.3, "×4"); ax.text(7.45, 3.3, "M1.6 × 5 screws", fontsize=8.5, va="center"); warn(ax, 7.3, 1.9, "Dab of silicone around the cable slot for strain relief, after testing.", 4.2)
+    badge(ax, 7.0, 3.3, "×4"); ax.text(7.45, 3.3, "M1.6 × 4 screws", fontsize=8.5, va="center"); warn(ax, 7.3, 1.9, "Dab of silicone around the cable slot for strain relief, after testing.", 4.2)
     return fig
 
 # ============================================================================== 10. bench test
@@ -280,7 +280,7 @@ def step11():
     items = [(mv(Cv, 0, 0, 62), lambda t: np.where((t.mean(1)[:, 1] < -22)[:, None], np.array([[0.12, 0.12, 0.14]]), np.array([[1.0, 0.82, 0.25]]))),
              (mv(xiao, 0, 0, zt + 3.6 + 38), "#2c6bd1"), (mv(brd, 0, 0, zb + 22), "#2b7a52"), (mv(batt, 0, 0, 2.0 + 2.75 + 8), "#f08a24"), (B, "#c3c9d3")]
     a3 = tris_3d(fig, [0.0, 0.02, 0.6, 0.82], items, el=28, az=-55)
-    steps = ["1  Battery into the abdomen pocket, plug socket toward the thorax", "2  Carrier board on its 2 screw posts + 4 supports: 2 × M2 × 8", "3  Battery plug into the JST socket (check polarity!)", "4  Ear cables through the top slots, ribbons tied off inside", "5  Cover on: press the lip into the base until it clicks"]
+    steps = ["1  Battery into the abdomen pocket, plug socket toward the thorax", "2  Carrier board on its 2 screw posts + 4 supports: 2 × M2 × 4", "3  Battery plug into the JST socket (check polarity!)", "4  Ear cables through the top slots, ribbons tied off inside", "5  Cover on: press the lip into the base until it clicks"]
     import textwrap
     yy = 5.7
     for st in steps:

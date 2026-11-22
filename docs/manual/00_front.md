@@ -13,7 +13,7 @@ This project is the design of a pair of hearing aids for conductive hearing loss
 
 **Design.** Each ear has a microphone, an amplifier and a bone-conduction vibrator (an *exciter*). One microcontroller, in a necklace pendant, processes the signals for both ears. The microphone and amplifier are on a small circuit board inside an earring. The exciter is held against the mastoid bone behind the ear by a printed spring arm that clips onto the wearer's glasses. A thin cable per ear runs along a necklace chain to the pendant, which also contains the battery.
 
-**Status.** The design is complete on screen: CAD models, three circuit boards, print files and a firmware skeleton. Nothing has been built, ordered or tested. It is a personal project and is not a medical device.
+**Status.** The design is complete on screen: CAD models, three circuit boards, print files and a firmware skeleton. The three circuit boards were ordered on 2026-11-22; nothing has been built or tested, and the prints and other parts are not yet ordered. It is a personal project and is not a medical device.
 
 ![Sound paths to the inner ear. Left: the air route through the ear canal, blocked by wax. Right: the bone route from an exciter behind the ear.](figures/overview/why_bone.png)
 

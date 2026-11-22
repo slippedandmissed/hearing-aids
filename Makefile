@@ -19,7 +19,7 @@ FIG_STAMPS = $(foreach g,$(FIG_GROUPS),$(FIG)/$(g).stamp)
 CHAPTERS   = $(sort $(wildcard docs/manual/[0-9]*.md))
 
 .DEFAULT_GOAL := help
-.PHONY: help all setup fetch previews print-files pcb pcb-renders reroute firmware figures docs graph check clean distclean \
+.PHONY: help all setup fetch previews print-files print-audit pcb pcb-renders reroute firmware figures docs graph check clean distclean \
         dangle-L dangle-R carrier
 
 help: ## list the targets
@@ -54,6 +54,10 @@ cad/print/manifest.csv: $(CAD_PY) assets/body_upper.npz
 
 previews: cad/out/preview_assembly.png cad/out/glasses_check.png cad/out/preview_bee.png cad/out/preview_gummy.png ## software-rendered previews of the whole assembly, glasses, bee and bears
 print-files: cad/print/manifest.csv ## every printable STL (58 files) + manifest.csv
+
+cad/print/audit.csv: cad/print_audit.py cad/print/manifest.csv
+	$(UV) cad/print_audit.py
+print-audit: cad/print/audit.csv ## mesh-level wall-thickness and gap audit of every print STL against JLC3DP's limits (about 5 minutes)
 
 # ---------------------------------------------------------------- PCBs (KiCad + Freerouting)
 tools/freerouting-1.9.0.jar:
@@ -93,7 +97,7 @@ $(FIG)/system.stamp: docs/figures/system.py $(FIG_PY)
 	$(UV) docs/figures/system.py && touch $@
 $(FIG)/sims.stamp: docs/figures/sims.py $(FIG_PY)
 	$(UV) docs/figures/sims.py && touch $@
-$(FIG)/costs.stamp: docs/figures/costs.py docs/figures/tables.py $(FIG_PY) docs/data/parts.toml cad/print/manifest.csv
+$(FIG)/costs.stamp: docs/figures/costs.py docs/figures/tables.py $(FIG_PY) docs/data/orders.toml cad/print/manifest.csv
 	$(UV) docs/figures/costs.py && touch $@
 $(FIG)/blueprints.stamp: docs/figures/blueprints.py $(FIG_PY) $(CAD_PY) assets/body_upper.npz
 	cd docs/figures && $(UV) blueprints.py && touch ../../$@
@@ -110,7 +114,7 @@ figures: $(FIG_STAMPS) $(FIG)/build_graph.png ## every figure of the manual (sch
 
 docs/build/references.bib: sources.toml tools/fetch.py
 	@mkdir -p docs/build; $(UV) tools/fetch.py bib $@
-$(TAB)/tables.stamp: docs/figures/tables.py docs/data/parts.toml cad/print/manifest.csv pcb/fab/dangle_L.zip pcb/fab/carrier.zip
+$(TAB)/tables.stamp: docs/figures/tables.py docs/data/orders.toml cad/print/manifest.csv pcb/fab/dangle_L.zip pcb/fab/carrier.zip
 	$(UV) docs/figures/tables.py && touch $@
 
 docs/build/manual.md: docs/assemble.py $(CHAPTERS) $(TAB)/tables.stamp
