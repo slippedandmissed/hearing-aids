@@ -81,85 +81,99 @@ flowchart LR
   n12(["dangle-R"])
   n13(["docs"])
   n14["docs/assemble.py"]
-  n15["docs/build/assets/bear-assembly.pdf"]
-  n16["docs/build/assets/bee-assembly.pdf"]
-  n17["docs/build/assets/bee-thickness.pdf"]
-  n18["docs/build/assets/bench-tests.pdf"]
-  n19["docs/build/assets/carrier-solder-map.pdf"]
-  n20["docs/build/assets/clip-fit.pdf"]
-  n21["docs/build/assets/clip-reasoning.pdf"]
-  n22["docs/build/assets/continuity-check.pdf"]
-  n23["docs/build/assets/dangle-solder-map.pdf"]
-  n24["docs/build/assets/necklace-assembly.pdf"]
-  n25["docs/build/assets/paint-plan.pdf"]
-  n26["docs/build/assets/parts-checklist.pdf"]
-  n27["docs/build/assets/signal-path.pdf"]
-  n28["docs/build/assets/system-overview.pdf"]
-  n29["figures/assembly.stamp"]
-  n30["figures/blueprints.stamp"]
-  n31["figures/build_graph.png"]
-  n32["figures/circuits.stamp"]
-  n33["figures/costs.stamp"]
-  n34["figures/measure.stamp"]
-  n35["figures/overview.stamp"]
-  n36["figures/renders.stamp"]
-  n37["figures/sims.stamp"]
-  n38["figures/system.stamp"]
-  n39["docs/build/hearing-manual.pdf"]
-  n40["docs/build/manual.md"]
-  n41["tables/tables.stamp"]
-  n42["docs/data/orders.toml"]
-  n43["docs/figures/assembly.py"]
-  n44["docs/figures/blueprints.py"]
-  n45["docs/figures/circuits.py"]
-  n46["docs/figures/common.py"]
-  n47["docs/figures/costs.py"]
-  n48["docs/figures/measure_mastoid.py"]
-  n49["docs/figures/overview.py"]
-  n50["docs/figures/renders.py"]
-  n51["docs/figures/sims.py"]
-  n52["docs/figures/system.py"]
-  n53["docs/figures/tables.py"]
-  n54["docs/manual/*.md"]
-  n55(["figures"])
-  n56(["firmware"])
-  n57["firmware src/*.rs"]
-  n58["firmware/passthrough/Cargo.toml"]
-  n59["firmware/passthrough/memory.x"]
-  n60["firmware/passthrough/passthrough.uf2"]
-  n61["firmware/tools/bin2uf2.py"]
-  n62(["pcb"])
-  n63["pcb scripts + footprint libs"]
-  n64(["pcb-renders"])
-  n65["pcb/fab/carrier.zip"]
-  n66["pcb/fab/dangle_L.zip"]
-  n67["pcb/fab/dangle_R.zip"]
-  n68["pcb/renders/carrier_bottom.png"]
-  n69["pcb/renders/carrier_top.png"]
-  n70["pcb/renders/dangle_L_bottom.png"]
-  n71["pcb/renders/dangle_L_top.png"]
-  n72["pcb/renders/dangle_R_bottom.png"]
-  n73["pcb/renders/dangle_R_top.png"]
-  n74["pcb/routes/carrier_C.edits.json"]
-  n75["pcb/routes/carrier_C.placement.sha256"]
-  n76["pcb/routes/carrier_C.ses"]
-  n77["pcb/routes/dangle_L.edits.json"]
-  n78["pcb/routes/dangle_L.placement.sha256"]
-  n79["pcb/routes/dangle_L.ses"]
-  n80["pcb/routes/dangle_R.edits.json"]
-  n81["pcb/routes/dangle_R.placement.sha256"]
-  n82["pcb/routes/dangle_R.ses"]
-  n83(["previews"])
-  n84(["print-audit"])
-  n85(["print-files"])
-  n86["tools/freerouting-1.9.0.jar"]
-  n87["tools/make_graph.py"]
-  n0 --> n31
+  n15["docs/assets/circuit-carrier.svg"]
+  n16["docs/assets/circuit-class-d.svg"]
+  n17["docs/assets/circuit-dangle.svg"]
+  n18["docs/assets/circuit-reverse-protection.svg"]
+  n19["docs/build/assets/bear-assembly.pdf"]
+  n20["docs/build/assets/bee-assembly.pdf"]
+  n21["docs/build/assets/bee-thickness.pdf"]
+  n22["docs/build/assets/bench-tests.pdf"]
+  n23["docs/build/assets/carrier-solder-map.pdf"]
+  n24["docs/build/assets/circuit-carrier.pdf"]
+  n25["docs/build/assets/circuit-class-d.pdf"]
+  n26["docs/build/assets/circuit-dangle.pdf"]
+  n27["docs/build/assets/circuit-reverse-protection.pdf"]
+  n28["docs/build/assets/clip-fit.pdf"]
+  n29["docs/build/assets/clip-reasoning.pdf"]
+  n30["docs/build/assets/continuity-check.pdf"]
+  n31["docs/build/assets/dangle-solder-map.pdf"]
+  n32["docs/build/assets/necklace-assembly.pdf"]
+  n33["docs/build/assets/paint-plan.pdf"]
+  n34["docs/build/assets/parts-checklist.pdf"]
+  n35["docs/build/assets/signal-path.pdf"]
+  n36["docs/build/assets/system-overview.pdf"]
+  n37["figures/assembly.stamp"]
+  n38["figures/blueprints.stamp"]
+  n39["figures/build_graph.png"]
+  n40["figures/circuits-check.stamp"]
+  n41["figures/circuits.stamp"]
+  n42["figures/costs.stamp"]
+  n43["figures/measure.stamp"]
+  n44["figures/overview.stamp"]
+  n45["figures/renders.stamp"]
+  n46["figures/sims.stamp"]
+  n47["figures/system.stamp"]
+  n48["docs/build/hearing-manual.pdf"]
+  n49["docs/build/manual.md"]
+  n50["tables/tables.stamp"]
+  n51["docs/check_circuits.py"]
+  n52["docs/data/orders.toml"]
+  n53["docs/figures/assembly.py"]
+  n54["docs/figures/blueprints.py"]
+  n55["docs/figures/circuits.py"]
+  n56["docs/figures/common.py"]
+  n57["docs/figures/costs.py"]
+  n58["docs/figures/measure_mastoid.py"]
+  n59["docs/figures/overview.py"]
+  n60["docs/figures/renders.py"]
+  n61["docs/figures/sims.py"]
+  n62["docs/figures/system.py"]
+  n63["docs/figures/tables.py"]
+  n64["docs/manual/*.md"]
+  n65(["figures"])
+  n66(["firmware"])
+  n67["firmware src/*.rs"]
+  n68["firmware/passthrough/Cargo.toml"]
+  n69["firmware/passthrough/memory.x"]
+  n70["firmware/passthrough/passthrough.uf2"]
+  n71["firmware/tools/bin2uf2.py"]
+  n72(["pcb"])
+  n73["pcb scripts + footprint libs"]
+  n74(["pcb-renders"])
+  n75["pcb/carrier/out/carrier_C_final.kicad_pcb"]
+  n76["pcb/carrier/out/carrier_C_nets.json"]
+  n77["pcb/fab/carrier.zip"]
+  n78["pcb/fab/dangle_L.zip"]
+  n79["pcb/fab/dangle_R.zip"]
+  n80["pcb/out/dangle_L_nets.json"]
+  n81["pcb/out/dangle_R_nets.json"]
+  n82["pcb/renders/carrier_bottom.png"]
+  n83["pcb/renders/carrier_top.png"]
+  n84["pcb/renders/dangle_L_bottom.png"]
+  n85["pcb/renders/dangle_L_top.png"]
+  n86["pcb/renders/dangle_R_bottom.png"]
+  n87["pcb/renders/dangle_R_top.png"]
+  n88["pcb/routes/carrier_C.edits.json"]
+  n89["pcb/routes/carrier_C.placement.sha256"]
+  n90["pcb/routes/carrier_C.ses"]
+  n91["pcb/routes/dangle_L.edits.json"]
+  n92["pcb/routes/dangle_L.placement.sha256"]
+  n93["pcb/routes/dangle_L.ses"]
+  n94["pcb/routes/dangle_R.edits.json"]
+  n95["pcb/routes/dangle_R.placement.sha256"]
+  n96["pcb/routes/dangle_R.ses"]
+  n97(["previews"])
+  n98(["print-audit"])
+  n99(["print-files"])
+  n100["tools/freerouting-1.9.0.jar"]
+  n101["tools/make_graph.py"]
+  n0 --> n39
   n1 --> n4
   n1 --> n5
   n1 --> n9
-  n1 --> n30
-  n1 --> n35
+  n1 --> n38
+  n1 --> n44
   n2 --> n1
   n3 --> n4
   n3 --> n5
@@ -167,148 +181,163 @@ flowchart LR
   n3 --> n7
   n3 --> n8
   n3 --> n9
-  n3 --> n30
-  n3 --> n35
-  n4 --> n36
-  n4 --> n83
-  n5 --> n36
-  n5 --> n83
-  n6 --> n36
-  n6 --> n83
-  n7 --> n36
-  n7 --> n83
-  n8 --> n84
+  n3 --> n38
+  n3 --> n44
+  n4 --> n45
+  n4 --> n97
+  n5 --> n45
+  n5 --> n97
+  n6 --> n45
+  n6 --> n97
+  n7 --> n45
+  n7 --> n97
+  n8 --> n98
   n9 --> n8
-  n9 --> n29
-  n9 --> n33
-  n9 --> n36
-  n9 --> n41
-  n9 --> n85
-  n10 --> n62
-  n11 --> n62
-  n12 --> n62
-  n14 --> n40
-  n15 --> n39
-  n16 --> n39
-  n17 --> n39
-  n18 --> n39
-  n19 --> n39
-  n20 --> n39
-  n21 --> n39
-  n22 --> n39
-  n23 --> n39
-  n24 --> n39
-  n25 --> n39
-  n26 --> n39
-  n27 --> n39
-  n28 --> n39
-  n29 --> n39
-  n29 --> n55
-  n30 --> n35
-  n30 --> n39
-  n30 --> n55
-  n31 --> n39
-  n31 --> n55
-  n32 --> n35
-  n32 --> n39
-  n32 --> n55
-  n33 --> n39
-  n33 --> n55
-  n34 --> n39
-  n34 --> n55
-  n35 --> n39
-  n35 --> n55
-  n36 --> n35
-  n36 --> n39
-  n36 --> n55
-  n37 --> n39
-  n37 --> n55
-  n38 --> n39
-  n38 --> n55
-  n39 --> n13
-  n40 --> n39
-  n41 --> n40
-  n42 --> n33
-  n42 --> n41
-  n43 --> n29
-  n44 --> n30
-  n45 --> n32
-  n46 --> n29
-  n46 --> n30
-  n46 --> n32
-  n46 --> n33
-  n46 --> n34
-  n46 --> n35
-  n46 --> n36
-  n46 --> n37
-  n46 --> n38
-  n47 --> n33
-  n48 --> n34
-  n49 --> n35
-  n50 --> n36
-  n51 --> n37
-  n52 --> n38
-  n53 --> n33
-  n53 --> n41
-  n54 --> n39
-  n54 --> n40
-  n57 --> n60
-  n58 --> n60
-  n59 --> n60
-  n60 --> n56
-  n61 --> n60
-  n62 --> n64
-  n63 --> n65
-  n63 --> n66
-  n63 --> n67
-  n65 --> n10
-  n65 --> n36
-  n65 --> n41
-  n65 --> n68
-  n65 --> n69
-  n66 --> n11
-  n66 --> n36
-  n66 --> n41
-  n66 --> n70
-  n66 --> n71
-  n67 --> n12
-  n67 --> n36
-  n67 --> n72
-  n67 --> n73
-  n69 --> n64
-  n71 --> n64
-  n73 --> n64
-  n74 --> n65
-  n74 --> n66
-  n74 --> n67
-  n75 --> n65
-  n75 --> n66
-  n75 --> n67
-  n76 --> n65
-  n76 --> n66
-  n76 --> n67
-  n77 --> n65
-  n77 --> n66
-  n77 --> n67
-  n78 --> n65
-  n78 --> n66
-  n78 --> n67
-  n79 --> n65
-  n79 --> n66
-  n79 --> n67
-  n80 --> n65
-  n80 --> n66
-  n80 --> n67
-  n81 --> n65
-  n81 --> n66
-  n81 --> n67
-  n82 --> n65
-  n82 --> n66
-  n82 --> n67
-  n86 --> n65
-  n86 --> n66
-  n86 --> n67
-  n87 --> n31
+  n9 --> n37
+  n9 --> n42
+  n9 --> n45
+  n9 --> n50
+  n9 --> n99
+  n10 --> n72
+  n11 --> n72
+  n12 --> n72
+  n14 --> n49
+  n15 --> n40
+  n16 --> n40
+  n17 --> n40
+  n18 --> n40
+  n19 --> n48
+  n20 --> n48
+  n21 --> n48
+  n22 --> n48
+  n23 --> n48
+  n24 --> n48
+  n25 --> n48
+  n26 --> n48
+  n27 --> n48
+  n28 --> n48
+  n29 --> n48
+  n30 --> n48
+  n31 --> n48
+  n32 --> n48
+  n33 --> n48
+  n34 --> n48
+  n35 --> n48
+  n36 --> n48
+  n37 --> n48
+  n37 --> n65
+  n38 --> n44
+  n38 --> n48
+  n38 --> n65
+  n39 --> n48
+  n39 --> n65
+  n40 --> n48
+  n41 --> n44
+  n41 --> n48
+  n41 --> n65
+  n42 --> n48
+  n42 --> n65
+  n43 --> n48
+  n43 --> n65
+  n44 --> n48
+  n44 --> n65
+  n45 --> n44
+  n45 --> n48
+  n45 --> n65
+  n46 --> n48
+  n46 --> n65
+  n47 --> n48
+  n47 --> n65
+  n48 --> n13
+  n49 --> n48
+  n50 --> n49
+  n51 --> n40
+  n52 --> n42
+  n52 --> n50
+  n53 --> n37
+  n54 --> n38
+  n55 --> n41
+  n56 --> n37
+  n56 --> n38
+  n56 --> n41
+  n56 --> n42
+  n56 --> n43
+  n56 --> n44
+  n56 --> n45
+  n56 --> n46
+  n56 --> n47
+  n57 --> n42
+  n58 --> n43
+  n59 --> n44
+  n60 --> n45
+  n61 --> n46
+  n62 --> n47
+  n63 --> n42
+  n63 --> n50
+  n64 --> n48
+  n64 --> n49
+  n67 --> n70
+  n68 --> n70
+  n69 --> n70
+  n70 --> n66
+  n71 --> n70
+  n72 --> n74
+  n73 --> n76
+  n73 --> n77
+  n73 --> n78
+  n73 --> n79
+  n75 --> n76
+  n76 --> n40
+  n77 --> n10
+  n77 --> n45
+  n77 --> n50
+  n77 --> n82
+  n77 --> n83
+  n78 --> n11
+  n78 --> n45
+  n78 --> n50
+  n78 --> n84
+  n78 --> n85
+  n79 --> n12
+  n79 --> n45
+  n79 --> n86
+  n79 --> n87
+  n80 --> n40
+  n81 --> n40
+  n83 --> n74
+  n85 --> n74
+  n87 --> n74
+  n88 --> n77
+  n88 --> n78
+  n88 --> n79
+  n89 --> n77
+  n89 --> n78
+  n89 --> n79
+  n90 --> n77
+  n90 --> n78
+  n90 --> n79
+  n91 --> n77
+  n91 --> n78
+  n91 --> n79
+  n92 --> n77
+  n92 --> n78
+  n92 --> n79
+  n93 --> n77
+  n93 --> n78
+  n93 --> n79
+  n94 --> n77
+  n94 --> n78
+  n94 --> n79
+  n95 --> n77
+  n95 --> n78
+  n95 --> n79
+  n96 --> n77
+  n96 --> n78
+  n96 --> n79
+  n100 --> n77
+  n100 --> n78
+  n100 --> n79
+  n101 --> n39
 ```
 <!-- BUILD-GRAPH:END -->
 

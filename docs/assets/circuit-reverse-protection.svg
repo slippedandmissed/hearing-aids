@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 492" width="640" height="492" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<!-- Reverse-battery protection with the P-FET Q1 (carrier board), both polarities. HAND-AUTHORED SOURCE; Q1's pins are checked against the routed board by docs/check_circuits.py. 3.7 V is a typical cell voltage. Checked 2026-11-23. -->
+<rect width="640" height="492" fill="#fff"/>
+<text x="14" y="22" font-size="14" text-anchor="start" fill="#1f2933" font-weight="700">Reverse-battery protection, Q1 up close</text>
+<g stroke="#1f2933" stroke-width="2"><line x1="50" y1="100" x2="50" y2="116"/><line x1="36" y1="116" x2="64" y2="116"/><line x1="42" y1="123" x2="58" y2="123"/><line x1="50" y1="123" x2="50" y2="140"/></g>
+<text x="70" y="108" font-size="14" text-anchor="start" fill="#d64545" font-weight="700">+</text>
+<text x="70" y="142" font-size="14" text-anchor="start" fill="#1f2933" font-weight="700">−</text>
+<text x="14" y="64" font-size="12.5" text-anchor="start" fill="#1f2933" font-weight="700">LiPo cell</text>
+<g data-board="carrier_C" data-ref="Q1" data-value="AO3401A" data-pins="1=GND,2=PROT,3=BATP">
+<g transform="translate(230,116) rotate(-90)" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"><polyline points="6,-24 6,-12 -4,-12"/><polyline points="6,24 6,12 -4,12"/><line x1="-4" y1="-16" x2="-4" y2="-8"/><line x1="-4" y1="-3" x2="-4" y2="3"/><line x1="-4" y1="8" x2="-4" y2="16"/><polyline points="-4,0 6,0 6,12"/><line x1="-10" y1="-13" x2="-10" y2="13"/><line x1="-24" y1="0" x2="-10" y2="0"/><polygon points="-1,-3 -1,3 4,0" fill="#1f2933" stroke="none"/></g></g>
+<polyline points="50,100 50,110 206,110" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="254,110 330,110" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="230,140 230,160" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<g stroke="#1f2933" stroke-width="2"><line x1="230" y1="160" x2="230" y2="167"/><line x1="220" y1="167" x2="240" y2="167"/><line x1="224" y1="171" x2="236" y2="171"/><line x1="227.5" y1="175" x2="232.5" y2="175"/></g>
+<polyline points="206,110 206,76 222,76" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="238,76 254,76 254,110" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="206" cy="110" r="3.4" fill="#1f2933"/>
+<circle cx="254" cy="110" r="3.4" fill="#1f2933"/>
+<polygon points="222,68 222,84 238,76" fill="#fff" stroke="#1f2933" stroke-width="2"/><line x1="238" y1="68" x2="238" y2="84" stroke="#1f2933" stroke-width="2"/>
+<text x="230" y="60" font-size="12" text-anchor="middle" fill="#6b7785">body diode</text>
+<rect x="330" y="88" width="104" height="44" rx="3" fill="#f6f8fa" stroke="#1f2933" stroke-width="2"/>
+<text x="382" y="108" font-size="12.5" text-anchor="middle" fill="#1f2933">rest of</text>
+<text x="382" y="124" font-size="12.5" text-anchor="middle" fill="#1f2933">the board</text>
+<polyline points="382,132 382,160" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<g stroke="#1f2933" stroke-width="2"><line x1="382" y1="160" x2="382" y2="167"/><line x1="372" y1="167" x2="392" y2="167"/><line x1="376" y1="171" x2="388" y2="171"/><line x1="379.5" y1="175" x2="384.5" y2="175"/></g>
+<polyline points="50,140 50,160" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<g stroke="#1f2933" stroke-width="2"><line x1="50" y1="160" x2="50" y2="167"/><line x1="40" y1="167" x2="60" y2="167"/><line x1="44" y1="171" x2="56" y2="171"/><line x1="47.5" y1="175" x2="52.5" y2="175"/></g>
+<text x="246" y="160" font-size="12" text-anchor="start" fill="#6b7785">gate to GND</text>
+<text x="14" y="190" font-size="13" text-anchor="start" fill="#1f2933" font-weight="700">Right way round</text>
+<text x="14" y="208" font-size="12.5" text-anchor="start" fill="#1f2933">The drain is at +3.7 V and the gate at 0 V, so the gate is 3.7 V below the source and the channel is on:</text>
+<text x="14" y="224" font-size="12.5" text-anchor="start" fill="#1f2933">the battery powers the board. (The diode carries the first instant, before the channel opens.)</text>
+<line x1="14" y1="238" x2="626" y2="238" stroke="#d3d9df"/>
+<g stroke="#1f2933" stroke-width="2"><line x1="50" y1="310" x2="50" y2="326"/><line x1="42" y1="326" x2="58" y2="326"/><line x1="36" y1="333" x2="64" y2="333"/><line x1="50" y1="333" x2="50" y2="350"/></g>
+<text x="70" y="318" font-size="14" text-anchor="start" fill="#1f2933" font-weight="700">−</text>
+<text x="70" y="352" font-size="14" text-anchor="start" fill="#d64545" font-weight="700">+</text>
+<text x="14" y="274" font-size="12.5" text-anchor="start" fill="#1f2933" font-weight="700">LiPo cell</text>
+<g data-board="carrier_C" data-ref="Q1" data-value="AO3401A" data-pins="1=GND,2=PROT,3=BATP">
+<g transform="translate(230,326) rotate(-90)" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"><polyline points="6,-24 6,-12 -4,-12"/><polyline points="6,24 6,12 -4,12"/><line x1="-4" y1="-16" x2="-4" y2="-8"/><line x1="-4" y1="-3" x2="-4" y2="3"/><line x1="-4" y1="8" x2="-4" y2="16"/><polyline points="-4,0 6,0 6,12"/><line x1="-10" y1="-13" x2="-10" y2="13"/><line x1="-24" y1="0" x2="-10" y2="0"/><polygon points="-1,-3 -1,3 4,0" fill="#1f2933" stroke="none"/></g></g>
+<polyline points="50,310 50,320 206,320" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="254,320 330,320" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="230,350 230,370" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<g stroke="#1f2933" stroke-width="2"><line x1="230" y1="370" x2="230" y2="377"/><line x1="220" y1="377" x2="240" y2="377"/><line x1="224" y1="381" x2="236" y2="381"/><line x1="227.5" y1="385" x2="232.5" y2="385"/></g>
+<polyline points="206,320 206,286 222,286" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="238,286 254,286 254,320" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="206" cy="320" r="3.4" fill="#1f2933"/>
+<circle cx="254" cy="320" r="3.4" fill="#1f2933"/>
+<polygon points="222,278 222,294 238,286" fill="#fff" stroke="#1f2933" stroke-width="2"/><line x1="238" y1="278" x2="238" y2="294" stroke="#1f2933" stroke-width="2"/>
+<text x="230" y="270" font-size="12" text-anchor="middle" fill="#6b7785">body diode</text>
+<rect x="330" y="298" width="104" height="44" rx="3" fill="#f6f8fa" stroke="#1f2933" stroke-width="2"/>
+<text x="382" y="318" font-size="12.5" text-anchor="middle" fill="#1f2933">rest of</text>
+<text x="382" y="334" font-size="12.5" text-anchor="middle" fill="#1f2933">the board</text>
+<polyline points="382,342 382,370" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<g stroke="#1f2933" stroke-width="2"><line x1="382" y1="370" x2="382" y2="377"/><line x1="372" y1="377" x2="392" y2="377"/><line x1="376" y1="381" x2="388" y2="381"/><line x1="379.5" y1="385" x2="384.5" y2="385"/></g>
+<polyline points="50,350 50,370" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<g stroke="#1f2933" stroke-width="2"><line x1="50" y1="370" x2="50" y2="377"/><line x1="40" y1="377" x2="60" y2="377"/><line x1="44" y1="381" x2="56" y2="381"/><line x1="47.5" y1="385" x2="52.5" y2="385"/></g>
+<text x="246" y="370" font-size="12" text-anchor="start" fill="#6b7785">gate to GND</text>
+<text x="14" y="400" font-size="13" text-anchor="start" fill="#d64545" font-weight="700">Reversed</text>
+<text x="14" y="418" font-size="12.5" text-anchor="start" fill="#1f2933">The drain is at −3.7 V, the gate and the source at 0 V. The channel stays off and the diode faces the wrong way,</text>
+<text x="14" y="434" font-size="12.5" text-anchor="start" fill="#1f2933">so nothing flows and nothing on the board is harmed.</text>
+<text x="14" y="460" font-size="12.5" text-anchor="start" fill="#6b7785">Voltages are relative to the board's ground, the net on the connector's second pin.</text>
+<text x="14" y="476" font-size="12.5" text-anchor="start" fill="#6b7785">A P-channel transistor conducts when its gate is below its source.</text>
+</svg>

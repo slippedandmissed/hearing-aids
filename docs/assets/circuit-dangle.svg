@@ -1,0 +1,244 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 900" width="640" height="900" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<!-- Earring (dangle) board as a textbook circuit. HAND-AUTHORED SOURCE: edit the SVG; docs/check_circuits.py compares every data-ref / data-value / data-pins with the real routed board (pcb/build_dangle.py), so a wrong value or wire fails make check. Facts: SD_MODE trip points 0.77 V and 1.4 V and the 100 kOhm internal pulldown are from the MAX98357A datasheet (Table 5 and the electrical characteristics). Checked 2026-11-23. -->
+<rect width="640" height="900" fill="#fff"/>
+<text x="14" y="22" font-size="14" text-anchor="start" fill="#1f2933" font-weight="700">Earring board (LEFT variant), part by part</text>
+<text x="14" y="40" font-size="12.5" text-anchor="start" fill="#6b7785">Same name = joined. Red: battery, orange: 3.3 V, blue: signal.</text>
+<g data-board="dangle_L" data-ref="U3" data-value="XC6206" data-pins="3=VBAT,2=V3V3,1=GND">
+<rect x="104" y="70" width="100" height="80" rx="3" fill="#f6f8fa" stroke="#1f2933" stroke-width="2.2"/>
+<line x1="104" y1="88" x2="88" y2="88" stroke="#1f2933" stroke-width="2"/>
+<text x="109" y="92" font-size="12" text-anchor="start" fill="#1f2933">IN</text>
+<text x="96" y="84" font-size="11.5" text-anchor="middle" fill="#6b7785">3</text>
+<line x1="204" y1="88" x2="220" y2="88" stroke="#1f2933" stroke-width="2"/>
+<text x="199" y="92" font-size="12" text-anchor="end" fill="#1f2933">OUT</text>
+<text x="212" y="84" font-size="11.5" text-anchor="middle" fill="#6b7785">2</text>
+<line x1="184" y1="150" x2="184" y2="166" stroke="#1f2933" stroke-width="2"/>
+<text x="184" y="144" font-size="12" text-anchor="middle" fill="#1f2933">GND</text>
+<text x="193" y="162" font-size="11.5" text-anchor="start" fill="#6b7785">1</text>
+</g>
+<g fill="#fff" stroke="#1f2933" stroke-width="1.8"><rect x="140" y="102" width="32" height="16"/><polygon points="116,122 116,144 138,133"/></g>
+<g fill="none" stroke="#1f2933" stroke-width="1.8"><polyline points="138,133 156,133 156,118"/></g>
+<text x="154" y="64" font-size="12.5" text-anchor="middle" fill="#1f2933" font-weight="700">U3 regulator</text>
+<polyline points="88,88 70,88" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<text x="66" y="92" font-size="12.5" text-anchor="end" fill="#d64545" font-weight="700">VBAT</text>
+<polyline points="220,88 322,88" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="262" cy="88" r="3.4" fill="#1f2933"/>
+<circle cx="322" cy="88" r="3.4" fill="#1f2933"/>
+<text x="292" y="80" font-size="12.5" text-anchor="middle" fill="#b35a00" font-weight="700">3V3</text>
+<polyline points="262,88 262,102" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<g data-board="dangle_L" data-ref="C4" data-value="1uF" data-pins="1=V3V3,2=GND">
+<g stroke="#1f2933" stroke-width="2" fill="none"><line x1="262" y1="102" x2="262" y2="119"/><line x1="251" y1="119" x2="273" y2="119"/><line x1="251" y1="125" x2="273" y2="125"/><line x1="262" y1="125" x2="262" y2="142"/></g></g>
+<text x="276" y="119" font-size="12.5" text-anchor="start" fill="#1f2933" font-weight="700">C4</text>
+<text x="276" y="134" font-size="12.5" text-anchor="start" fill="#1f2933">1 µF</text>
+<g stroke="#1f2933" stroke-width="2"><line x1="262" y1="142" x2="262" y2="149"/><line x1="252" y1="149" x2="272" y2="149"/><line x1="256" y1="153" x2="268" y2="153"/><line x1="259.5" y1="157" x2="264.5" y2="157"/></g>
+<polyline points="322,88 322,102" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<g data-board="dangle_L" data-ref="C5" data-value="100nF" data-pins="1=V3V3,2=GND">
+<g stroke="#1f2933" stroke-width="2" fill="none"><line x1="322" y1="102" x2="322" y2="119"/><line x1="311" y1="119" x2="333" y2="119"/><line x1="311" y1="125" x2="333" y2="125"/><line x1="322" y1="125" x2="322" y2="142"/></g></g>
+<text x="336" y="119" font-size="12.5" text-anchor="start" fill="#1f2933" font-weight="700">C5</text>
+<text x="336" y="134" font-size="12.5" text-anchor="start" fill="#1f2933">100 nF</text>
+<g stroke="#1f2933" stroke-width="2"><line x1="322" y1="142" x2="322" y2="149"/><line x1="312" y1="149" x2="332" y2="149"/><line x1="316" y1="153" x2="328" y2="153"/><line x1="319.5" y1="157" x2="324.5" y2="157"/></g>
+<g stroke="#1f2933" stroke-width="2"><line x1="184" y1="166" x2="184" y2="173"/><line x1="174" y1="173" x2="194" y2="173"/><line x1="178" y1="177" x2="190" y2="177"/><line x1="181.5" y1="181" x2="186.5" y2="181"/></g>
+<g data-board="dangle_L" data-ref="U2" data-value="SPH0641" data-pins="5=V3V3,4=PDM_CLK,2=GND,1=PDM_DATA,3=GND">
+<rect x="420" y="70" width="110" height="112" rx="3" fill="#f6f8fa" stroke="#1f2933" stroke-width="2.2"/>
+<line x1="475" y1="70" x2="475" y2="54" stroke="#1f2933" stroke-width="2"/>
+<text x="475" y="85" font-size="12" text-anchor="middle" fill="#1f2933">VDD</text>
+<text x="484" y="64" font-size="11.5" text-anchor="start" fill="#6b7785">5</text>
+<line x1="420" y1="92" x2="404" y2="92" stroke="#1f2933" stroke-width="2"/>
+<text x="425" y="96" font-size="12" text-anchor="start" fill="#1f2933">CLOCK</text>
+<text x="412" y="88" font-size="11.5" text-anchor="middle" fill="#6b7785">4</text>
+<line x1="420" y1="122" x2="404" y2="122" stroke="#1f2933" stroke-width="2"/>
+<text x="425" y="126" font-size="12" text-anchor="start" fill="#1f2933">SELECT</text>
+<text x="412" y="118" font-size="11.5" text-anchor="middle" fill="#6b7785">2</text>
+<line x1="530" y1="92" x2="546" y2="92" stroke="#1f2933" stroke-width="2"/>
+<text x="525" y="96" font-size="12" text-anchor="end" fill="#1f2933">DATA</text>
+<text x="538" y="88" font-size="11.5" text-anchor="middle" fill="#6b7785">1</text>
+<line x1="475" y1="182" x2="475" y2="198" stroke="#1f2933" stroke-width="2"/>
+<text x="475" y="176" font-size="12" text-anchor="middle" fill="#1f2933">GND</text>
+<text x="484" y="194" font-size="11.5" text-anchor="start" fill="#6b7785">3</text>
+</g>
+<g fill="none" stroke="#1f2933" stroke-width="2"><line x1="440" y1="140" x2="440" y2="164"/><path d="M448 140 Q454 152 448 164"/><line x1="448" y1="152" x2="468" y2="152"/><line x1="502" y1="152" x2="514" y2="152"/></g>
+<polygon points="514,147 522,152 514,157" fill="#1f2933"/>
+<rect x="468" y="139" width="34" height="26" fill="#fff" stroke="#1f2933" stroke-width="1.8"/>
+<text x="485" y="157" font-size="12.5" text-anchor="middle" fill="#1f2933">ΣΔ</text>
+<text x="466" y="62" font-size="12.5" text-anchor="end" fill="#1f2933" font-weight="700">U2 microphone</text>
+<text x="475" y="44" font-size="12.5" text-anchor="middle" fill="#b35a00" font-weight="700">3V3</text>
+<polyline points="404,92 396,92" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<text x="400" y="96" font-size="12.5" text-anchor="end" fill="#2f6fb0" font-weight="700">PDM_CLK</text>
+<g stroke="#1f2933" stroke-width="2"><line x1="404" y1="122" x2="404" y2="129"/><line x1="394" y1="129" x2="414" y2="129"/><line x1="398" y1="133" x2="410" y2="133"/><line x1="401.5" y1="137" x2="406.5" y2="137"/></g>
+<polyline points="546,92 552,92" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<text x="552" y="96" font-size="12.5" text-anchor="start" fill="#2f6fb0" font-weight="700">PDM_DATA</text>
+<g stroke="#1f2933" stroke-width="2"><line x1="475" y1="198" x2="475" y2="205"/><line x1="465" y1="205" x2="485" y2="205"/><line x1="469" y1="209" x2="481" y2="209"/><line x1="472.5" y1="213" x2="477.5" y2="213"/></g>
+<g data-board="dangle_L" data-ref="U1" data-value="MAX98357A" data-pins="1=I2S_DIN,14=I2S_LRCLK,16=I2S_BCLK,2=GAIN,4=SDM,7=VBAT,8=VBAT,3=GND,11=GND,15=GND,17=GND,9=OUTP,10=OUTN">
+<rect x="210" y="270" width="200" height="200" rx="3" fill="#f6f8fa" stroke="#1f2933" stroke-width="2.2"/>
+<line x1="210" y1="296" x2="194" y2="296" stroke="#1f2933" stroke-width="2"/>
+<text x="215" y="300" font-size="12" text-anchor="start" fill="#1f2933">DIN</text>
+<text x="202" y="292" font-size="11.5" text-anchor="middle" fill="#6b7785">1</text>
+<line x1="210" y1="322" x2="194" y2="322" stroke="#1f2933" stroke-width="2"/>
+<text x="215" y="326" font-size="12" text-anchor="start" fill="#1f2933">LRCLK</text>
+<text x="202" y="318" font-size="11.5" text-anchor="middle" fill="#6b7785">14</text>
+<line x1="210" y1="348" x2="194" y2="348" stroke="#1f2933" stroke-width="2"/>
+<text x="215" y="352" font-size="12" text-anchor="start" fill="#1f2933">BCLK</text>
+<text x="202" y="344" font-size="11.5" text-anchor="middle" fill="#6b7785">16</text>
+<line x1="210" y1="384" x2="194" y2="384" stroke="#1f2933" stroke-width="2"/>
+<text x="215" y="388" font-size="12" text-anchor="start" fill="#1f2933">GAIN_SLOT</text>
+<text x="202" y="380" font-size="11.5" text-anchor="middle" fill="#6b7785">2</text>
+<line x1="210" y1="440" x2="194" y2="440" stroke="#1f2933" stroke-width="2"/>
+<text x="215" y="444" font-size="12" text-anchor="start" fill="#1f2933">SD_MODE</text>
+<text x="202" y="436" font-size="11.5" text-anchor="middle" fill="#6b7785">4</text>
+<line x1="270" y1="270" x2="270" y2="254" stroke="#1f2933" stroke-width="2"/>
+<text x="270" y="285" font-size="12" text-anchor="middle" fill="#1f2933">VDD</text>
+<text x="279" y="264" font-size="11.5" text-anchor="start" fill="#6b7785">7</text>
+<line x1="310" y1="270" x2="310" y2="254" stroke="#1f2933" stroke-width="2"/>
+<text x="310" y="285" font-size="12" text-anchor="middle" fill="#1f2933">VDD</text>
+<text x="319" y="264" font-size="11.5" text-anchor="start" fill="#6b7785">8</text>
+<line x1="260" y1="470" x2="260" y2="486" stroke="#1f2933" stroke-width="2"/>
+<text x="260" y="464" font-size="12" text-anchor="middle" fill="#1f2933">GND</text>
+<text x="269" y="482" font-size="11.5" text-anchor="start" fill="#6b7785">3</text>
+<line x1="300" y1="470" x2="300" y2="486" stroke="#1f2933" stroke-width="2"/>
+<text x="300" y="464" font-size="12" text-anchor="middle" fill="#1f2933">GND</text>
+<text x="309" y="482" font-size="11.5" text-anchor="start" fill="#6b7785">11</text>
+<line x1="340" y1="470" x2="340" y2="486" stroke="#1f2933" stroke-width="2"/>
+<text x="340" y="464" font-size="12" text-anchor="middle" fill="#1f2933">GND</text>
+<text x="349" y="482" font-size="11.5" text-anchor="start" fill="#6b7785">15</text>
+<line x1="380" y1="470" x2="380" y2="486" stroke="#1f2933" stroke-width="2"/>
+<text x="380" y="464" font-size="12" text-anchor="middle" fill="#1f2933">EP</text>
+<text x="389" y="482" font-size="11.5" text-anchor="start" fill="#6b7785">17</text>
+<line x1="410" y1="340" x2="426" y2="340" stroke="#1f2933" stroke-width="2"/>
+<text x="405" y="344" font-size="12" text-anchor="end" fill="#1f2933">OUTP</text>
+<text x="418" y="336" font-size="11.5" text-anchor="middle" fill="#6b7785">9</text>
+<line x1="410" y1="430" x2="426" y2="430" stroke="#1f2933" stroke-width="2"/>
+<text x="405" y="434" font-size="12" text-anchor="end" fill="#1f2933">OUTN</text>
+<text x="418" y="426" font-size="11.5" text-anchor="middle" fill="#6b7785">10</text>
+</g>
+<text x="332" y="262" font-size="12.5" text-anchor="start" fill="#1f2933" font-weight="700">U1 amplifier</text>
+<text x="188" y="300" font-size="12.5" text-anchor="end" fill="#2f6fb0" font-weight="700">I2S_DIN</text>
+<text x="188" y="326" font-size="12.5" text-anchor="end" fill="#2f6fb0" font-weight="700">I2S_LRCLK</text>
+<text x="188" y="352" font-size="12.5" text-anchor="end" fill="#2f6fb0" font-weight="700">I2S_BCLK</text>
+<g fill="#fff" stroke="#1f2933" stroke-width="1.8"><rect x="284" y="300" width="64" height="40"/><polygon points="296,358 296,398 338,378"/></g>
+<text x="316" y="317" font-size="12" text-anchor="middle" fill="#1f2933">I2S</text>
+<text x="316" y="332" font-size="12" text-anchor="middle" fill="#1f2933">DAC</text>
+<g fill="none" stroke="#1f2933" stroke-width="1.8"><line x1="296" y1="340" x2="296" y2="358"/><polyline points="338,378 350,378"/><polyline points="350,340 350,430"/><line x1="350" y1="340" x2="362" y2="340"/><line x1="350" y1="430" x2="362" y2="430"/></g>
+<circle cx="350" cy="378" r="3.4" fill="#1f2933"/>
+<text x="316" y="424" font-size="12" text-anchor="middle" fill="#6b7785">class-D</text>
+<text x="316" y="438" font-size="12" text-anchor="middle" fill="#6b7785">bridge</text>
+<g data-board="dangle_L" data-ref="R_GAIN" data-value="100k" data-pins="1=VBAT,2=GAIN">
+<g transform="translate(150,384)" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"><polyline points="-20,0 -14,0 -10,-6 -5,6 0,-6 5,6 10,-6 14,0 20,0"/></g></g>
+<text x="150" y="410" font-size="12.5" text-anchor="middle" fill="#1f2933" font-weight="700">R_GAIN</text>
+<text x="150" y="425" font-size="12.5" text-anchor="middle" fill="#1f2933">100 kΩ</text>
+<polyline points="170,384 194,384" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="130,384 104,384" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<text x="100" y="388" font-size="12.5" text-anchor="end" fill="#d64545" font-weight="700">VBAT</text>
+<g data-board="dangle_L" data-ref="R_SD" data-value="2k" data-pins="1=V3V3,2=SDM">
+<g transform="translate(150,440)" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"><polyline points="-20,0 -14,0 -10,-6 -5,6 0,-6 5,6 10,-6 14,0 20,0"/></g></g>
+<text x="150" y="466" font-size="12.5" text-anchor="middle" fill="#1f2933" font-weight="700">R_SD</text>
+<text x="150" y="481" font-size="12.5" text-anchor="middle" fill="#1f2933">2 kΩ</text>
+<polyline points="170,440 194,440" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="130,440 104,440" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<text x="100" y="444" font-size="12.5" text-anchor="end" fill="#b35a00" font-weight="700">3V3</text>
+<polyline points="270,254 270,246 310,246 310,254" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="290,246 290,226 568,226" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="290" cy="246" r="3.4" fill="#1f2933"/>
+<text x="282" y="222" font-size="12.5" text-anchor="end" fill="#d64545" font-weight="700">VBAT</text>
+<circle cx="440" cy="226" r="3.4" fill="#1f2933"/>
+<g data-board="dangle_L" data-ref="C1" data-value="10uF" data-pins="1=VBAT,2=GND">
+<g stroke="#1f2933" stroke-width="2" fill="none"><line x1="440" y1="226" x2="440" y2="243"/><line x1="429" y1="243" x2="451" y2="243"/><line x1="429" y1="249" x2="451" y2="249"/><line x1="440" y1="249" x2="440" y2="266"/></g></g>
+<text x="454" y="243" font-size="12.5" text-anchor="start" fill="#1f2933" font-weight="700">C1</text>
+<text x="454" y="258" font-size="12.5" text-anchor="start" fill="#1f2933">10 µF</text>
+<g stroke="#1f2933" stroke-width="2"><line x1="440" y1="266" x2="440" y2="273"/><line x1="430" y1="273" x2="450" y2="273"/><line x1="434" y1="277" x2="446" y2="277"/><line x1="437.5" y1="281" x2="442.5" y2="281"/></g>
+<circle cx="504" cy="226" r="3.4" fill="#1f2933"/>
+<g data-board="dangle_L" data-ref="C2" data-value="100nF" data-pins="1=VBAT,2=GND">
+<g stroke="#1f2933" stroke-width="2" fill="none"><line x1="504" y1="226" x2="504" y2="243"/><line x1="493" y1="243" x2="515" y2="243"/><line x1="493" y1="249" x2="515" y2="249"/><line x1="504" y1="249" x2="504" y2="266"/></g></g>
+<text x="518" y="243" font-size="12.5" text-anchor="start" fill="#1f2933" font-weight="700">C2</text>
+<text x="518" y="258" font-size="12.5" text-anchor="start" fill="#1f2933">100 nF</text>
+<g stroke="#1f2933" stroke-width="2"><line x1="504" y1="266" x2="504" y2="273"/><line x1="494" y1="273" x2="514" y2="273"/><line x1="498" y1="277" x2="510" y2="277"/><line x1="501.5" y1="281" x2="506.5" y2="281"/></g>
+<circle cx="568" cy="226" r="3.4" fill="#1f2933"/>
+<g data-board="dangle_L" data-ref="C3" data-value="1uF" data-pins="1=VBAT,2=GND">
+<g stroke="#1f2933" stroke-width="2" fill="none"><line x1="568" y1="226" x2="568" y2="243"/><line x1="557" y1="243" x2="579" y2="243"/><line x1="557" y1="249" x2="579" y2="249"/><line x1="568" y1="249" x2="568" y2="266"/></g></g>
+<text x="582" y="243" font-size="12.5" text-anchor="start" fill="#1f2933" font-weight="700">C3</text>
+<text x="582" y="258" font-size="12.5" text-anchor="start" fill="#1f2933">1 µF</text>
+<g stroke="#1f2933" stroke-width="2"><line x1="568" y1="266" x2="568" y2="273"/><line x1="558" y1="273" x2="578" y2="273"/><line x1="562" y1="277" x2="574" y2="277"/><line x1="565.5" y1="281" x2="570.5" y2="281"/></g>
+<polyline points="260,486 380,486" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="320" cy="486" r="3.4" fill="#1f2933"/>
+<g stroke="#1f2933" stroke-width="2"><line x1="320" y1="486" x2="320" y2="493"/><line x1="310" y1="493" x2="330" y2="493"/><line x1="314" y1="497" x2="326" y2="497"/><line x1="317.5" y1="501" x2="322.5" y2="501"/></g>
+<polyline points="426,340 466,340" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<g data-board="dangle_L" data-ref="R_OUT1" data-value="22R" data-pins="1=OUTP,2=EXCP">
+<g transform="translate(486,340)" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"><polyline points="-20,0 -14,0 -10,-6 -5,6 0,-6 5,6 10,-6 14,0 20,0"/></g></g>
+<text x="486" y="326" font-size="12.5" text-anchor="middle" fill="#1f2933">R_OUT1 22 Ω</text>
+<polyline points="506,340 570,340 570,366" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="426,430 466,430" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<g data-board="dangle_L" data-ref="R_OUT2" data-value="22R" data-pins="1=OUTN,2=EXCN">
+<g transform="translate(486,430)" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"><polyline points="-20,0 -14,0 -10,-6 -5,6 0,-6 5,6 10,-6 14,0 20,0"/></g></g>
+<text x="486" y="456" font-size="12.5" text-anchor="middle" fill="#1f2933">R_OUT2 22 Ω</text>
+<polyline points="506,430 570,430 570,414" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<path d="M570 366 c14 0 14 12 0 12 c14 0 14 12 0 12 c14 0 14 12 0 12 c14 0 14 12 0 12" fill="none" stroke="#1f2933" stroke-width="2"/>
+<text x="590" y="388" font-size="12.5" text-anchor="start" fill="#1f2933" font-weight="700">exciter</text>
+<text x="590" y="403" font-size="12.5" text-anchor="start" fill="#1f2933">4 Ω</text>
+<g data-board="dangle_L" data-ref="J_EXC_P" data-pins="1=EXCP"><circle cx="540" cy="340" r="6" fill="#fff" stroke="#1f2933" stroke-width="2"/></g>
+<text x="540" y="360" font-size="12" text-anchor="middle" fill="#1f2933">EXC+</text>
+<g data-board="dangle_L" data-ref="J_EXC_N" data-pins="1=EXCN"><circle cx="540" cy="430" r="6" fill="#fff" stroke="#1f2933" stroke-width="2"/></g>
+<text x="540" y="418" font-size="12" text-anchor="middle" fill="#1f2933">EXC−</text>
+<text x="14" y="548" font-size="12.5" text-anchor="start" fill="#1f2933" font-weight="700">Cable connector: 8 through-hole pads</text>
+<g data-board="dangle_L" data-ref="J1" data-pins="1=I2S_LRCLK"><circle cx="52" cy="582" r="6" fill="#fff" stroke="#1f2933" stroke-width="2"/></g>
+<text x="52" y="568" font-size="11.5" text-anchor="middle" fill="#6b7785">1</text>
+<text x="52" y="608" font-size="12" text-anchor="middle" fill="#2f6fb0" font-weight="700">I2S_LRCLK</text>
+<g data-board="dangle_L" data-ref="J2" data-pins="1=I2S_DIN"><circle cx="124" cy="582" r="6" fill="#fff" stroke="#1f2933" stroke-width="2"/></g>
+<text x="124" y="568" font-size="11.5" text-anchor="middle" fill="#6b7785">2</text>
+<text x="124" y="608" font-size="12" text-anchor="middle" fill="#2f6fb0" font-weight="700">I2S_DIN</text>
+<g data-board="dangle_L" data-ref="J3" data-pins="1=VBAT"><circle cx="196" cy="582" r="6" fill="#fff" stroke="#1f2933" stroke-width="2"/></g>
+<text x="196" y="568" font-size="11.5" text-anchor="middle" fill="#6b7785">3</text>
+<text x="196" y="608" font-size="12" text-anchor="middle" fill="#d64545" font-weight="700">VBAT</text>
+<g data-board="dangle_L" data-ref="J4" data-pins="1=PDM_DATA"><circle cx="268" cy="582" r="6" fill="#fff" stroke="#1f2933" stroke-width="2"/></g>
+<text x="268" y="568" font-size="11.5" text-anchor="middle" fill="#6b7785">4</text>
+<text x="268" y="608" font-size="12" text-anchor="middle" fill="#2f6fb0" font-weight="700">PDM_DATA</text>
+<g data-board="dangle_L" data-ref="J5" data-pins="1=I2S_BCLK"><circle cx="340" cy="582" r="6" fill="#fff" stroke="#1f2933" stroke-width="2"/></g>
+<text x="340" y="568" font-size="11.5" text-anchor="middle" fill="#6b7785">5</text>
+<text x="340" y="608" font-size="12" text-anchor="middle" fill="#2f6fb0" font-weight="700">I2S_BCLK</text>
+<g data-board="dangle_L" data-ref="J6" data-pins="1=GND"><circle cx="412" cy="582" r="6" fill="#fff" stroke="#1f2933" stroke-width="2"/></g>
+<text x="412" y="568" font-size="11.5" text-anchor="middle" fill="#6b7785">6</text>
+<text x="412" y="608" font-size="12" text-anchor="middle" fill="#1f2933" font-weight="700">GND</text>
+<g data-board="dangle_L" data-ref="J7" data-pins="1=PDM_CLK"><circle cx="484" cy="582" r="6" fill="#fff" stroke="#1f2933" stroke-width="2"/></g>
+<text x="484" y="568" font-size="11.5" text-anchor="middle" fill="#6b7785">7</text>
+<text x="484" y="608" font-size="12" text-anchor="middle" fill="#2f6fb0" font-weight="700">PDM_CLK</text>
+<g data-board="dangle_L" data-ref="J8" data-pins="1=GND"><circle cx="556" cy="582" r="6" fill="#fff" stroke="#1f2933" stroke-width="2"/></g>
+<text x="556" y="568" font-size="11.5" text-anchor="middle" fill="#6b7785">8</text>
+<text x="556" y="608" font-size="12" text-anchor="middle" fill="#1f2933" font-weight="700">GND</text>
+<line x1="14" y1="630" x2="626" y2="630" stroke="#d3d9df"/>
+<text x="14" y="654" font-size="14" text-anchor="start" fill="#1f2933" font-weight="700">The RIGHT board differs in two places</text>
+<g data-board="dangle_R" data-ref="R_SD" data-value="220k" data-pins="1=V3V3,2=SDM">
+<g transform="translate(110,704)" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"><polyline points="-20,0 -14,0 -10,-6 -5,6 0,-6 5,6 10,-6 14,0 20,0"/></g></g>
+<text x="110" y="730" font-size="12.5" text-anchor="middle" fill="#1f2933" font-weight="700">R_SD</text>
+<text x="110" y="745" font-size="12.5" text-anchor="middle" fill="#1f2933">220 kΩ</text>
+<polyline points="90,704 70,704" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<text x="64" y="708" font-size="12.5" text-anchor="end" fill="#b35a00" font-weight="700">3V3</text>
+<polyline points="130,704 170,704" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<text x="176" y="708" font-size="12.5" text-anchor="start" fill="#2f6fb0" font-weight="700">SD_MODE</text>
+<g data-board="dangle_R" data-ref="U2" data-value="SPH0641" data-pins="5=V3V3,4=PDM_CLK,2=V3V3,1=PDM_DATA,3=GND">
+<rect x="420" y="676" width="110" height="100" rx="3" fill="#f6f8fa" stroke="#1f2933" stroke-width="2.2"/>
+<line x1="475" y1="676" x2="475" y2="660" stroke="#1f2933" stroke-width="2"/>
+<text x="475" y="691" font-size="12" text-anchor="middle" fill="#1f2933">VDD</text>
+<text x="484" y="670" font-size="11.5" text-anchor="start" fill="#6b7785">5</text>
+<line x1="420" y1="698" x2="404" y2="698" stroke="#1f2933" stroke-width="2"/>
+<text x="425" y="702" font-size="12" text-anchor="start" fill="#1f2933">CLOCK</text>
+<text x="412" y="694" font-size="11.5" text-anchor="middle" fill="#6b7785">4</text>
+<line x1="420" y1="736" x2="404" y2="736" stroke="#1f2933" stroke-width="2"/>
+<text x="425" y="740" font-size="12" text-anchor="start" fill="#1f2933">SELECT</text>
+<text x="412" y="732" font-size="11.5" text-anchor="middle" fill="#6b7785">2</text>
+<line x1="530" y1="698" x2="546" y2="698" stroke="#1f2933" stroke-width="2"/>
+<text x="525" y="702" font-size="12" text-anchor="end" fill="#1f2933">DATA</text>
+<text x="538" y="694" font-size="11.5" text-anchor="middle" fill="#6b7785">1</text>
+<line x1="475" y1="776" x2="475" y2="792" stroke="#1f2933" stroke-width="2"/>
+<text x="475" y="770" font-size="12" text-anchor="middle" fill="#1f2933">GND</text>
+<text x="484" y="788" font-size="11.5" text-anchor="start" fill="#6b7785">3</text>
+</g>
+<text x="475" y="656" font-size="12.5" text-anchor="middle" fill="#b35a00" font-weight="700">3V3</text>
+<polyline points="404,736 396,736" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<text x="392" y="740" font-size="12.5" text-anchor="end" fill="#b35a00" font-weight="700">3V3</text>
+<g stroke="#1f2933" stroke-width="2"><line x1="475" y1="792" x2="475" y2="799"/><line x1="465" y1="799" x2="485" y2="799"/><line x1="469" y1="803" x2="481" y2="803"/><line x1="472.5" y1="807" x2="477.5" y2="807"/></g>
+<polyline points="404,698 396,698" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<text x="392" y="702" font-size="12.5" text-anchor="end" fill="#2f6fb0" font-weight="700">PDM_CLK</text>
+<polyline points="546,698 552,698" fill="none" stroke="#1f2933" stroke-width="2" stroke-linejoin="round"/>
+<text x="552" y="702" font-size="12.5" text-anchor="start" fill="#2f6fb0" font-weight="700">PDM_DATA</text>
+<text x="14" y="826" font-size="12.5" text-anchor="start" fill="#6b7785">SD_MODE sits at 3.3 V divided by the amplifier's own 100 kΩ pulldown:</text>
+<text x="14" y="842" font-size="12.5" text-anchor="start" fill="#6b7785">about 3.2 V with 2 kΩ (above 1.4 V: left word), about 1.0 V with 220 kΩ (0.77 – 1.4 V: right word).</text>
+<text x="14" y="858" font-size="12.5" text-anchor="start" fill="#6b7785">SELECT to GND: the microphone answers after the clock's rising edge (left).</text>
+<text x="14" y="874" font-size="12.5" text-anchor="start" fill="#6b7785">SELECT to 3V3: it answers after the falling edge (right).</text>
+</svg>

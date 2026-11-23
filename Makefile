@@ -126,7 +126,7 @@ $(FIG)/build_graph.png: Makefile tools/make_graph.py
 docs/build/assets/%.pdf: docs/assets/%.svg
 	@mkdir -p $(dir $@); rsvg-convert -f pdf -o $@ $<
 
-$(PDF): docs/build/manual.md docs/build/references.bib docs/manual/metadata.yaml docs/manual/header.tex $(FIG_STAMPS) $(FIG)/build_graph.png $(ASSET_PDF)
+$(PDF): docs/build/manual.md docs/build/references.bib docs/manual/metadata.yaml docs/manual/header.tex $(FIG_STAMPS) $(FIG)/build_graph.png $(ASSET_PDF) $(FIG)/circuits-check.stamp
 	cd docs/build && pandoc manual.md ../manual/metadata.yaml -o $(notdir $@) --from markdown+pipe_tables+grid_tables+implicit_figures \
 	  --pdf-engine=xelatex --citeproc --bibliography=references.bib --number-sections \
 	  --include-in-header=../manual/header.tex --resource-path=.:figures:../manual
@@ -136,9 +136,18 @@ graph: ## redraw the build dependency graph (docs/build/build_graph.png) and upd
 	$(UV) tools/make_graph.py
 
 # ---------------------------------------------------------------- housekeeping
-check: ## quick sanity checks: Python compiles, print files valid, PCB DRC has no unconnected nets
+NETS = pcb/out/dangle_L_nets.json pcb/out/dangle_R_nets.json pcb/carrier/out/carrier_C_nets.json
+pcb/out/%_nets.json: pcb/out/%_final.kicad_pcb pcb/dump_nets.py
+	$(KICAD_PY) pcb/dump_nets.py $< $@
+pcb/carrier/out/carrier_C_nets.json: pcb/carrier/out/carrier_C_final.kicad_pcb pcb/dump_nets.py
+	$(KICAD_PY) pcb/dump_nets.py $< $@
+$(FIG)/circuits-check.stamp: docs/check_circuits.py $(wildcard docs/assets/circuit-*.svg) $(NETS)
+	$(UV) docs/check_circuits.py && touch $@
+
+check: $(NETS) ## quick sanity checks: Python compiles, print files valid, PCB DRC has no unconnected nets, circuit diagrams match the boards
 	$(UV) -m compileall -q cad pcb tools docs assets firmware/tools
 	@! grep -q CHECK cad/print/manifest.csv || (echo "print files failing validity"; exit 1)
+	$(UV) docs/check_circuits.py
 	@for f in pcb/out/dangle_L_drc.txt pcb/out/dangle_R_drc.txt pcb/carrier/out/carrier_C_drc.txt; do \
 	  n=$$(grep -c '^\[unconnected' $$f); echo "$$f: $$n unconnected"; test $$n = 0; done
 
