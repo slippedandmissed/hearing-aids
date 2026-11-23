@@ -126,8 +126,8 @@ $(FIG)/build_graph.png: Makefile tools/make_graph.py
 docs/build/assets/%.pdf: docs/assets/%.svg
 	@mkdir -p $(dir $@); rsvg-convert -f pdf -o $@ $<
 
-$(PDF): docs/build/manual.md docs/build/references.bib docs/manual/metadata.yaml docs/manual/header.tex $(FIG_STAMPS) $(FIG)/build_graph.png $(ASSET_PDF) $(FIG)/circuits-check.stamp
-	cd docs/build && pandoc manual.md ../manual/metadata.yaml -o $(notdir $@) --from markdown+pipe_tables+grid_tables+implicit_figures \
+$(PDF): docs/build/manual.md docs/build/references.bib docs/manual/metadata.yaml docs/manual/header.tex docs/manual/table_header.lua $(FIG_STAMPS) $(FIG)/build_graph.png $(ASSET_PDF) $(FIG)/circuits-check.stamp
+	cd docs/build && pandoc manual.md ../manual/metadata.yaml -o $(notdir $@) --lua-filter=../manual/table_header.lua --from markdown+pipe_tables+grid_tables+implicit_figures \
 	  --pdf-engine=xelatex --citeproc --bibliography=references.bib --number-sections \
 	  --include-in-header=../manual/header.tex --resource-path=.:figures:../manual
 docs: $(PDF) ## the manual: datasheet + user manual + project log (docs/build/hearing-manual.pdf)

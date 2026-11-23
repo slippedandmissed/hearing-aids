@@ -1,6 +1,6 @@
 \usepackage{float}
 \floatplacement{figure}{H}
-\usepackage{booktabs}
+\usepackage{booktabs}\setlength{\heavyrulewidth}{0.9pt}\setlength{\lightrulewidth}{0.4pt}
 \usepackage{longtable}
 \usepackage{array}
 \usepackage{xcolor}
@@ -8,8 +8,7 @@
 \usepackage{etoolbox}
 \usepackage{caption}
 \captionsetup{font=small,labelfont=bf,skip=4pt}
-\AtBeginEnvironment{longtable}{\footnotesize}
-\renewcommand{\arraystretch}{1.18}
+
 \pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\textit{Open-ear hearing aids}}\fancyhead[R]{\small\thepage}\renewcommand{\headrulewidth}{0.3pt}
 \setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
 \usepackage{graphicx}
@@ -27,7 +26,7 @@
 \emergencystretch=4em
 \setcounter{tocdepth}{2}
 \AtBeginDocument{\hypersetup{pdftitle={Open-ear hearing aids: datasheet, user manual and project log},pdfauthor={morgan}}}
-\AtBeginDocument{\definecolor{rowgrey}{gray}{0.93}\rowcolors{2}{rowgrey}{white}}
+\AtBeginDocument{\definecolor{rowgrey}{gray}{0.955}\rowcolors{2}{rowgrey}{white}}
 
 % --- assembly step headings: one place draws the step number; a step with a figure starts a page, a short one flows on unless under a third of a page is left
 \usepackage{tikz}

@@ -81,7 +81,7 @@ def bom_tables():
 def jlc_tables():
     for nm, f in (("dangle_L", "dangle_L_BOM.csv"), ("dangle_R", "dangle_R_BOM.csv"), ("carrier", "carrier_BOM.csv")):
         rows = csv_rows(os.path.join(ROOT, "pcb", "fab", f))
-        write(f"jlc_{nm}", md([[r.get("Comment", ""), r.get("Designator", ""), r.get("Footprint", ""), r.get("LCSC Part #", "")] for r in rows], ["Part", "Designators", "Footprint", "LCSC"]) if rows else "*(run `make pcb` to generate this table)*")
+        write(f"jlc_{nm}", md([[r.get("Comment", ""), r.get("Designator", "").replace(",", ", "), r.get("Footprint", ""), r.get("LCSC Part #", "")] for r in rows], ["Part", "Designators", "Footprint", "LCSC"]) if rows else "*(run `make pcb` to generate this table)*")
 
 def print_tables():
     man = csv_rows(os.path.join(ROOT, "cad", "print", "manifest.csv"))
