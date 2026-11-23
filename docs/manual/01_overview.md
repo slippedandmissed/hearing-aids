@@ -8,27 +8,21 @@
 
 ## The idea
 
-Chronic wax blockages in both ears make ordinary hearing *conductive*: sound cannot get through the ear canal, but the inner ear behind it is healthy. Skull vibrations bypass the blockage, which is why a bone-conduction device can help on bad days. Instead of a behind-the-ear aid with an ear-mould (which would sit in the blocked canal), this project keeps the canal **open** and delivers sound by pressing a small vibrating *exciter* against the mastoid bone behind each ear.
+Chronic wax blockages in both ears make hearing *conductive*: sound cannot get through the ear canal, but the inner ear behind it is healthy. Vibrations in the skull bypass the blockage, so a bone-conduction device can help on bad days. A behind-the-ear aid with an ear-mould would sit in the blocked canal. This one keeps the canal **open** and presses a small vibrating *exciter* against the mastoid bone behind each ear.
 
-The design goals, in the order they were decided:
+The goals, in the order they were decided:
 
-1. **Open ear, bone conduction**, one unit per ear, usable while wearing glasses.
-2. **Low latency** (a few milliseconds) so your own voice and the aided copy do not echo.
-3. **Digital signal processing** so tuning is done in software, not by swapping resistors: equaliser, compressor, hard limiter, feedback suppression, later a phone app.
-4. **Designed on screen**: CAD, PCBs and documentation are all generated from code; assembly needs only through-hole soldering and one fiddly pair of wires.
-5. **Appearance**: pink and blue gummy-bear earrings (the microphones) and a bee-shaped necklace pendant (the microcontroller and battery).
+1. **Open ear, bone conduction**, one unit per ear, usable with glasses.
+2. **Low latency**, a few milliseconds, so your own voice and its aided copy do not echo.
+3. **Tuning in software**: equaliser, compressor, limiter, feedback suppression, later a phone app. No swapping resistors.
+4. **Designed on screen** from code (CAD, PCBs, drawings), buildable with a soldering iron and no SMD work.
+5. **Fun to wear**: pink and blue gummy-bear earrings (the microphones) and a bumblebee pendant (the computer and battery).
 
-## The whole thing in one picture
+## The whole thing
 
-![Where everything sits, and the path one ear's sound takes.](assets/system-overview.svg)
+Per ear: **clips** on the glasses stem, a printed **spring arm** that reaches behind the ear and presses the **exciter** on the mastoid, and a **gummy-bear earring** holding a small PCB (microphone, amplifier, regulator). An 8-wire cable per ear runs down the neck to the **bee**, which holds one XIAO nRF52840 that listens to both microphones and drives both amplifiers, a 500 mAh battery, a switch, an LED and a USB-C port. [How each part works](#how-each-part-works) explains each of them.
 
-## What is in it
-
-![What lives where: the glasses stems and earlobes carry the sensors and transducers, the neck carries two thin cables, the chest carries the computer and battery.](figures/system/architecture.png)
-
-Per ear there are four things: **clips** that snap onto the glasses stem, a printed **spring arm** that curves behind the ear and presses the **exciter** against the mastoid, a **gummy-bear earring** containing a small PCB (microphone, amplifier, regulator) and a short exciter cable. Between the ears and the chest runs an **8-wire cable per ear**, tied to a necklace chain. In the **bee** sits one XIAO nRF52840 microcontroller that listens to both microphones and drives both amplifiers, a 500 mAh battery, a switch, an LED and a USB-C port.
-
-![Signal chain for one ear. The microphone and amplifier are in the earring; the processing is in the necklace box.](figures/system/signal_chain.png)
+![Where everything sits, and the path one ear's sound takes.](assets/system-overview.svg){height=43%}
 
 ## Key numbers
 
@@ -45,6 +39,6 @@ Per ear there are four things: **clips** that snap onto the glasses stem, a prin
 | Necklace box | 105 × 116 × 17 mm including wings, about 50 g | DERIVED / ESTIMATE |
 | Cost, everything | £300.05 paid (every order placed); about £305 – 317 projected in total, the difference being UK import charges still to come (see [Parts and cost](#parts-and-cost)) | MEASURED (paid) / ESTIMATE (rest) |
 
-## What is *not* done
+## Where it stands
 
-The firmware is a compile-only skeleton (see [Firmware](#firmware-placeholder)). All the parts are ordered, but nothing has arrived, been assembled or been powered. The 16.129 kHz sample rate is outside the amplifier's listed rates by 0.8 % and has not been tried. The clip's grip on the real glasses is unproven. The risks are listed in [Decisions and open risks](#decisions-and-open-risks).
+Designed, ordered and not yet built. The firmware is a compile-only skeleton ([Firmware](#firmware-placeholder)), nothing has arrived or been powered, and the clip's grip on real glasses is unproven. [Decisions and open risks](#decisions-and-open-risks) lists what could still go wrong.

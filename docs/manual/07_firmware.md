@@ -2,7 +2,7 @@
 
 # Firmware (placeholder)
 
-> This chapter is intentionally short. It will be filled in as the firmware is written. For now it records what exists, what is assumed, and what is planned.
+> Short on purpose: the firmware is not written yet. This records what exists, what is assumed and what is next, and grows as the firmware does.
 
 ## Status
 
@@ -30,7 +30,7 @@
 
 PDM clock = 32 MHz / 31 = 1.032 MHz, ratio 64 → 16.129 kHz; the I2S master clock is derived from the same 32 MHz, so no sample-rate converter is needed ([@nrf52840_ps]). Memory: flash origin `0x27000`, length `0xCD000`; RAM origin `0x20000008`.
 
-## Planned (in this order)
+## Next, in order
 
 1. Bench bring-up on a XIAO + one dangle PCB: tone out, microphone level read-out over USB serial, LED blink codes for self-diagnosis.
 2. A `no_std` DSP library, tested on the laptop with WAV files: band equaliser, compressor, hard limiter, feedback cancellation (adaptive filter), noise gate.

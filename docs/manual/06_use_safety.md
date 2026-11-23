@@ -4,24 +4,24 @@
 
 ## Putting it on
 
-1. Switch the bee **ON** (red LED), hang the bee round your neck, put the chain's slack where it does not catch.
-2. Put on the glasses with the clips and arms fitted; the exciters should rest on the mastoid bone, the bony bump behind each ear.
-3. Hang the bears on the earrings. Keep the cable slack loops at the ears.
-4. Start with the volume low and raise it until speech is clear, never until it is loud.
+1. Switch the bee **ON** (red LED) and hang it round your neck, with the chain's slack clear of snags.
+2. Put on the glasses with the clips and arms fitted. Each exciter rests on the mastoid, the bony bump behind the ear.
+3. Hang the bears on the earrings, keeping a slack loop of cable at each ear.
+4. Start quiet and raise the volume until speech is clear, never until it is loud.
 
 ## Adjusting
 
-- **Pressure** is set by the arm: 2.4 mm softer, 2.8 mm standard, 3.2 mm stiffer. You can bend the plate slightly only at the moment of fitting; do not heat nylon.
-- **Position**: small moves of the exciter change loudness a lot. Mark the spot that works.
-- **Feedback** (a howl) means the exciter is too close to the microphone or the gain is too high; turn it down and move the earring away from the arm.
+- **Pressure:** swap the arm. 2.4 mm is softer, 2.8 mm standard, 3.2 mm stiffer. Do not heat or bend nylon beyond a gentle nudge at fitting.
+- **Position:** a few millimetres changes the loudness a lot. Mark the spot that works.
+- **Howl:** the exciter is too close to the microphone or the gain is too high. Turn it down and move the earring away from the arm.
 
 ## Charging
 
-Plug a USB-C charger or laptop into the bee with the **slide switch ON** (the switch sits between the cell and the charger). 500 mAh at 50 – 100 mA takes roughly 5 – 10 hours. Charge on a hard surface, in sight, never on the head or under a pillow. Unplug when full.
+Plug USB-C into the bee with the **slide switch ON**; the switch sits between the cell and the charger. 500 mAh at 50 – 100 mA takes about 5 – 10 hours. Charge on a hard surface, in sight, never while worn or under a pillow, and unplug when full.
 
 ## Safety
 
-- **Hearing safety.** Bone conduction can reach the inner ear at levels that are not obvious by feel. Never turn it up to compensate for a blockage that needs treatment; see a clinician about the wax.
+- **Hearing.** Bone conduction can reach the inner ear at levels you cannot judge by feel. Do not turn it up to cope with a blockage that needs treatment; see a clinician about the wax.
 - **Electrical limits.** The series resistors limit the exciter to about 30 mW in the worst case; the firmware adds its own hard limiter.
 - **Battery.** A LiPo can burn if shorted, crushed or reversed. Use a protected cell; check the plug polarity; never leave the box in a hot car; stop using a puffy cell.
 - **Skin contact.** The exciter and the arm sit on your skin for hours: if the skin reddens or hurts, remove them and shorten the wearing time.

@@ -6,35 +6,6 @@ FS, FSB = 11.5, 12.5          # normal / bold label size (points, on a 9-inch ca
 
 def label(ax, x, y, s, fs=FS, **kw): ax.text(x, y, s, fontsize=fs, ha=kw.pop("ha", "center"), va=kw.pop("va", "center"), **kw)
 
-# ============================================================================== 1. what lives where
-def architecture():
-    fig, ax = canvas(9, 7.2)
-    cols = [("EACH EAR  (×2)", 0.25, 2.85, C["pink"]), ("NECK", 3.55, 2.25, C["mute"]), ("CHEST", 6.2, 2.55, "#d4a800")]
-    for t, x, w, col in cols:
-        group(ax, x, 0.35, w, 6.0, "", col); label(ax, x + w / 2, 6.05, t, 13, fontweight="bold", color=col)
-    def b(x, y, w, h, txt, fc, bold=True): box(ax, x, y, w, h, txt, fc, fs=FSB if bold else FS, bold=bold)
-    b(0.5, 4.35, 2.35, 1.05, "Glasses clips\n+ spring arm", "#eceff3"); b(0.5, 2.95, 2.35, 1.05, "Bone vibrator\n(exciter)", "#ffe3f0"); b(0.5, 1.55, 2.35, 1.05, "Gummy-bear\nearring", "#dff0ff"); b(0.5, 0.5, 2.35, 0.7, "Earring hook", "#eceff3", False)
-    arrow(ax, (1.675, 4.35), (1.675, 4.0), color=C["mute"]); arrow(ax, (1.675, 2.95), (1.675, 2.6), color=C["mute"])
-    b(3.8, 4.0, 1.75, 1.35, "Left\ncable", "#fff2da"); b(3.8, 2.35, 1.75, 1.35, "Right\ncable", "#fff2da"); b(3.8, 0.5, 1.75, 0.7, "Chain", "#eceff3", False)
-    arrow(ax, (2.85, 2.2), (3.8, 4.6), color=C["pink"], lw=2, rad=-0.15); arrow(ax, (2.85, 2.0), (3.8, 3.0), color=C["pink"], lw=2)
-    b(6.45, 4.35, 2.05, 1.05, "Computer", "#e4eeff"); b(6.45, 2.95, 2.05, 1.05, "Switch, LED,\nUSB-C", "#eceff3"); b(6.45, 1.55, 2.05, 1.05, "Battery", "#e1f5e9")
-    arrow(ax, (5.55, 4.7), (6.45, 4.85), both=True, lw=2); arrow(ax, (5.55, 3.05), (6.45, 4.55), both=True, lw=2, rad=0.1)
-    arrow(ax, (7.475, 4.35), (7.475, 4.0), color=C["mute"]); arrow(ax, (7.475, 2.95), (7.475, 2.6), color=C["mute"])
-    label(ax, 4.5, 0.12, "Each ear has its own clips, arm, vibrator, earring and cable.", 10, color=C["mute"], style="italic")
-    return fig
-
-# ============================================================================== 2. signal chain
-def signal_chain():
-    fig, ax = canvas(9, 5.6); W = 2.2
-    items = [("Sound\nin the room", "#eceff3", 0.25, 3.7), ("Microphone\n(in the earring)", "#dff0ff", 3.4, 3.7), ("Computer\n(in the bee)", "#e4eeff", 6.55, 3.7),
-             ("Amplifier\n(in the earring)", "#dff0ff", 6.55, 1.1), ("Bone vibrator\n(behind the ear)", "#ffe3f0", 3.4, 1.1), ("Skull, then\ninner ear", "#eceff3", 0.25, 1.1)]
-    for t, fc, x, y in items: box(ax, x, y, W, 1.2, t, fc, fs=11.5, bold=True)
-    arrow(ax, (2.45, 4.3), (3.4, 4.3), lw=2.5); arrow(ax, (5.6, 4.3), (6.55, 4.3), lw=2.5); arrow(ax, (7.65, 3.7), (7.65, 2.3), lw=2.5); arrow(ax, (6.55, 1.7), (5.6, 1.7), lw=2.5); arrow(ax, (3.4, 1.7), (2.45, 1.7), lw=2.5)
-    label(ax, 2.92, 4.62, "air", 10.5, color=C["mute"]); label(ax, 6.07, 4.62, "bits", 10.5, color=C["mute"]); label(ax, 7.85, 3.0, "tuned\nnumbers", 10.5, color=C["mute"], ha="left")
-    label(ax, 6.07, 2.02, "on / off", 10.5, color=C["mute"]); label(ax, 2.92, 2.02, "shaking", 10.5, color=C["mute"])
-    label(ax, 4.5, 0.45, "About 3 to 4 thousandths of a second from sound to vibration (estimate).", 10.5, color=C["mute"], style="italic")
-    return fig
-
 # ============================================================================== 3. power
 def power_tree():
     fig, ax = canvas(9, 5.4)
@@ -110,5 +81,5 @@ def timing_i2s():
     return fig
 
 if __name__ == "__main__":
-    for name, f in (("architecture", architecture), ("signal_chain", signal_chain), ("power_tree", power_tree), ("wiring", wiring), ("clocks", clocks), ("timing_pdm", timing_pdm), ("timing_i2s", timing_i2s)):
+    for name, f in (("power_tree", power_tree), ("wiring", wiring), ("clocks", clocks), ("timing_pdm", timing_pdm), ("timing_i2s", timing_i2s)):
         save(f(), "system", name)
