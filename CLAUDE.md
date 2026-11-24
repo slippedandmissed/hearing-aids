@@ -25,12 +25,12 @@ Two DIY open-ear **bone-conduction hearing aids** for the owner (UK, conductive 
 | Freerouting 1.9.0 | autorouting | `tools/freerouting-1.9.0.jar` (from `make fetch`); the pipeline passes `-dct 0` so the "Start (20s)" dialog is skipped; it needs `java` (OpenJDK 17) and opens a Swing window while it runs |
 | Rust + cargo | firmware (`firmware/`, a cargo workspace: `hearing-dsp` library, `hearing-xiao` device frontend, `hearing-desktop` WAV frontend) | `rustup target add thumbv7em-none-eabihf`, `rustup component add llvm-tools`; `make firmware` builds ELF → `.bin` → `.uf2`; `make firmware-test` (= `cd firmware && cargo test`) runs the host tests. `hearing-xiao` is not a default member (it needs its own target and linker script), so build it from its directory |
 | ngspice | exciter drive simulation | called by `docs/figures/sims.py` in batch mode |
-| pandoc + XeLaTeX | the manual | `make docs`; fonts Helvetica Neue and Menlo (macOS) |
+| pandoc + XeLaTeX | the manual | `make docs`; fonts Helvetica Neue and Menlo on macOS, Liberation Sans/Mono on Linux |
 | Graphviz `dot` | dependency graph | `brew install graphviz` |
-| GitHub Actions | CI (`.github/workflows/manual.yml`) | on push to `main`: `make fetch docs` on macOS, PDF as artifact + rolling `latest` release; a new tool the docs build needs must be installed there too |
+| GitHub Actions | CI (`.github/workflows/manual.yml`) | on push to `main`: `make fetch docs` on Ubuntu 24.04, PDF as artifact + rolling `latest` release; a new tool the docs build needs must be installed there too |
 | `trimesh`, `matplotlib`, `schemdraw`, `Pillow` | previews, renders, drawings | in `pyproject.toml` |
 
-macOS is assumed (KiCad path, system fonts). On another OS set `KICAD_PY`, `KICAD_FOOTPRINTS`, and change the fonts in `docs/manual/metadata.yaml` and `pcb/finish*.py`.
+macOS and Ubuntu are supported: the Makefile and `pcb/*.py` pick `KICAD_PY`, `KICAD_FOOTPRINTS` and the manual fonts (`MAINFONT`, `MONOFONT`) by platform; on Linux `KICAD_PY` is `/usr/bin/python3` (KiCad from the PPA). Python is pinned to 3.13 by `.python-version`.
 
 ## Repository map
 

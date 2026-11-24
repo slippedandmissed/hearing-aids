@@ -26,7 +26,17 @@ brew install --cask mactex-no-gui      # XeLaTeX for the PDF (or any TeX Live wi
 rustup-init -y                         # then restart the shell so cargo is on PATH
 ```
 
-You also need `java` on your `PATH` (OpenJDK 17: `brew info openjdk@17` shows the line to add) and the fonts *Helvetica Neue* and *Menlo* (standard on macOS).
+On Ubuntu 24.04 (this is what CI uses, see `.github/workflows/manual.yml`):
+
+```sh
+sudo add-apt-repository ppa:kicad/kicad-10.0-releases && sudo apt-get update
+sudo apt-get install kicad openjdk-17-jre-headless graphviz ngspice pandoc librsvg2-bin texlive-xetex texlive-latex-extra texlive-fonts-recommended texlive-science lmodern fonts-liberation fonts-urw-base35 fontconfig
+curl -LsSf https://astral.sh/uv/install.sh | sh    # plus rustup for the firmware
+```
+
+On Linux the Makefile defaults to `KICAD_PY=/usr/bin/python3` (the apt package installs `pcbnew` into the system Python), footprints in `/usr/share/kicad/footprints`, and the manual fonts *Liberation Sans* / *Liberation Mono* (override with `MAINFONT`, `MONOFONT`). The manual's body font therefore differs between platforms. `.python-version` pins Python 3.13 (dependencies have no wheels for newer versions yet).
+
+On macOS you also need `java` on your `PATH` (OpenJDK 17: `brew info openjdk@17` shows the line to add) and the fonts *Helvetica Neue* and *Menlo* (standard on macOS).
 
 Then, in the repository:
 
@@ -362,7 +372,7 @@ flowchart LR
 
 - **Router results are committed.** KiCad's design export is not reproducible (random item IDs reorder it) and the autorouter's result depends on that order, so the accepted routing of each board is stored in `pcb/routes/<board>.ses` with a fingerprint of the placement it belongs to. `make pcb` re-uses the lock while the fingerprint matches and re-routes (and rewrites the lock) when the placement changes. Small fixes on top of a routed board (move a via, delete or add a track) are kept in `pcb/routes/<board>.edits.json` and applied after the lock is imported (`pcb/route_edits.py`), so they never need a new router run; a re-route sets the old edits aside as `.stale`.
 - Freerouting is run with `-dct 0`, which skips its "Start (20 s)" confirmation dialog.
-- **CI builds the manual** on a macOS runner (`.github/workflows/manual.yml`, the same Homebrew prerequisites as above plus `librsvg` for `rsvg-convert`), runs `make fetch docs` and moves a rolling `latest` release to the new PDF. It never re-routes: it uses the committed locks. Not yet run on GitHub at the time of writing; the first run may need fixes (KiCad's Python path, TeX packages).
+- **CI builds the manual** on an Ubuntu 24.04 runner (`.github/workflows/manual.yml`, the apt packages listed above), runs `make fetch docs` and moves a rolling `latest` release to the new PDF. It never re-routes: it uses the committed locks. The build was tried in an Ubuntu 24.04 container, but the first run on GitHub may still need fixes.
 - Figures, tables, the cost model and the BOM tables in the manual are all computed from the CAD, the PCB outputs and `docs/data/orders.toml`; change an input and `make docs` updates the PDF.
 
 ## Repository layout
