@@ -149,6 +149,10 @@ graph: ## redraw the build dependency graph (docs/build/build_graph.png) and upd
 
 # ---------------------------------------------------------------- housekeeping
 NETS = pcb/out/dangle_L_nets.json pcb/out/dangle_R_nets.json pcb/carrier/out/carrier_C_nets.json
+# the routed boards come out of the PCB pipeline (the zips are its final products)
+pcb/out/dangle_L_final.kicad_pcb: pcb/fab/dangle_L.zip ; @touch $@
+pcb/out/dangle_R_final.kicad_pcb: pcb/fab/dangle_R.zip ; @touch $@
+pcb/carrier/out/carrier_C_final.kicad_pcb: pcb/fab/carrier.zip ; @touch $@
 pcb/out/%_nets.json: pcb/out/%_final.kicad_pcb pcb/dump_nets.py
 	$(KICAD_PY) pcb/dump_nets.py $< $@
 pcb/carrier/out/carrier_C_nets.json: pcb/carrier/out/carrier_C_final.kicad_pcb pcb/dump_nets.py
