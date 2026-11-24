@@ -1,0 +1,58 @@
+# Builds the PDF manual on every push to main and publishes it two ways:
+#   - a workflow artifact (kept 90 days, needs a GitHub login to download), and
+#   - a rolling GitHub release tagged `latest`, so the README can link to a stable public URL.
+# Ubuntu: KiCad 10 from its PPA (pcbnew is a module of the system python3), TeX Live, Liberation fonts for the manual.
+name: manual
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: manual
+  cancel-in-progress: true
+
+permissions:
+  contents: write   # to move the `latest` release
+
+jobs:
+  pdf:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Install system tools
+        run: |
+          sudo add-apt-repository -y ppa:kicad/kicad-10.0-releases
+          sudo apt-get update
+          sudo apt-get install -y kicad openjdk-17-jre-headless graphviz ngspice pandoc librsvg2-bin \
+            texlive-xetex texlive-latex-extra texlive-fonts-recommended texlive-science lmodern \
+            fonts-liberation fonts-urw-base35 fontconfig
+
+      - name: Python environment and third-party downloads
+        run: |
+          uv sync
+          make fetch
+
+      - name: Build the manual
+        run: make docs
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hearing-manual
+          path: docs/build/hearing-manual.pdf
+          if-no-files-found: error
+
+      - name: Move the rolling `latest` release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --cleanup-tag --yes || true
+          gh release create latest docs/build/hearing-manual.pdf \
+            --target "$GITHUB_SHA" \
+            --title "Manual (latest main)" \
+            --notes "PDF manual built from commit $GITHUB_SHA by the \`manual\` workflow. Replaced on every push to main."

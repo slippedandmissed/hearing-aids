@@ -2,7 +2,16 @@
 #   make            list the targets      make all        build everything       make clean   remove generated files
 # See README.md for what each target does. `make graph` redraws the dependency graph in the README.
 UV        ?= uv run python
+# Platform defaults: macOS (KiCad.app, system fonts) or Linux (apt/PPA KiCad: pcbnew is a module of the system python3). Override on the command line.
+ifeq ($(shell uname -s),Darwin)
 KICAD_PY  ?= /Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/3.9/bin/python3
+MAINFONT  ?= Helvetica Neue
+MONOFONT  ?= Menlo
+else
+KICAD_PY  ?= /usr/bin/python3
+MAINFONT  ?= Liberation Sans
+MONOFONT  ?= Liberation Mono
+endif
 export KICAD_PY
 SYSROOT   := $(shell rustc --print sysroot 2>/dev/null)
 OBJCOPY    = $(firstword $(wildcard $(SYSROOT)/lib/rustlib/*/bin/llvm-objcopy))
@@ -131,7 +140,7 @@ docs/build/assets/%.pdf: docs/assets/%.svg
 
 $(PDF): docs/build/manual.md docs/build/references.bib docs/manual/metadata.yaml docs/manual/header.tex docs/manual/table_header.lua $(FIG_STAMPS) $(FIG)/build_graph.png $(ASSET_PDF) $(FIG)/circuits-check.stamp
 	cd docs/build && pandoc manual.md ../manual/metadata.yaml -o $(notdir $@) --lua-filter=../manual/table_header.lua --from markdown+pipe_tables+grid_tables+implicit_figures \
-	  --pdf-engine=xelatex --citeproc --bibliography=references.bib --number-sections \
+	  -M mainfont="$(MAINFONT)" -M monofont="$(MONOFONT)" --pdf-engine=xelatex --citeproc --bibliography=references.bib --number-sections \
 	  --include-in-header=../manual/header.tex --resource-path=.:figures:../manual
 docs: $(PDF) ## the manual: datasheet + user manual + project log (docs/build/hearing-manual.pdf)
 

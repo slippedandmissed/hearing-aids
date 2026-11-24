@@ -27,6 +27,7 @@ Two DIY open-ear **bone-conduction hearing aids** for the owner (UK, conductive 
 | ngspice | exciter drive simulation | called by `docs/figures/sims.py` in batch mode |
 | pandoc + XeLaTeX | the manual | `make docs`; fonts Helvetica Neue and Menlo (macOS) |
 | Graphviz `dot` | dependency graph | `brew install graphviz` |
+| GitHub Actions | CI (`.github/workflows/manual.yml`) | on push to `main`: `make fetch docs` on macOS, PDF as artifact + rolling `latest` release; a new tool the docs build needs must be installed there too |
 | `trimesh`, `matplotlib`, `schemdraw`, `Pillow` | previews, renders, drawings | in `pyproject.toml` |
 
 macOS is assumed (KiCad path, system fonts). On another OS set `KICAD_PY`, `KICAD_FOOTPRINTS`, and change the fonts in `docs/manual/metadata.yaml` and `pcb/finish*.py`.

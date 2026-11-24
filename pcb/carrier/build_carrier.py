@@ -4,7 +4,7 @@ import sys, os, json, math
 import pcbnew
 from pcbnew import FromMM as mm, VECTOR2I
 HERE = os.path.dirname(os.path.abspath(__file__)); OUT = os.path.join(HERE, "out"); os.makedirs(OUT, exist_ok=True)
-KFP = os.environ.get("KICAD_FOOTPRINTS", "/Applications/KiCad/KiCad.app/Contents/SharedSupport/footprints")
+KFP = os.environ.get("KICAD_FOOTPRINTS", "/Applications/KiCad/KiCad.app/Contents/SharedSupport/footprints" if sys.platform == "darwin" else "/usr/share/kicad/footprints")
 W, H = 56.0, 40.0
 board = pcbnew.BOARD(); nets = {}
 def net(n):

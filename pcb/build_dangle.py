@@ -8,7 +8,7 @@ from pcbnew import FromMM as mm, VECTOR2I
 
 VARIANT = sys.argv[1]; STAGE = sys.argv[2]
 HERE = os.path.dirname(os.path.abspath(__file__)); OUT = os.path.join(HERE, "out"); os.makedirs(OUT, exist_ok=True)
-KFP = os.environ.get("KICAD_FOOTPRINTS", "/Applications/KiCad/KiCad.app/Contents/SharedSupport/footprints")
+KFP = os.environ.get("KICAD_FOOTPRINTS", "/Applications/KiCad/KiCad.app/Contents/SharedSupport/footprints" if sys.platform == "darwin" else "/usr/share/kicad/footprints")
 W, H = 13.0, 28.0
 
 def fp_load(lib, name):

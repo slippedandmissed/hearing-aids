@@ -10,7 +10,7 @@ import and survive until the placement changes, so a tweak never means a new rou
 import os, sys, shutil, subprocess, zipfile, re
 
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
-KICAD_PY = os.environ.get("KICAD_PY", "/Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/3.9/bin/python3")
+KICAD_PY = os.environ.get("KICAD_PY", "/Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/3.9/bin/python3" if sys.platform == "darwin" else "/usr/bin/python3")
 JAR = os.path.join(ROOT, "tools", "freerouting-1.9.0.jar")
 LAYERS = "F.Cu,B.Cu,F.Mask,B.Mask,F.Silkscreen,B.Silkscreen,Edge.Cuts"
 ROUTES = os.path.join(HERE, "routes")
