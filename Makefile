@@ -6,7 +6,8 @@ KICAD_PY  ?= /Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/
 export KICAD_PY
 SYSROOT   := $(shell rustc --print sysroot 2>/dev/null)
 OBJCOPY    = $(firstword $(wildcard $(SYSROOT)/lib/rustlib/*/bin/llvm-objcopy))
-FW_ELF     = firmware/passthrough/target/thumbv7em-none-eabihf/release/passthrough
+FW_ELF     = firmware/target/thumbv7em-none-eabihf/release/hearing-xiao
+FW_SRC     = $(wildcard firmware/Cargo.* firmware/hearing-*/Cargo.toml firmware/hearing-*/src/*.rs firmware/hearing-xiao/memory.x firmware/hearing-xiao/build.rs firmware/profiles/*.toml)
 FIG        = docs/build/figures
 ASSET_SVG  = $(wildcard docs/assets/*.svg)
 ASSET_PDF  = $(patsubst docs/assets/%.svg,docs/build/assets/%.pdf,$(ASSET_SVG))
@@ -21,7 +22,7 @@ FIG_STAMPS = $(foreach g,$(FIG_GROUPS),$(FIG)/$(g).stamp)
 CHAPTERS   = $(sort $(wildcard docs/manual/[0-9]*.md))
 
 .DEFAULT_GOAL := help
-.PHONY: help all setup fetch previews print-files print-audit pcb pcb-renders reroute firmware figures docs graph check clean distclean \
+.PHONY: help all setup fetch previews print-files print-audit pcb pcb-renders reroute firmware firmware-test figures docs graph check clean distclean \
         dangle-L dangle-R carrier
 
 help: ## list the targets
@@ -86,11 +87,13 @@ reroute: ## re-run Freerouting for all three boards and rewrite the routing lock
 pcb-renders: pcb pcb/renders/dangle_L_top.png pcb/renders/dangle_R_top.png pcb/renders/carrier_top.png ## KiCad 3D renders of the three PCBs
 
 # ---------------------------------------------------------------- firmware (compile only; not hardware-tested)
-firmware/passthrough/passthrough.uf2: $(wildcard firmware/passthrough/src/*.rs) firmware/passthrough/Cargo.toml firmware/passthrough/memory.x firmware/tools/bin2uf2.py
-	cd firmware/passthrough && cargo build --release
-	$(OBJCOPY) -O binary $(FW_ELF) firmware/passthrough/passthrough.bin
-	$(UV) firmware/tools/bin2uf2.py firmware/passthrough/passthrough.bin $@
-firmware: firmware/passthrough/passthrough.uf2 ## build the passthrough firmware (.elf, .bin, .uf2)
+firmware/hearing-xiao.uf2: $(FW_SRC) firmware/tools/bin2uf2.py
+	cd firmware/hearing-xiao && cargo build --release
+	$(OBJCOPY) -O binary $(FW_ELF) firmware/hearing-xiao.bin
+	$(UV) firmware/tools/bin2uf2.py firmware/hearing-xiao.bin $@
+firmware: firmware/hearing-xiao.uf2 ## build the XIAO firmware (.elf, .bin, .uf2)
+firmware-test: ## run the DSP library and desktop frontend tests on the host
+	cd firmware && cargo test
 
 # ---------------------------------------------------------------- documentation (figures -> tables -> PDF)
 $(FIG)/circuits.stamp: docs/figures/circuits.py $(FIG_PY)
@@ -153,9 +156,9 @@ check: $(NETS) ## quick sanity checks: Python compiles, print files valid, PCB D
 
 clean: ## remove everything that is generated (keeps downloads and the Python environment)
 	rm -rf cad/out cad/print pcb/out pcb/carrier/out pcb/fab pcb/renders docs/build \
-	  firmware/passthrough/passthrough.bin firmware/passthrough/passthrough.uf2 assets/body_upper.npz
+	  firmware/hearing-xiao.bin firmware/hearing-xiao.uf2 assets/body_upper.npz
 	find . -name __pycache__ -not -path './.venv/*' -prune -exec rm -rf {} +; find . -name '.DS_Store' -not -path './.venv/*' -delete
 	find . \( -name '*.lck' -o -name '*-backups' \) -not -path './.venv/*' -prune -exec rm -rf {} +
 
 distclean: clean ## clean + remove downloads (router jar, datasheets, MakeHuman sources) and Rust build output
-	rm -rf tools/freerouting-*.jar docs/datasheets assets/mh_raw firmware/passthrough/target
+	rm -rf tools/freerouting-*.jar docs/datasheets assets/mh_raw firmware/target

@@ -14,9 +14,9 @@ pcb/fab/
 pcb/renders/
 docs/build/
 assets/body_upper.npz
-firmware/passthrough/target/
-firmware/passthrough/passthrough.bin
-firmware/passthrough/passthrough.uf2
+firmware/target/
+firmware/hearing-xiao.bin
+firmware/hearing-xiao.uf2
 
 # --- downloaded by `make fetch` (third-party; see sources.toml)
 tools/*.jar

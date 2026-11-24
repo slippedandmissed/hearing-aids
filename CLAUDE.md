@@ -23,7 +23,7 @@ Two DIY open-ear **bone-conduction hearing aids** for the owner (UK, conductive 
 | build123d | CAD (`cad/`) | pure Python; dimensions live in `cad/params.py`, `cad/bee_box.py` (`HP`, `BP`), `cad/gummy_dangle.py` (`GP`) |
 | KiCad 10 | PCBs | **two interpreters**: the project venv has no `pcbnew`; KiCad's bundled Python does (`KICAD_PY`, default `/Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/3.9/bin/python3`). `kicad-cli` must be on `PATH` |
 | Freerouting 1.9.0 | autorouting | `tools/freerouting-1.9.0.jar` (from `make fetch`); the pipeline passes `-dct 0` so the "Start (20s)" dialog is skipped; it needs `java` (OpenJDK 17) and opens a Swing window while it runs |
-| Rust + cargo | firmware (`firmware/passthrough`) | `rustup target add thumbv7em-none-eabihf`, `rustup component add llvm-tools`; `make firmware` builds ELF → `.bin` → `.uf2` |
+| Rust + cargo | firmware (`firmware/`, a cargo workspace: `hearing-dsp` library, `hearing-xiao` device frontend, `hearing-desktop` WAV frontend) | `rustup target add thumbv7em-none-eabihf`, `rustup component add llvm-tools`; `make firmware` builds ELF → `.bin` → `.uf2`; `make firmware-test` (= `cd firmware && cargo test`) runs the host tests. `hearing-xiao` is not a default member (it needs its own target and linker script), so build it from its directory |
 | ngspice | exciter drive simulation | called by `docs/figures/sims.py` in batch mode |
 | pandoc + XeLaTeX | the manual | `make docs`; fonts Helvetica Neue and Menlo (macOS) |
 | Graphviz `dot` | dependency graph | `brew install graphviz` |
@@ -41,7 +41,7 @@ cad/        params.py, glasses.py, earhook.py (stem, clip, spring arm); gummy_da
             print_files.py (every STL + manifest)
 pcb/        build_dangle.py, carrier/build_carrier.py (placement)  →  pipeline.py (Freerouting, ground plane, silk, DRC, BOM/CPL, gerbers, renders)
             import_ses*.py, ground_plane.py, finish*.py, bom*.py, fingerprint.py; lib/ + carrier/lib/ (vendored footprints); routes/ (routing locks)
-firmware/   passthrough/ (Rust, compile-only), tools/bin2uf2.py
+firmware/   hearing-dsp/ (no_std DSP), hearing-profile/ (TOML profile, shared), hearing-xiao/ (device), hearing-desktop/ (WAV, simulation, live frontend); profiles/device.toml is baked into the firmware, tools/bin2uf2.py
 docs/       manual/*.md (chapters), figures/*.py (every figure), data/orders.toml (cost ledger), assemble.py
 tools/      fetch.py (downloads + bibliography), make_graph.py (dependency graph)
 ```

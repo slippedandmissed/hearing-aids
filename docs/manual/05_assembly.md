@@ -147,12 +147,12 @@ Start the silicone a day ahead, and do the rest after the bench test of Step 10 
 
 ![Where to probe, what to expect, and the tone test.](assets/bench-tests.svg)
 
-1. Flash the firmware ([Firmware](#firmware-placeholder); double-tap reset to enter the bootloader, copy the `.uf2`).
+1. Flash the firmware ([Firmware](#firmware), which has a bring-up plan for this step; double-tap reset to enter the bootloader, copy the `.uf2`).
 2. Switch on: the red LED should light.
 3. Measure VBAT (about 3.7 – 4.2 V) at carrier ear pad 3 (marker b), and the 3.3 V rail across C4 on a dangle board with its ribbon connected (marker c).
 4. In a quiet room, hold the exciter in your fingers (not on your skull) and raise the volume slowly: expect a clean tone and no squeal.
 
-**Until the firmware exists, only the continuity and voltage tests are possible.** Do not skip this step.
+The firmware has never run on hardware: expect this step to find something. Do not skip it.
 
 ## Step 11: Assemble the bee box {-}
 
@@ -203,5 +203,5 @@ The ribbons enter the bee through the top slots with a loop of slack inside the 
 1. Everything on: clips fitted, bears hung, bee on, switch off.
 2. **Volume low.** Switch on and put the glasses on.
 3. Raise the volume slowly while you talk. A clean, quiet copy of your voice is the aim.
-4. **Squeal or buzz?** Turn it down and move the exciter away from the microphone. A bone-conduction exciter sits only a few centimetres from the mic, so some squeal at high gain is likely: the [Firmware](#firmware-placeholder) chapter plans a feedback canceller for it, which does not exist yet.
+4. **Squeal or buzz?** Turn it down and move the exciter away from the microphone. A bone-conduction exciter sits only a few centimetres from the mic, so some squeal at high gain is likely. The [Firmware](#firmware) chapter has a feedback canceller (off in the default profile, simulated on assumed paths only) and a procedure to measure the real margin.
 5. The hardware cap keeps the exciter well under 100 mW whatever the firmware does, but **stop if anything hurts**.

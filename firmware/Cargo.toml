@@ -1,0 +1,20 @@
+[workspace]
+resolver = "3"
+members = ["hearing-dsp", "hearing-profile", "hearing-desktop", "hearing-xiao"]
+# hearing-xiao needs the thumbv7em target and linker script (its own .cargo/config.toml), so a bare
+# `cargo test` at this level covers only the host crates. `make firmware` builds the XIAO crate.
+default-members = ["hearing-dsp", "hearing-profile", "hearing-desktop"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+# The closed-loop simulations run several seconds of audio per test.
+[profile.test]
+opt-level = 3
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1

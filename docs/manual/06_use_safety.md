@@ -35,7 +35,7 @@ Plug USB-C into the bee with the **slide switch ON**; the switch sits between th
 | no LED when switched on | battery flat or unplugged, plug reversed, switch dirty | check the plug polarity, charge, measure VBAT at pad 3 |
 | charging does nothing | slide switch is OFF, bad USB cable, XIAO battery wires loose | switch ON, another cable, re-solder the BAT wires |
 | silence from one ear | cable wire broken or on the wrong pad, amp strap wrong | continuity test pad by pad, check L/R board against L/R cable |
-| both ears silent, LED on | firmware not running, amplifier rate rejected (16.129 kHz) | reflash; scope LRCLK; see risk 1 in [Decisions and open risks](#decisions-and-open-risks) |
+| both ears silent, LED on | firmware not running, amplifier rate rejected (16.129 kHz) | reflash; play the boot beep against a phone tuner app (about 1 kHz); see risk 1 in [Decisions and open risks](#decisions-and-open-risks) |
 | a howl or whistle | feedback | lower the volume, reposition, check the mic seal |
 | crackles with head movement | broken ribbon wire or poor joint | flex test while measuring continuity |
 | sound only when pressing the exciter | too little pad pressure | thicker arm, re-seat the clip, re-bend the plate gently |

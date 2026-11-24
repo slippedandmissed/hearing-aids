@@ -41,4 +41,4 @@ Per ear: **clips** on the glasses stem, a printed **spring arm** that reaches be
 
 ## Where it stands
 
-Designed, ordered and not yet built. The firmware is a compile-only skeleton ([Firmware](#firmware-placeholder)), nothing has arrived or been powered, and the clip's grip on real glasses is unproven. [Decisions and open risks](#decisions-and-open-risks) lists what could still go wrong.
+Designed, ordered and not yet built. The firmware's signal processing is tested on a PC but has never run on the device ([Firmware](#firmware)), nothing has arrived or been powered, and the clip's grip on real glasses is unproven. [Decisions and open risks](#decisions-and-open-risks) lists what could still go wrong.

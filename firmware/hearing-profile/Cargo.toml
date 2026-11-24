@@ -1,0 +1,10 @@
+[package]
+name = "hearing-profile"
+description = "Read a TOML hearing profile (a preset plus overrides) into a hearing-dsp Config, and print a Config as Rust source."
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+hearing-dsp = { path = "../hearing-dsp", features = ["serde"] }
+toml = "0.8"

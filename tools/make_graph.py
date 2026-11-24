@@ -20,7 +20,7 @@ def group(name):
     if re.match(r"cad/[^/]+\.py$", name): return "cad/*.py"
     if re.match(r"pcb/(carrier/)?[^/]+\.py$", name) or "/lib/" in name and name.startswith("pcb"): return "pcb scripts + footprint libs"
     if re.match(r"docs/manual/", name) or name.startswith("docs/manual"): return "docs/manual/*.md"
-    if re.match(r"firmware/passthrough/src/", name): return "firmware src/*.rs"
+    if re.match(r"firmware/hearing-[a-z]*/src/", name): return "firmware src/*.rs"
     return name
 
 def colour(n):

@@ -11,7 +11,7 @@ assets/             head mesh builder (generic CC0 mesh; sources are downloaded)
 cad/                build123d models, print-file generator, previews
 pcb/                KiCad generators, Freerouting pipeline, footprint libraries,
                     routes/ = committed routing locks (the one generated thing under version control)
-firmware/           Rust passthrough firmware and the UF2 converter
+firmware/           Rust firmware workspace (DSP library, XIAO and desktop frontends) and the UF2 converter
 docs/               this manual (docs/manual), figure scripts, data
 tools/              fetch.py (downloads, bibliography), make_graph.py (dependency graph)
 ```

@@ -1,0 +1,12 @@
+[package]
+name = "hearing-desktop"
+description = "Desktop test frontend: run the hearing-dsp chain on WAV files."
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+hearing-dsp = { path = "../hearing-dsp" }
+hound = "3.5"
+hearing-profile = { path = "../hearing-profile" }
+cpal = "0.18.2"

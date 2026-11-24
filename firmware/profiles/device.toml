@@ -1,0 +1,7 @@
+# The settings baked into the XIAO firmware (`make firmware`) and, with --profile, run by hearing-desktop.
+# Start from a preset and override only what you change; `hearing-desktop profile --preset conductive` prints every
+# setting. Arrays (bands, crossover_hz, eq) are replaced whole. A misspelt setting is an error, not ignored.
+#
+# SAFE DEFAULT: -6 dB flat, 4000/32768 ceiling, no feedback canceller. Do not switch to "conductive" until the
+# feedback margin has been measured on the bench (see the Firmware chapter, Bench bring-up).
+preset = "passthrough"
