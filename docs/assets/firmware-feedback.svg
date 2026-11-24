@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 700" width="640" height="700" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<!-- Why the loop howls and how the firmware's canceller (firmware/hearing-dsp/src/feedback.rs) deals with it. HAND-AUTHORED SOURCE. Schematic only: the echo path has not been measured.
+     Numbers from FeedbackCfg in config.rs (64 taps, mu 0.002 running, mu_cal 0.05, 3 s calibration, probe -40 dBFS, leak 0.001) and the simulator results in docs/manual/07_firmware.md. Checked 2026-11-24. -->
+<style>.tb{font-size:14px;fill:#1f2933;font-weight:700} .m{font-size:12.5px;fill:#6b7785} .bx{font-size:13px;fill:#1f2933;font-weight:700;text-anchor:middle} .bs{font-size:12px;fill:#1f2933;text-anchor:middle} .nb{font-size:13px;fill:#fff;font-weight:700;text-anchor:middle} .r{font-size:12.5px;fill:#d64545;font-weight:700}</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#1f2933"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#d64545"/></marker></defs>
+<rect width="640" height="700" fill="#fff"/>
+
+<!-- A -->
+<circle cx="26" cy="26" r="11" fill="#1f2933"/><text class="nb" x="26" y="31">A</text><text class="tb" x="46" y="31">The problem: the exciter is heard by the microphone</text>
+<rect x="14" y="62" width="104" height="50" rx="5" fill="#ffd1e8" stroke="#c0377d"/><text class="bx" x="66" y="92">Microphone</text>
+<rect x="168" y="62" width="130" height="50" rx="5" fill="#fff3b8" stroke="#b89a00"/><text class="bx" x="233" y="82">Gain</text><text class="bs" x="233" y="100">(the firmware)</text>
+<rect x="348" y="62" width="104" height="50" rx="5" fill="#dfe4e8" stroke="#6b7785"/><text class="bx" x="400" y="92">Exciter</text>
+<path d="M118 87 H166" stroke="#1f2933" stroke-width="2" marker-end="url(#a)" fill="none"/>
+<path d="M298 87 H346" stroke="#1f2933" stroke-width="2" marker-end="url(#a)" fill="none"/>
+<path d="M400 114 V152 H66 V114" stroke="#d64545" stroke-width="2.2" stroke-dasharray="6 4" fill="none" marker-end="url(#ar)"/>
+<text class="r" x="233" y="146" style="text-anchor:middle">echo: the shaking leaks back to the microphone</text>
+<text class="m" x="14" y="180">If the echo comes back louder than it left (gain x coupling above 1), each trip makes it bigger: a squeal.</text>
+<text class="m" x="14" y="196">The path is a delay of a millisecond or two, then a few resonances of the head and the earring.</text>
+<text class="m" x="14" y="212">Nobody knows its strength yet; the bench measures it.</text>
+
+<!-- B -->
+<circle cx="26" cy="252" r="11" fill="#1f2933"/><text class="nb" x="26" y="257">B</text><text class="tb" x="46" y="257">The fix: subtract a copy of the echo</text>
+<rect x="14" y="298" width="104" height="50" rx="5" fill="#ffd1e8" stroke="#c0377d"/><text class="bx" x="66" y="328">Microphone</text>
+<circle cx="190" cy="323" r="17" fill="#fff" stroke="#1f2933" stroke-width="2"/><text class="bx" x="190" y="329" style="font-size:20px">+</text>
+<rect x="248" y="298" width="100" height="50" rx="5" fill="#fff3b8" stroke="#b89a00"/><text class="bx" x="298" y="328">Gain</text>
+<rect x="398" y="298" width="104" height="50" rx="5" fill="#dfe4e8" stroke="#6b7785"/><text class="bx" x="450" y="328">Exciter</text>
+<path d="M118 323 H171" stroke="#1f2933" stroke-width="2" marker-end="url(#a)" fill="none"/>
+<path d="M207 323 H246" stroke="#1f2933" stroke-width="2" marker-end="url(#a)" fill="none"/>
+<path d="M348 323 H396" stroke="#1f2933" stroke-width="2" marker-end="url(#a)" fill="none"/>
+<path d="M450 298 V272 H66 V296" stroke="#d64545" stroke-width="2.2" stroke-dasharray="6 4" fill="none" marker-end="url(#ar)"/>
+<text class="r" x="330" y="266" style="text-anchor:middle">the real echo</text>
+<rect x="248" y="392" width="150" height="46" rx="5" fill="#d9ecff" stroke="#2f8bd6"/><text class="bx" x="323" y="412">Model of the echo</text><text class="bs" x="323" y="429">64 numbers (taps)</text>
+<path d="M372 323 V380 H323 V390" stroke="#1f2933" stroke-width="2" fill="none" marker-end="url(#a)"/>
+<circle cx="372" cy="323" r="3.5" fill="#1f2933"/>
+<path d="M248 415 H190 V342" stroke="#2f8bd6" stroke-width="2.2" fill="none" marker-end="url(#a)"/>
+<text class="bs" x="204" y="406" style="text-anchor:start;fill:#2f8bd6;font-weight:700">minus</text>
+<text class="m" x="14" y="464">The model hears what the exciter is being told to play, predicts the echo it will cause, and subtracts that</text>
+<text class="m" x="14" y="480">before the gain. The better the prediction, the more gain before the squeal.</text>
+
+<!-- C -->
+<circle cx="26" cy="520" r="11" fill="#1f2933"/><text class="nb" x="26" y="525">C</text><text class="tb" x="46" y="525">Learning the model without learning your voice</text>
+<rect x="14" y="546" width="296" height="104" rx="6" fill="#f6f8fa" stroke="#d3d9df"/>
+<text class="tb" x="28" y="568">At switch-on: 3 seconds</text>
+<text class="m" x="28" y="588">The exciter plays a faint hiss the firmware makes.</text>
+<text class="m" x="28" y="604">With no speech around, the model learns the</text>
+<text class="m" x="28" y="620">path quickly (step 0.05) and keeps a saved copy.</text>
+<text class="m" x="28" y="640">Wear the earrings in place first.</text>
+<rect x="330" y="546" width="296" height="104" rx="6" fill="#f6f8fa" stroke="#d3d9df"/>
+<text class="tb" x="344" y="568">Afterwards: nearly frozen</text>
+<text class="m" x="344" y="588">It may drift a little (step 0.002) but is pulled</text>
+<text class="m" x="344" y="604">back to the saved copy. It can follow a slow</text>
+<text class="m" x="344" y="620">change but cannot learn your vowels, which an</text>
+<text class="m" x="344" y="640">always-learning filter would cancel.</text>
+<text class="m" x="14" y="672">Simulated on assumed paths: +4 to +16 dB of extra gain before squealing. Not measured on a real head.</text>
+</svg>

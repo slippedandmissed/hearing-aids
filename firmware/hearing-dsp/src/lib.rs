@@ -12,12 +12,14 @@ mod ear;
 mod feedback;
 mod gate;
 mod limiter;
+mod melody;
 
 pub use biquad::Biquad;
 pub use config::{BANDS, Band, Config, EQ_BANDS, EqBand, FeedbackCfg, Gate, SAMPLE_RATE};
 pub use feedback::{MAX_DELAY, MAX_TAPS};
 pub use ear::Ear;
 pub use limiter::Limiter;
+pub use melody::{Melody, Note, STARTUP, Tone};
 
 /// Convert a signed 16-bit sample to the library's nominal range of -1.0 ..= 1.0.
 #[inline]

@@ -4,18 +4,76 @@
 
 > The signal processing exists and is tested on a PC; nothing has run on the device. This records what exists, what is assumed, how to bring it up on the bench and what is next, and grows as the firmware does.
 
+## A walkthrough, step by step
+
+This section explains what the firmware does without any code, in the order things happen. The sections after it are the record: numbers, results and the bench plan. Everything here describes what was written and tested on a PC; **none of it has run on the device yet**.
+
+### Where the firmware sits
+
+The XIAO in the bee listens to both microphones and drives both amplifiers ([How each part works](#how-each-part-works) has the electronics). The firmware is the part in the middle. It is written as three separate pieces so that it can be tried without the hardware:
+
+- **`hearing-dsp`** holds all the sound processing. It knows nothing about chips or pins, so the same code runs on the XIAO and on a PC.
+- **`hearing-xiao`** is the thin layer for the real board: it reads the microphones, calls the processing, and feeds the amplifiers.
+- **`hearing-desktop`** runs the same processing on a PC: on a recording, as a graph, or live from a microphone to headphones.
+
+A fourth piece, **`hearing-profile`**, reads the settings file, so the PC and the device always use identical settings.
+
+### What happens to every sample
+
+The microphone is turned into a stream of numbers, 16 129 per second (one *sample* every 62 microseconds). Each number goes through the steps below, for each ear separately, and comes out as the number sent to the amplifier.
+
+![The seven steps every sample goes through. Left: a sketch of what the step does. Right: whether the first prototype uses it.](assets/firmware-chain.svg)
+
+The first prototype switches most of these off on purpose. The device runs the `PASSTHROUGH` settings: the sound is turned down by 6 dB, evenly, and only the cleaning-up, the band split and the safety limit are active. That is deliberately boring, so that the first thing you hear on the bench is a quiet, clean copy of your own voice and any fault is in the hardware or the clocks and not in the tuning.
+
+### Why there is a feedback canceller
+
+A hearing aid with a speaker beside the microphone can squeal. Here the speaker is a bone exciter, and its shaking travels through the head and the earring to the microphone. If the sound that comes back is louder than the sound that went out, it grows with every trip.
+
+![The loop that howls, the fix, and how the fix is trained.](assets/firmware-feedback.svg)
+
+The firmware makes a model of that echo and subtracts it. The tricky part is teaching the model: a model that learns all the time also learns your voice (your voice *is* the sound the loop is carrying) and then cancels it. So the firmware learns once, in the first three seconds after switching on, while the exciter plays a faint hiss, and afterwards lets the model change only very slowly. In simulation on made-up echo paths this allows 4 to 16 dB more gain before the squeal and leaves speech almost untouched. The real path has not been measured; the bench plan below does that. The canceller is **off** in the first prototype.
+
+### From switch-on to hearing
+
+![What the device does after switch-on, how often each part runs, and how a setting reaches the device.](assets/firmware-timeline.svg)
+
+1. **Power on.** The XIAO starts, sets up the microphone clock and the amplifier clock, and plays a short jingle (0.6 s): three rising notes, short, short, long, with the XIAO's green LED lit while each note sounds. The LED alone shows the program is running (even with nothing else connected); hearing the notes shows the path from the XIAO through the amplifier to the exciter works; and the pitch of the long last note (1008 Hz) on a tuner app checks the clock plan. `hearing-desktop melody out.wav` writes the same jingle so you can hear it on the computer first.
+2. **Calibration**, only when the canceller is on: three seconds of faint hiss. Wear the earrings in place.
+3. **Fade-in** over 0.1 s, then the hearing aid runs until you switch off.
+4. **While running**, three things repeat at different speeds (panel B above). Only the per-sample work must never be late; if the processor cannot keep up you will hear crackles, which is how the bench plan detects it.
+
+### Trying a setting without hardware
+
+Everything is controlled by one text file, `firmware/profiles/device.toml`. Start from a preset and override only what you change. From the `firmware/` directory:
+
+| you want to | command | what you get |
+|---|---|---|
+| see the settings | `cargo run --release -p hearing-desktop -- profile --preset conductive` | every setting, as a file you can edit |
+| hear them on a recording | `... -- process in.wav out.wav --profile my.toml` | a processed WAV and a note on how often the limiter was reached |
+| see what they do | `... -- response --profile my.toml` | gain at each frequency and loudness |
+| hear them live | `... -- live --gain-db -20` (**headphones**: loudspeakers will squeal; this mode has not been run yet) | your microphone through the chain |
+| check the delay | `... -- latency` | how late the sound comes out, by frequency |
+| test the feedback canceller | `... -- feedback` | the simulated loop and the table below |
+
+(`...` is `cargo run --release -p hearing-desktop`.) When a profile sounds right, copy it to `firmware/profiles/device.toml`, run `make firmware`, double-tap reset on the XIAO and copy `firmware/hearing-xiao.uf2` to the drive that appears. A misspelt setting stops the build instead of being ignored. These tools judge the *processing*; they cannot tell you how loud the exciter is on your head, and that is what the bench plan is for.
+
+### What this does not do yet
+
+It is not a prescription. There is no audiogram, so the `conductive` preset is an **ESTIMATE** for a flat conductive loss and must not be worn before the feedback margin has been measured. There is no noise reduction. There is no phone app or Bluetooth. The processor load, the real delay and the real feedback path are all still to be measured on the bench.
+
 ## Status
 
 | item | state |
 |---|---|
 | Layout | a cargo workspace in `firmware/`: `hearing-dsp` (`no_std`, no alloc, `f32`; the signal processing, tested on the host), `hearing-xiao` (embassy-nrf [@embassy]; PDM in, DSP, I2S out), `hearing-desktop` (runs the same DSP over WAV files) |
 | Device frontend | compiles for `thumbv7em-none-eabihf`; **not run on hardware** |
-| What it does | stereo PDM in → one `Ear` per channel (the chain below, set to the `PASSTHROUGH` preset: −6 dB, flat) → stereo I2S out, 16-frame blocks, boot beep |
+| What it does | stereo PDM in → one `Ear` per channel (the chain below, set to the `PASSTHROUGH` preset: −6 dB, flat) → stereo I2S out, 16-frame blocks, start-up jingle with a green-LED blink |
 | Host tools | `hearing-desktop`: `process` (WAV through the chain), `response` (gain by frequency and level), `latency` (group delay), `feedback` (closed-loop simulation), `live` (microphone to headphones; not exercised yet, see the log), `profile` (print a profile as TOML); `--profile FILE.toml` works everywhere a preset does |
 | Settings file | `firmware/profiles/device.toml` is read by `hearing-desktop --profile` and baked into the firmware by `hearing-xiao/build.rs`; a misspelt setting stops the build |
 | Footprint | about 30 KB flash, 6.7 KB RAM (`.uf2` 60 KB); CPU load **not measured** |
 | Flashing | `.uf2` for the XIAO's bootloader [@uf2; @adafruit_bl], application origin `0x27000` (**UNVERIFIED** for this bootloader; no SWD probe needed) |
-| DSP | chain below, tested on the host (35 library and 6 desktop tests); feedback canceller written and simulated on **assumed** paths only |
+| DSP | chain below, tested on the host (40 library and 8 desktop tests); feedback canceller written and simulated on **assumed** paths only |
 | Settings | changed by reflashing for the first prototype; no Bluetooth or phone app yet ([@trouble] is the candidate host stack if that changes) |
 
 ## Signal chain (`hearing-dsp`, one per ear)
@@ -65,8 +123,8 @@ The order for the day the boards arrive. It needs a multimeter, your ears, a pho
 |---|---|---|---|
 | 0 | Continuity and voltages of Steps 3 and 10 of the assembly guide, before any firmware | VBAT 3.7–4.2 V at pad 3; 3.3 V across C4 on each dangle; no VBAT-to-GND beep | do not flash; fix the wiring first |
 | 1 | Flash `firmware/hearing-xiao.uf2` (double-tap reset, copy to the drive). Open `INFO_UF2.txt` on the drive first and note the bootloader and SoftDevice lines | the board restarts and the red charge/power LED behaves as before | the application start address `0x27000` is **unverified**; if the board falls back to the bootloader or never starts, compare it with the SoftDevice size in `INFO_UF2.txt` and change `memory.x` |
-| 2 | Switch on with each exciter held in your fingers, not on your head | a short 1 kHz beep (0.3 s) from both exciters | silence from both: the amplifier may reject 16.129 kHz (risk 1); silence from one: the Troubleshooting table |
-| 3 | Play the beep against a tuner app | about 1008 Hz (the beep is a 16-sample sine at 16.129 kHz); a different pitch means a different real sample rate, and a ratio of the two readings tells you by how much | this is the no-scope test of the clock plan: a clean beep at the right pitch means the PDM and I2S clocks are what the code says |
+| 2 | Switch on with each exciter held in your fingers, not on your head | the start-up jingle (short, short, long) from both exciters, and the green LED blinking the same pattern | silence from both: the amplifier may reject 16.129 kHz (risk 1); silence from one: the Troubleshooting table |
+| 3 | Play the jingle against a tuner app (the long last note) | about 1008 Hz (the note is computed for 16.129 kHz); a different pitch means a different real sample rate, and a ratio of the two readings tells you by how much | this is the no-scope test of the clock plan: a clean note at the right pitch means the PDM and I2S clocks are what the code says |
 | 4 | Talk near each bear's microphone hole, exciter still in your fingers | a quiet copy of your voice (the default profile is −6 dB flat) | no sound: mic clock or data wiring (risk 2), or the dangle's L/R strap; cover one bear's hole to confirm each ear hears its own microphone |
 | 5 | Put the exciters on your head as in Step 15, at the default (−6 dB) profile | a clean, quiet copy of your voice, no squeal | squeal at −6 dB means the loop gain is already near 1: stop and measure it as in stage 6 |
 | 6 | **Measure the feedback margin** with a reflash ladder: edit `firmware/profiles/device.toml`, set all four `gain_db` to 0, 6, 12, 18, 24 dB in turn, flash, talk. Note the highest gain with no squeal, with the canceller off. Then repeat the same ladder with the canceller on (the `[feedback]` table below), so the two numbers are comparable | one number for each: **max stable gain without and with the canceller**, directly comparable with the simulator's table | squeal at the lowest rung: the coupling is much stronger than assumed; the answer is mechanical (mic seal, arm), not firmware |
@@ -131,6 +189,8 @@ PDM clock = 32 MHz / 31 = 1.032 MHz, ratio 64 → 16.129 kHz; the I2S master clo
 
 ## Firmware log
 
+- **2026-11-24 (walkthrough).** Added the step-by-step walkthrough at the start of this chapter with three hand-drawn diagrams (`docs/assets/firmware-*.svg`: signal chain, feedback loop and its fix, boot timeline and how often each part runs). The diagrams are sketches of the ideas, not plots; the real response comes from `hearing-desktop response`.
+- **2026-11-24 (jingle).** The plain boot beep is replaced by a 0.6 s start-up jingle (`hearing-dsp/src/melody.rs`: E5, G5, then a held 1008 Hz note; short, short, long) with the XIAO's green LED lit while each note sounds, so a bare board shows it is running. Tested on the host (length, level, click-free ends, LED rhythm, pitch of the last note); `hearing-desktop melody OUT.wav` writes it for listening. **Not run on the device**; the LED pin (P0.30, active low) is from memory of the XIAO documentation and UNVERIFIED.
 - **2026-11-23 (tools).** `hearing-profile` crate: one TOML file (preset plus overrides, typos rejected) is read by the desktop tool and baked into the firmware by `build.rs`. `latency` command: DSP group delay 0.1 to 0.8 ms above 1 kHz. `live` mode written (streaming resampler tested against the offline one) but **not run**: the session's sandbox could not open the audio device (CoreAudio error `!obj` at the first device query), so it needs a first run on the Mac with headphones. Bench bring-up plan written for a setup with no oscilloscope. The `CONDUCTIVE_GUESS` canceller delay went from 16 to 0 until the real path is measured.
 - **2026-11-23 (feedback).** Canceller and closed-loop simulator written. First version (plain NLMS) raised the stable gain a lot and destroyed voiced sound (fidelity 12 → 3 dB); replaced by boot calibration plus a leashed filter, which keeps the sound and still adds 4–16 dB in simulation. Simulated on assumed paths only. The howl metric alone had hidden the damage: a stability number needs a fidelity number beside it.
 - **2026-11-23 (later).** DSP chain written and tested on the host: biquads, band split, compressor, expander, EQ, soft limiter. A first compressor detector (rectified peak) read 4 dB low on a sine and was replaced by an RMS detector. Tests that compared a compressed band with its nominal gain were wrong, because a 30 dB band beside 0 dB neighbours has its own shape from the crossover skirts; they now compare with the same band uncompressed.

@@ -26,7 +26,7 @@ The choices that shape the project, and what would prove each one wrong. The rea
 
 | # | risk | settled by |
 |---:|---|---|
-| 1 | The amplifier rejects 16.129 kHz | first power-up: the boot beep is audible and at the right pitch (tuner app); a frequency counter or scope on LRCLK if one is available |
+| 1 | The amplifier rejects 16.129 kHz | first power-up: the start-up jingle is audible and its last note is at the right pitch (1008 Hz on a tuner app); a frequency counter or scope on LRCLK if one is available |
 | 2 | The microphone clock margin of 0.8 % | a bench test across temperature |
 | 3 | Noise on the shared 8-wire, 60 cm bus | a real cable test |
 | 4 | Feedback between the exciter and the microphone | a listening test, then the feedback canceller |

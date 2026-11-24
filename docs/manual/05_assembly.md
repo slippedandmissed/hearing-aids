@@ -22,6 +22,28 @@ Follow the pictures; the text under each picture has the detail. Allow a weekend
 
 Every clip is engraved with its fit code (side, grip, arm thickness). The grips and arms are explained in Step 12.
 
+## Firmware: build it and test it on your computer {-}
+
+Steps 1 to 5 below can be done now, before the parts arrive; the bare-XIAO flash needs only the XIAO and a USB cable, so do it before Step 3. The first part takes about ten minutes. The firmware chapter ([Firmware](#firmware)) explains what the code does; this section is only how to get it onto the board.
+
+**Marked placeholders.** Anything written as **[TO FILL IN: ...]** is a step that cannot be written until the hardware is in your hands. Replace each one with what you actually saw, and flip the status tag from UNVERIFIED to MEASURED where the text says so.
+
+1. **Install the tools once.** Rust from [rustup.rs](https://rustup.rs), then in a terminal: `rustup target add thumbv7em-none-eabihf` and `rustup component add llvm-tools`. The rest of the project's tools are in the README (`uv sync`, `make`).
+2. **Run the tests:** `make firmware-test`. Expect every test to pass (54 at the time of writing: the processing, the settings reader and the PC tools). If one fails, stop: the firmware does not do what the manual says.
+3. **Choose the settings.** The first build should use the shipped file `firmware/profiles/device.toml`, which says `preset = "passthrough"`: the sound is turned down 6 dB, the feedback canceller is off, and the safety limit is on. Do not change it for the first power-up.
+4. **Build:** `make firmware`. It prints the size and writes `firmware/hearing-xiao.uf2`. A misspelt setting in the file stops the build with the name of the setting.
+5. **Optional: listen first.** With headphones on (never the exciters), `cd firmware && cargo run --release -p hearing-desktop -- live --gain-db -20` plays your microphone through the same processing. This mode has **not been run yet**; if it fails, it affects nothing else.
+
+### Flash a bare XIAO before you solder anything {-}
+
+The fastest way to find out that the file, the cable and the boot-loader address are right is to try them on the XIAO alone, while a mistake is still cheap to fix.
+
+1. Plug a **data** USB-C cable (not a charge-only one) from the computer to the XIAO. Nothing else is connected.
+2. **Double-tap the reset button** quickly. A drive should appear on the computer. **[TO FILL IN: the drive's name; XIAO-BOOT is expected but UNVERIFIED. The LED pattern that means the boot-loader is waiting. If no drive appears: try a different cable, then a slower or faster double-tap.]**
+3. Open `INFO_UF2.txt` on that drive and note the boot-loader version and the SoftDevice line. **[TO FILL IN: write them here, and compare the SoftDevice size with the application start address `0x27000` in `firmware/hearing-xiao/memory.x`. That address is UNVERIFIED; it is the one number in the build most likely to be wrong.]**
+4. Drag `firmware/hearing-xiao.uf2` onto the drive. The drive vanishes and the board restarts by itself.
+5. **The program running.** The drive vanishes, and the XIAO's green LED should blink three times: short, short, long (the start-up jingle's rhythm). With the amplifiers connected you also hear the jingle. **[TO FILL IN: whether the green LED did blink, and its colour and brightness; the pin (P0.30, lit when low) is UNVERIFIED. The red charge LED is separate and cannot be controlled.]** If the drive reappears or the board seems to start over and over, the start address is wrong: see the Firmware chapter's bring-up table, stage 1.
+
 ## Step 1: Look before you solder {-}
 
 ![The continuity check, before any power.](assets/continuity-check.svg)
@@ -147,12 +169,23 @@ Start the silicone a day ahead, and do the rest after the bench test of Step 10 
 
 ![Where to probe, what to expect, and the tone test.](assets/bench-tests.svg)
 
-1. Flash the firmware ([Firmware](#firmware), which has a bring-up plan for this step; double-tap reset to enter the bootloader, copy the `.uf2`).
-2. Switch on: the red LED should light.
-3. Measure VBAT (about 3.7 – 4.2 V) at carrier ear pad 3 (marker b), and the 3.3 V rail across C4 on a dangle board with its ribbon connected (marker c).
-4. In a quiet room, hold the exciter in your fingers (not on your skull) and raise the volume slowly: expect a clean tone and no squeal.
+The firmware has never run on hardware: expect this step to find something. Do not skip it. The full staged plan, with what a miss means at each stage, is in the Firmware chapter ([Bench bring-up](#bench-bring-up)); this is the short version in the order of the build.
 
-The firmware has never run on hardware: expect this step to find something. Do not skip it.
+**Power and wiring first, before any firmware:**
+
+1. Measure VBAT (about 3.7 – 4.2 V) at carrier ear pad 3 (marker b), and the 3.3 V rail across C4 on a dangle board with its ribbon connected (marker c). **[TO FILL IN: the readings you got, per board.]**
+2. Switch on: the red LED should light. **[TO FILL IN: how long it takes to turn off after unplugging USB, and whether it behaves differently on battery only.]**
+
+**Then the firmware** (built in "Firmware: build it and test it on your computer", flashed the same way as on the bare XIAO):
+
+3. Flash `firmware/hearing-xiao.uf2` with the earrings connected and the exciters held in your fingers, **not on your head**.
+4. **The jingle.** At switch-on both exciters play three rising notes, short, short, long, while the green LED blinks the same rhythm. Play the long last note against a phone tuner app: about 1008 Hz means the clocks are what the code says. **[TO FILL IN: the pitch you measured, and the note the tuner showed. No sound from either: see the Firmware chapter, stage 2.]**
+5. **Voice.** In a quiet room, talk close to each bear's microphone hole: a quiet copy of your voice from that ear's exciter, and nothing from the other. Cover one microphone hole to check each ear hears its own. **[TO FILL IN: which ear is which if they are swapped (the dangle's L/R strap); the level you heard.]**
+6. **Squeal?** At this setting (6 dB down) there must be none while the exciter is in your fingers. **[TO FILL IN.]**
+
+**Only after those work:** the feedback margin and the canceller are measured by reflashing at a ladder of gains (Firmware chapter, stages 6 and 7). **[TO FILL IN: the highest gain with no squeal, canceller off and on. It decides whether Step 15 can use more than the default. Also: crackling means the processor cannot keep up, and nothing in the manual yet says what to do about it beyond the options listed there.]**
+
+Do not raise the safety ceiling (`limit_dbfs`) to get more volume; the hardware power cap stays as it is.
 
 ## Step 11: Assemble the bee box {-}
 
@@ -202,6 +235,6 @@ The ribbons enter the bee through the top slots with a loop of slack inside the 
 
 1. Everything on: clips fitted, bears hung, bee on, switch off.
 2. **Volume low.** Switch on and put the glasses on.
-3. Raise the volume slowly while you talk. A clean, quiet copy of your voice is the aim.
+3. Raise the volume slowly while you talk. (The firmware has no volume control yet: the loudness is the profile you flashed. Start with the shipped −6 dB `passthrough` and only go up after the gain ladder in Step 10 has told you where the squeal starts.) **[TO FILL IN: the gain you settled on, and the profile file for it.]** A clean, quiet copy of your voice is the aim.
 4. **Squeal or buzz?** Turn it down and move the exciter away from the microphone. A bone-conduction exciter sits only a few centimetres from the mic, so some squeal at high gain is likely. The [Firmware](#firmware) chapter has a feedback canceller (off in the default profile, simulated on assumed paths only) and a procedure to measure the real margin.
 5. The hardware cap keeps the exciter well under 100 mW whatever the firmware does, but **stop if anything hurts**.

@@ -5,6 +5,7 @@
 //!   hearing-desktop feedback [--scenario damped|ringy] [--coupling-db DB] [--input noise|voiced] [--taps N --delay N --mu X]
 //!   hearing-desktop live [--seconds N] [--stereo-input] [options]   (microphone to headphones; WEAR HEADPHONES)
 //!   hearing-desktop profile [--preset NAME | --profile FILE]     (prints every setting as TOML)
+//!   hearing-desktop melody OUT.wav   (the start-up jingle the device plays)
 //!   hearing-desktop latency [--preset passthrough|conductive]
 //!   hearing-desktop response [--preset passthrough|conductive] [--gain-db DB] [--limit-dbfs DB]
 //!
@@ -51,7 +52,7 @@ fn read_wav(path: &str) -> Result<(Vec<Vec<f32>>, f32), String> {
     Ok((chans, spec.sample_rate as f32))
 }
 
-const USAGE: &str = "usage: hearing-desktop process IN.wav OUT.wav [options] | hearing-desktop response [options] | hearing-desktop feedback [options] | hearing-desktop latency [options] | hearing-desktop profile [options] | hearing-desktop live [options]\n\
+const USAGE: &str = "usage: hearing-desktop process IN.wav OUT.wav [options] | hearing-desktop response [options] | hearing-desktop feedback [options] | hearing-desktop melody OUT.wav | hearing-desktop latency [options] | hearing-desktop profile [options] | hearing-desktop live [options]\n\
 options: --preset passthrough|conductive | --profile FILE.toml  --gain-db DB (added to every band)  --limit-dbfs DB";
 
 fn parse_options(args: &[String]) -> Result<Config, String> {
@@ -108,12 +109,33 @@ fn run(args: &[String]) -> Result<(), String> {
             live::run(&cfg, seconds, stereo)
         }
         [cmd, rest @ ..] if cmd == "profile" => hearing_profile::to_toml(&parse_options(rest)?).map(|t| print!("{t}")),
+        [cmd, output] if cmd == "melody" => melody(output),
         [cmd, rest @ ..] if cmd == "latency" => latency::print(&parse_options(rest)?),
         [cmd, rest @ ..] if cmd == "feedback" => feedback_sim::report(rest),
         [cmd, rest @ ..] if cmd == "response" => response::print(&parse_options(rest)?),
         [cmd, input, output, rest @ ..] if cmd == "process" => process(input, output, &parse_options(rest)?),
         _ => Err(USAGE.into()),
     }
+}
+
+/// Write the start-up jingle the device plays, so it can be heard (and judged) on the computer.
+fn melody(output: &str) -> Result<(), String> {
+    let spec = hound::WavSpec {
+        channels: 1,
+        sample_rate: SAMPLE_RATE.round() as u32,
+        bits_per_sample: 16,
+        sample_format: hound::SampleFormat::Int,
+    };
+    let mut w = hound::WavWriter::create(output, spec).map_err(|e| format!("{output}: {e}"))?;
+    let mut m = hearing_dsp::Melody::new(&hearing_dsp::STARTUP);
+    let mut n = 0;
+    while let Some(t) = m.next_sample() {
+        w.write_sample(hearing_dsp::to_i16(t.value)).map_err(|e| e.to_string())?;
+        n += 1;
+    }
+    w.finalize().map_err(|e| e.to_string())?;
+    println!("{output}: {n} samples, {:.2} s", n as f32 / SAMPLE_RATE);
+    Ok(())
 }
 
 fn process(input: &str, output: &str, cfg: &Config) -> Result<(), String> {

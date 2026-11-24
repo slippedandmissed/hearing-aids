@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<!-- What the device does after power-on, how often each part of the processing runs, and how a setting gets from a text file into the device. HAND-AUTHORED SOURCE.
+     From firmware/hearing-xiao/src/main.rs (the jingle of hearing-dsp/src/melody.rs, 0.58 s; calibration after it), hearing-dsp (control step 8 samples, fade-in 100 ms) and the Makefile (make firmware). Times in panel A are not to scale. Checked 2026-11-24. -->
+<style>.tb{font-size:14px;fill:#1f2933;font-weight:700} .m{font-size:12.5px;fill:#6b7785} .bx{font-size:13px;fill:#1f2933;font-weight:700;text-anchor:middle} .bs{font-size:12px;fill:#1f2933;text-anchor:middle} .nb{font-size:13px;fill:#fff;font-weight:700;text-anchor:middle}</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#1f2933"/></marker></defs>
+<rect width="640" height="640" fill="#fff"/>
+
+<circle cx="26" cy="26" r="11" fill="#1f2933"/><text class="nb" x="26" y="31">A</text><text class="tb" x="46" y="31">After you switch on (times not to scale)</text>
+<rect x="14" y="52" width="100" height="56" fill="#f5c518" stroke="#1f2933"/><text class="bx" x="64" y="76">Jingle</text><text class="bs" x="64" y="94">0.6 s</text>
+<rect x="114" y="52" width="260" height="56" fill="#9ad6ff" stroke="#1f2933"/><text class="bx" x="244" y="76">Faint hiss</text><text class="bs" x="244" y="94">3 s, learning the echo</text>
+<rect x="374" y="52" width="40" height="56" fill="#d7f0d0" stroke="#1f2933"/>
+<rect x="414" y="52" width="212" height="56" fill="#9ad6a6" stroke="#1f2933"/><text class="bx" x="520" y="76">Hearing aid</text><text class="bs" x="520" y="94">until switched off</text>
+<text class="bs" x="394" y="124" style="font-size:11px">fade-in</text>
+<text class="m" x="14" y="146">1 Short, short, long, heard and blinked on the green LED; the long note is 1008 Hz.</text>
+<text class="m" x="14" y="162">2 The hiss is only played when the canceller is switched on. The first prototype has it off.</text>
+<text class="m" x="14" y="178">3 The sound then rises from silence over 0.1 s, so there is no click.</text>
+
+<circle cx="26" cy="216" r="11" fill="#1f2933"/><text class="nb" x="26" y="221">B</text><text class="tb" x="46" y="221">How often each part runs</text>
+<rect x="14" y="238" width="612" height="44" rx="5" fill="#f6f8fa" stroke="#d3d9df"/>
+<text class="bx" x="28" y="258" style="text-anchor:start;fill:#2f8bd6">every sample, 62 microseconds</text>
+<text class="m" x="28" y="274">filters, canceller, gain, limiter: the work that must never be late</text>
+<rect x="14" y="292" width="612" height="44" rx="5" fill="#f6f8fa" stroke="#d3d9df"/>
+<text class="bx" x="28" y="312" style="text-anchor:start;fill:#7a5fd0">every 8 samples, 0.5 ms</text>
+<text class="m" x="28" y="328">work out the new gain for each band from the measured level; it is then eased in sample by sample</text>
+<rect x="14" y="346" width="612" height="44" rx="5" fill="#f6f8fa" stroke="#d3d9df"/>
+<text class="bx" x="28" y="366" style="text-anchor:start;fill:#17a2a2">every 16 samples, 1 ms</text>
+<text class="m" x="28" y="382">a block moves from the microphone side to the amplifier side (adds to the delay)</text>
+<text class="m" x="14" y="410">Budget: about 3970 CPU cycles per stereo sample on the XIAO. Whether it all fits is not measured yet.</text>
+
+<circle cx="26" cy="448" r="11" fill="#1f2933"/><text class="nb" x="26" y="453">C</text><text class="tb" x="46" y="453">Changing a setting</text>
+<rect x="14" y="474" width="132" height="64" rx="5" fill="#fff3b8" stroke="#b89a00"/><text class="bx" x="80" y="498">Edit</text><text class="bs" x="80" y="516">profiles/</text><text class="bs" x="80" y="530">device.toml</text>
+<rect x="176" y="474" width="132" height="64" rx="5" fill="#d9ecff" stroke="#2f8bd6"/><text class="bx" x="242" y="498">make firmware</text><text class="bs" x="242" y="516">builds the .uf2;</text><text class="bs" x="242" y="530">a typo stops it</text>
+<rect x="338" y="474" width="132" height="64" rx="5" fill="#dfe4e8" stroke="#6b7785"/><text class="bx" x="404" y="498">Double-tap</text><text class="bs" x="404" y="516">reset on the</text><text class="bs" x="404" y="530">XIAO</text>
+<rect x="500" y="474" width="126" height="64" rx="5" fill="#d7f0d0" stroke="#2e7d5b"/><text class="bx" x="563" y="498">Copy the</text><text class="bs" x="563" y="516">.uf2 to the</text><text class="bs" x="563" y="530">drive</text>
+<path d="M146 506 H174" stroke="#1f2933" stroke-width="2" marker-end="url(#a)" fill="none"/>
+<path d="M308 506 H336" stroke="#1f2933" stroke-width="2" marker-end="url(#a)" fill="none"/>
+<path d="M470 506 H498" stroke="#1f2933" stroke-width="2" marker-end="url(#a)" fill="none"/>
+<text class="m" x="14" y="566">The board restarts by itself and runs the new settings. Try a profile by ear first with</text>
+<text class="m" x="14" y="582">hearing-desktop live (headphones on, not the exciters), or on a recording with process.</text>
+<text class="m" x="14" y="606">The ceiling on loudness is a setting too: do not raise it to get more volume.</text>
+</svg>

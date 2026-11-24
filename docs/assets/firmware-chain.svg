@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 700" width="640" height="700" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+<!-- The firmware's signal chain for one ear, in the order of firmware/hearing-dsp/src/ear.rs (process_sample). HAND-AUTHORED SOURCE.
+     The little graphs are sketches of the idea, not plots of the real response (use `hearing-desktop response` for that).
+     Numbers: PASSTHROUGH and CONDUCTIVE_GUESS in firmware/hearing-dsp/src/config.rs; crossovers 500/1500/3000 Hz, high-pass 100 Hz, limiter knee at 70 % of the ceiling. Checked 2026-11-24. -->
+<style>.tb{font-size:14px;fill:#1f2933;font-weight:700} .m{font-size:12.5px;fill:#6b7785} .nb{font-size:13px;fill:#fff;font-weight:700;text-anchor:middle} .chip{font-size:12px;fill:#1f2933;font-weight:700;text-anchor:middle} .ax{font-size:11px;fill:#6b7785}</style>
+<rect width="640" height="700" fill="#fff"/>
+<text x="14" y="26" class="tb">What happens to every sample, in order (one ear)</text>
+<text x="14" y="46" class="m">16 129 times a second a new number arrives from the microphone and goes through all seven steps.</text>
+
+<!-- 1 clean-up -->
+<rect x="14" y="66" width="170" height="44" rx="4" fill="#f6f8fa" stroke="#d3d9df"/>
+<g transform="translate(14,66)"><path d="M4 40 C30 40 38 10 70 8 L166 8" fill="none" stroke="#1f2933" stroke-width="2"/><path d="M38 4 v36" stroke="#d64545" stroke-width="1" stroke-dasharray="3 3"/><text class="ax" x="42" y="38">100 Hz</text></g>
+<circle cx="206" cy="80" r="11" fill="#f08a24"/><text class="nb" x="206" y="85">1</text><text class="tb" x="226" y="85">Clean up</text>
+<text class="m" x="226" y="104">Remove everything below 100 Hz: the DC offset,</text><text class="m" x="226" y="119">wind and handling rumble. Bad numbers are zeroed.</text>
+<rect x="530" y="70" width="96" height="22" rx="11" fill="#9ad6a6"/><text class="chip" x="578" y="85">always on</text>
+<path d="M99 112 v18" stroke="#1f2933" stroke-width="2"/><path d="M93 126 l6 8 6 -8z" fill="#1f2933"/>
+
+<!-- 2 canceller -->
+<rect x="14" y="146" width="170" height="44" rx="4" fill="#f6f8fa" stroke="#d3d9df"/>
+<g transform="translate(14,146)"><path d="M0 22 C14 -2 28 -2 42 22 S70 46 85 22 S113 -2 127 22 S155 46 170 22" fill="none" stroke="#1f2933" stroke-width="2"/><path d="M0 22 C6 16 10 28 15 22 S24 16 30 22 S38 28 44 22 S52 16 58 22 S66 28 72 22 S80 16 86 22 S94 28 100 22 S108 16 114 22 S122 28 128 22 S136 16 142 22 S150 28 156 22 S164 16 170 22" fill="none" stroke="#d64545" stroke-width="1.2" stroke-dasharray="3 2"/></g>
+<circle cx="206" cy="160" r="11" fill="#f08a24"/><text class="nb" x="206" y="165">2</text><text class="tb" x="226" y="165">Subtract the echo</text>
+<text class="m" x="226" y="184">Take away the part of the microphone signal that is</text><text class="m" x="226" y="199">the exciter's own sound coming back (red).</text>
+<rect x="530" y="150" width="96" height="22" rx="11" fill="#e6e9ec"/><text class="chip" x="578" y="165">off at first</text>
+<path d="M99 192 v18" stroke="#1f2933" stroke-width="2"/><path d="M93 206 l6 8 6 -8z" fill="#1f2933"/>
+
+<!-- 3 expander -->
+<rect x="14" y="226" width="170" height="44" rx="4" fill="#f6f8fa" stroke="#d3d9df"/>
+<g transform="translate(14,226)"><path d="M6 40 L164 6" fill="none" stroke="#9aa5b1" stroke-width="1.4" stroke-dasharray="3 3"/><path d="M6 42 L40 38 L70 28 L164 6" fill="none" stroke="#1f2933" stroke-width="2"/><text class="ax" x="76" y="40">level in</text><text class="ax" x="14" y="16">out</text></g>
+<circle cx="206" cy="240" r="11" fill="#f08a24"/><text class="nb" x="206" y="245">3</text><text class="tb" x="226" y="245">Hush the very quiet</text>
+<text class="m" x="226" y="264">Below a low level (about -75 dBFS) turn down, so the</text><text class="m" x="226" y="279">microphone's own hiss is not amplified. Dashed: no change.</text>
+<rect x="530" y="230" width="96" height="22" rx="11" fill="#e6e9ec"/><text class="chip" x="578" y="245">off at first</text>
+<path d="M99 272 v18" stroke="#1f2933" stroke-width="2"/><path d="M93 286 l6 8 6 -8z" fill="#1f2933"/>
+
+<!-- 4 band split -->
+<rect x="14" y="306" width="170" height="44" rx="4" fill="#f6f8fa" stroke="#d3d9df"/>
+<g transform="translate(14,306)"><rect x="2" y="6" width="38" height="30" fill="#f08a24"/><rect x="42" y="6" width="42" height="30" fill="#2f8bd6"/><rect x="86" y="6" width="38" height="30" fill="#7a5fd0"/><rect x="126" y="6" width="42" height="30" fill="#17a2a2"/><text class="nb" x="21" y="26">low</text><text class="nb" x="63" y="26">mid</text><text class="nb" x="105" y="26">high</text><text class="nb" x="147" y="26">top</text></g>
+<circle cx="206" cy="320" r="11" fill="#f08a24"/><text class="nb" x="206" y="325">4</text><text class="tb" x="226" y="325">Split into four bands</text>
+<text class="m" x="226" y="344">Cut at 500, 1500 and 3000 Hz. Put back together with</text><text class="m" x="226" y="359">equal gains the bands give the original (within 0.3 dB).</text>
+<rect x="530" y="310" width="96" height="22" rx="11" fill="#9ad6a6"/><text class="chip" x="578" y="325">always on</text>
+<path d="M99 352 v18" stroke="#1f2933" stroke-width="2"/><path d="M93 366 l6 8 6 -8z" fill="#1f2933"/>
+
+<!-- 5 compressor -->
+<rect x="14" y="386" width="170" height="44" rx="4" fill="#f6f8fa" stroke="#d3d9df"/>
+<g transform="translate(14,386)"><path d="M6 42 L164 4" fill="none" stroke="#9aa5b1" stroke-width="1.4" stroke-dasharray="3 3"/><path d="M6 38 L70 24 L164 14" fill="none" stroke="#1f2933" stroke-width="2"/><circle cx="70" cy="24" r="3" fill="#d64545"/><text class="ax" x="76" y="40">level in</text><text class="ax" x="14" y="14">out</text></g>
+<circle cx="206" cy="400" r="11" fill="#f08a24"/><text class="nb" x="206" y="405">5</text><text class="tb" x="226" y="405">Give each band its gain</text>
+<text class="m" x="226" y="424">Full gain for quiet sound; above a threshold (red dot)</text><text class="m" x="226" y="439">less and less, so loud sound is not made painful.</text>
+<rect x="530" y="390" width="96" height="22" rx="11" fill="#f5c518"/><text class="chip" x="578" y="405">-6 dB flat</text>
+<path d="M99 432 v18" stroke="#1f2933" stroke-width="2"/><path d="M93 446 l6 8 6 -8z" fill="#1f2933"/>
+
+<!-- 6 EQ -->
+<rect x="14" y="466" width="170" height="44" rx="4" fill="#f6f8fa" stroke="#d3d9df"/>
+<g transform="translate(14,466)"><path d="M4 22 L166 22" fill="none" stroke="#1f2933" stroke-width="2"/><path d="M4 12 L166 12 M4 32 L166 32" stroke="#d3d9df" stroke-width="1" stroke-dasharray="3 3"/><text class="ax" x="8" y="9">+</text><text class="ax" x="8" y="42">-</text></g>
+<circle cx="206" cy="480" r="11" fill="#f08a24"/><text class="nb" x="206" y="485">6</text><text class="tb" x="226" y="485">Shape for the exciter</text>
+<text class="m" x="226" y="504">Three adjustable bumps and dips to flatten the exciter's</text><text class="m" x="226" y="519">uneven response. Flat until the exciter has been measured.</text>
+<rect x="530" y="470" width="96" height="22" rx="11" fill="#e6e9ec"/><text class="chip" x="578" y="485">off at first</text>
+<path d="M99 512 v18" stroke="#1f2933" stroke-width="2"/><path d="M93 526 l6 8 6 -8z" fill="#1f2933"/>
+
+<!-- 7 limiter -->
+<rect x="14" y="546" width="170" height="44" rx="4" fill="#f6f8fa" stroke="#d3d9df"/>
+<g transform="translate(14,546)"><path d="M6 40 L90 14 C110 8 130 7 164 7" fill="none" stroke="#1f2933" stroke-width="2"/><path d="M6 7 L164 7" stroke="#d64545" stroke-width="1.4" stroke-dasharray="4 3"/><text class="ax" x="100" y="40">level in</text><text class="ax" x="10" y="20" fill="#d64545" style="fill:#d64545">ceiling</text></g>
+<circle cx="206" cy="560" r="11" fill="#f08a24"/><text class="nb" x="206" y="565">7</text><text class="tb" x="226" y="565">Fade in, then limit</text>
+<text class="m" x="226" y="584">Rise from silence over 100 ms at start. Nothing can be</text><text class="m" x="226" y="599">louder than the ceiling (red), whatever the gain.</text>
+<rect x="530" y="550" width="96" height="22" rx="11" fill="#d64545"/><text class="chip" x="578" y="565" style="fill:#fff">the safety</text>
+<path d="M99 592 v18" stroke="#1f2933" stroke-width="2"/><path d="M93 606 l6 8 6 -8z" fill="#1f2933"/>
+
+<rect x="14" y="626" width="612" height="52" rx="6" fill="#f6f8fa" stroke="#d3d9df"/>
+<text class="tb" x="28" y="650">Out to the amplifier</text>
+<text class="m" x="28" y="668">The same seven steps run for each ear, on its own microphone, with its own state.</text>
+</svg>
